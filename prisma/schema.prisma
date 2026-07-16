@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Student {
+  id             String   @id @default(uuid())
+  registerNumber String   @unique
+  name           String
+  batch          String   // e.g., "31924U180"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  results        Result[]
+}
+
+model Semester {
+  id        String    @id @default(uuid())
+  number    Int       @unique // 1 to 6
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  subjects  Subject[]
+}
+
+model Subject {
+  id         String   @id @default(uuid())
+  code       String   @unique // e.g., "U18CS41"
+  name       String
+  credits    Int
+  semesterId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  semester   Semester @relation(fields: [semesterId], references: [id])
+  results    Result[]
+}
+
+model Result {
+  id            String   @id @default(uuid())
+  studentId     String
+  subjectId     String
+  internalMarks Int
+  externalMarks Int
+  total         Int
+  grade         String   // e.g., "O", "A+", "U"
+  passStatus    Boolean  // true if passed, false if arrear
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  student       Student  @relation(fields: [studentId], references: [id])
+  subject       Subject  @relation(fields: [subjectId], references: [id])
+
+  @@unique([studentId, subjectId]) // A student has one result per subject (unless arrear retakes, which we might model differently later, but let's keep it simple: updated result)
+}

@@ -1,0 +1,31 @@
+[
+  {
+    "registerNumber": "31923U18041",
+    "name": "NIZAMUDDIN N",
+    "batch": "31923U180",
+    "results": [
+      { "code": "23UECS22A", "internalMarks": 16, "externalMarks": 30 },
+      { "code": "23ULE40", "internalMarks": 21, "externalMarks": 2 },
+      { "code": "23USCS33", "internalMarks": 15, "externalMarks": 44 }
+    ]
+  },
+  {
+    "registerNumber": "31923U18043",
+    "name": "SALMAN FARIS C",
+    "batch": "31923U180",
+    "results": [
+      { "code": "23UCS11", "internalMarks": 15, "externalMarks": 10 },
+      { "code": "23UCS31", "internalMarks": 15, "externalMarks": 1 },
+      { "code": "23UCS41", "internalMarks": 14, "externalMarks": 6 },
+      { "code": "23UCS52", "internalMarks": 16, "externalMarks": 30 },
+      { "code": "23UECS12A", "internalMarks": 18, "externalMarks": 4 },
+      { "code": "23UECS32A", "internalMarks": 16, "externalMarks": 8 },
+      { "code": "23ULE20", "internalMarks": 16, "externalMarks": 15 },
+      { "code": "23UPCS46", "internalMarks": 24, "externalMarks": 31 },
+      { "code": "23USCS23", "internalMarks": 11, "externalMarks": 6 },
+      { "code": "23USCS24", "internalMarks": 11, "externalMarks": 6 },
+      { "code": "23USCS33", "internalMarks": 16, "externalMarks": 32 },
+      { "code": "23USCS43", "internalMarks": 21, "externalMarks": 6 }
+    ]
+  }
+]

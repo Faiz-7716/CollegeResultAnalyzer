@@ -1,0 +1,3222 @@
+[
+  {
+    "registerNumber": "31924U18001",
+    "name": "AKASH",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 14,
+        "externalMarks": 15
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 13,
+        "externalMarks": 8
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 20,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 60
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 15,
+        "externalMarks": 20
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 32
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 18
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 17,
+        "externalMarks": 10
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 17,
+        "externalMarks": 20
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 24,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 22,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS33",
+        "internalMarks": 21,
+        "externalMarks": 33
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 22,
+        "externalMarks": 8
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 24
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 15,
+        "externalMarks": 39
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 13,
+        "externalMarks": 22
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 14,
+        "externalMarks": 6
+      },
+      {
+        "code": "23ULT20",
+        "internalMarks": 24,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 50
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 14,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 21,
+        "externalMarks": 63
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18002",
+    "name": "DEVANATH S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 15,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 9
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 13,
+        "externalMarks": 5
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 14,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 19,
+        "externalMarks": 12
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 21,
+        "externalMarks": 51
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 2
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18003",
+    "name": "FAREED AHMED V",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 19,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 17,
+        "externalMarks": 6
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 43
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 18,
+        "externalMarks": 66
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 70
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 16,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 19,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 6
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 16,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 17,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 48
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 51
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 22,
+        "externalMarks": 5
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 23,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 18,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 14,
+        "externalMarks": 3
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 12,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 21,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 53
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 21,
+        "externalMarks": 61
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18004",
+    "name": "LITHISHWARAN V",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 18,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 16,
+        "externalMarks": 56
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 19,
+        "externalMarks": 34
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 18,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 20,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 45
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 16,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UCS31",
+        "internalMarks": 14,
+        "externalMarks": 15
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 19,
+        "externalMarks": 0
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 20,
+        "externalMarks": 5
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 16,
+        "externalMarks": 15
+      },
+      {
+        "code": "23ULT30",
+        "internalMarks": 24,
+        "externalMarks": 34
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 24,
+        "externalMarks": 47
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 17,
+        "externalMarks": 16
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 5
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 43
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 14,
+        "externalMarks": 9
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 13,
+        "externalMarks": 9
+      },
+      {
+        "code": "23ULT20",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 50
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 23,
+        "externalMarks": 67
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18005",
+    "name": "MAAZ M G",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 22,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 21,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 21,
+        "externalMarks": 52
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 23,
+        "externalMarks": 43
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 19,
+        "externalMarks": 64
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 73
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 19,
+        "externalMarks": 15
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 24,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 25,
+        "externalMarks": 48
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 22,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 25,
+        "externalMarks": 70
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 43
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 71
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 22,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 22,
+        "externalMarks": 58
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 23,
+        "externalMarks": 56
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 23,
+        "externalMarks": 60
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 22,
+        "externalMarks": 45
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 25,
+        "externalMarks": 71
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18006",
+    "name": "MANIKANDAN S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 12
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 11
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 20,
+        "externalMarks": 9
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 25,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 38
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 32
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 20,
+        "externalMarks": 45
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 19,
+        "externalMarks": 37
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 16,
+        "externalMarks": 36
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 20,
+        "externalMarks": 41
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 17,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULT20",
+        "internalMarks": 25,
+        "externalMarks": 45
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 68
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 25,
+        "externalMarks": 69
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18007",
+    "name": "MOHAMAD ZABIULLAH S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 16,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 17,
+        "externalMarks": 16
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 16,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 20,
+        "externalMarks": 48
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 19,
+        "externalMarks": 61
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 69
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 38
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 16
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 23,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 19,
+        "externalMarks": 46
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 38
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 24,
+        "externalMarks": 42
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 22,
+        "externalMarks": 11
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 58
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 18,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 15,
+        "externalMarks": 36
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 19,
+        "externalMarks": 45
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 22,
+        "externalMarks": 68
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 55
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 18,
+        "externalMarks": 37
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 24,
+        "externalMarks": 74
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18008",
+    "name": "MOHAMED THAHA V I",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 14,
+        "externalMarks": 5
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 1
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 15,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 15,
+        "externalMarks": 68
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 16,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 18,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 1
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 13,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 14,
+        "externalMarks": 32
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 21,
+        "externalMarks": 5
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 20,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 15,
+        "externalMarks": 17
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 15,
+        "externalMarks": 7
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 16,
+        "externalMarks": 31
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 15,
+        "externalMarks": 54
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 16,
+        "externalMarks": 13
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 21,
+        "externalMarks": 60
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18009",
+    "name": "MOHAMMED ARQUM V",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 18,
+        "externalMarks": 5
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 15,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 19,
+        "externalMarks": 64
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 41
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 18,
+        "externalMarks": 32
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 19
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 7
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 16,
+        "externalMarks": 11
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 15,
+        "externalMarks": 7
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 68
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 40
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 14,
+        "externalMarks": 14
+      },
+      {
+        "code": "23USCS33",
+        "internalMarks": 22,
+        "externalMarks": 32
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 16
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 21
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 13,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 14,
+        "externalMarks": 14
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 19,
+        "externalMarks": 50
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 40
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 21,
+        "externalMarks": 66
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18010",
+    "name": "MOHAMMED AZHAN T",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 17,
+        "externalMarks": 12
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 15,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 17,
+        "externalMarks": 50
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 18,
+        "externalMarks": 39
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 21,
+        "externalMarks": 72
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 65
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 40
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 24,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 23,
+        "externalMarks": 37
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 21,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 22,
+        "externalMarks": 45
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 72
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 24,
+        "externalMarks": 41
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 73
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 44
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 13,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 21,
+        "externalMarks": 60
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 25,
+        "externalMarks": 59
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 55
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 19,
+        "externalMarks": 61
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 23,
+        "externalMarks": 65
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18011",
+    "name": "MOHAMMED FAIZ P",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 22,
+        "externalMarks": 45
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 25,
+        "externalMarks": 45
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 24,
+        "externalMarks": 69
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 22,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 25,
+        "externalMarks": 48
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 25,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 25,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 25,
+        "externalMarks": 59
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 25,
+        "externalMarks": 59
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 25,
+        "externalMarks": 46
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 72
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 18,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 25,
+        "externalMarks": 48
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 25,
+        "externalMarks": 67
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 19,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 25,
+        "externalMarks": 74
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18012",
+    "name": "MOHAMMED FARHAN H S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 17,
+        "externalMarks": 7
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 14,
+        "externalMarks": 22
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 19
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 17,
+        "externalMarks": 63
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 7
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 17,
+        "externalMarks": 23
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 10
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 16,
+        "externalMarks": 14
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 21,
+        "externalMarks": 11
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 19,
+        "externalMarks": 53
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 15,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 14,
+        "externalMarks": 9
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 16,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 16,
+        "externalMarks": 48
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 15,
+        "externalMarks": 32
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 58
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18013",
+    "name": "MOHAMMED IMRAN A",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 19,
+        "externalMarks": 39
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 19,
+        "externalMarks": 37
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 22,
+        "externalMarks": 47
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 21,
+        "externalMarks": 62
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 15
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 24,
+        "externalMarks": 39
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 24,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 20,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 24,
+        "externalMarks": 65
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 74
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 19,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 19,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 21,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 21,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 19,
+        "externalMarks": 35
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 23,
+        "externalMarks": 65
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18014",
+    "name": "MOHAMMED IRBAZ I",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 15,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 15,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 14
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 15,
+        "externalMarks": 40
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 17,
+        "externalMarks": 61
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 41
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 18,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 10
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 19,
+        "externalMarks": 17
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 19,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 22,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 22,
+        "externalMarks": 38
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 22,
+        "externalMarks": 9
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 20,
+        "externalMarks": 50
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 16,
+        "externalMarks": 17
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 14,
+        "externalMarks": 57
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 15,
+        "externalMarks": 36
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 20,
+        "externalMarks": 53
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 16,
+        "externalMarks": 47
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 61
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18015",
+    "name": "MOHAMMED NAHIR A",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 18,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 16,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 16,
+        "externalMarks": 40
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 33
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 20,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 22,
+        "externalMarks": 71
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 40
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 23,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 22,
+        "externalMarks": 6
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 20,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 23,
+        "externalMarks": 54
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 66
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 23,
+        "externalMarks": 66
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 15,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 17,
+        "externalMarks": 22
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 22,
+        "externalMarks": 56
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 16,
+        "externalMarks": 34
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 24,
+        "externalMarks": 68
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18016",
+    "name": "MOHAMMED RASHID R",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 14,
+        "externalMarks": 17
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 13
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 14,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 17,
+        "externalMarks": 68
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 40
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 22,
+        "externalMarks": 6
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 19,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 6
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 15,
+        "externalMarks": 3
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 20,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 11
+      },
+      {
+        "code": "23USCS33",
+        "internalMarks": 21,
+        "externalMarks": 13
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 5
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 21,
+        "externalMarks": 58
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 12
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 14,
+        "externalMarks": 19
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 14,
+        "externalMarks": 13
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 18,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 35
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 17,
+        "externalMarks": 8
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 64
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18017",
+    "name": "MOHAMMED RAZI T",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 20,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 20,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 25,
+        "externalMarks": 42
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 16,
+        "externalMarks": 73
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 20,
+        "externalMarks": 69
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 61
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 23,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 25,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 25,
+        "externalMarks": 54
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 24,
+        "externalMarks": 56
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 74
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 60
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 43
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 23,
+        "externalMarks": 71
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 23,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 25,
+        "externalMarks": 43
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 24,
+        "externalMarks": 64
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 70
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 22,
+        "externalMarks": 48
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 25,
+        "externalMarks": 70
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18018",
+    "name": "MOHAMMED SAMEER A",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 18,
+        "externalMarks": 43
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 16,
+        "externalMarks": 61
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 21,
+        "externalMarks": 56
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 24,
+        "externalMarks": 39
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 19,
+        "externalMarks": 65
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 51
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 70
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 42
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 21,
+        "externalMarks": 60
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 21,
+        "externalMarks": 60
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 48
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 49
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 42
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 50
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 16,
+        "externalMarks": 50
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 21,
+        "externalMarks": 50
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 23,
+        "externalMarks": 54
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 55
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 22,
+        "externalMarks": 46
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 24,
+        "externalMarks": 68
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18019",
+    "name": "MOHAMMED SIDDIQUE S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 20,
+        "externalMarks": 43
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 17,
+        "externalMarks": 41
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 19,
+        "externalMarks": 41
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 18,
+        "externalMarks": 47
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 21,
+        "externalMarks": 68
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 42
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 23,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 21,
+        "externalMarks": 47
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 23,
+        "externalMarks": 49
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 45
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 66
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 43
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 23,
+        "externalMarks": 62
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 23,
+        "externalMarks": 39
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 19,
+        "externalMarks": 20
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 21,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 22,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 21,
+        "externalMarks": 43
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 65
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18020",
+    "name": "MOHAMMED SUFIYAN A",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 20,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 19,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 17,
+        "externalMarks": 34
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 38
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 20,
+        "externalMarks": 62
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 71
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 14,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 23,
+        "externalMarks": 33
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 18,
+        "externalMarks": 20
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 21,
+        "externalMarks": 18
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 22,
+        "externalMarks": 11
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 50
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 60
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 40
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 23,
+        "externalMarks": 70
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 20,
+        "externalMarks": 32
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 22,
+        "externalMarks": 61
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 25,
+        "externalMarks": 70
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 19,
+        "externalMarks": 8
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 23,
+        "externalMarks": 67
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18021",
+    "name": "MOHAMMED YASEER E Y",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 19,
+        "externalMarks": 37
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 14,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 39
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 20,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 24,
+        "externalMarks": 52
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 7
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 19,
+        "externalMarks": 40
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 18,
+        "externalMarks": 40
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 21,
+        "externalMarks": 52
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 50
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 17,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 23,
+        "externalMarks": 61
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18022",
+    "name": "MOHAMMED YASER C",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 16,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 14,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 17,
+        "externalMarks": 24
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 14,
+        "externalMarks": 42
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 19,
+        "externalMarks": 62
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 52
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 8
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 20,
+        "externalMarks": 6
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 7
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 15,
+        "externalMarks": 11
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 14,
+        "externalMarks": 41
+      },
+      {
+        "code": "23ULU30",
+        "internalMarks": 17,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 18,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 22,
+        "externalMarks": 40
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 31
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 21,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 21,
+        "externalMarks": 44
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 17,
+        "externalMarks": 20
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 18,
+        "externalMarks": 35
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 21,
+        "externalMarks": 53
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 55
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 18,
+        "externalMarks": 30
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 65
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18023",
+    "name": "MUHAMMAD S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 14,
+        "externalMarks": 19
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 10
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 15,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 31
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 17,
+        "externalMarks": 66
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 24,
+        "externalMarks": 42
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 16,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 41
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 13,
+        "externalMarks": 3
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 19,
+        "externalMarks": 12
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 3
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 13,
+        "externalMarks": 18
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 18,
+        "externalMarks": 33
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 17,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 22,
+        "externalMarks": 33
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 58
+      },
+      {
+        "code": "23ULU20",
+        "internalMarks": 18,
+        "externalMarks": 57
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 23,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 14,
+        "externalMarks": 34
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 22,
+        "externalMarks": 62
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18024",
+    "name": "SAIF ALI S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 21,
+        "externalMarks": 55
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 16,
+        "externalMarks": 58
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 20,
+        "externalMarks": 41
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 24,
+        "externalMarks": 43
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 22,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 72
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 19,
+        "externalMarks": 44
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 20,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 24,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 23,
+        "externalMarks": 36
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 25,
+        "externalMarks": 49
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 23,
+        "externalMarks": 70
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 25,
+        "externalMarks": 58
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 46
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 21,
+        "externalMarks": 57
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 20,
+        "externalMarks": 49
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 18,
+        "externalMarks": 59
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 24,
+        "externalMarks": 39
+      },
+      {
+        "code": "23ULT20",
+        "internalMarks": 23,
+        "externalMarks": 54
+      },
+      {
+        "code": "23UPCS25",
+        "internalMarks": 24,
+        "externalMarks": 68
+      },
+      {
+        "code": "23USCS23",
+        "internalMarks": 18,
+        "externalMarks": 41
+      },
+      {
+        "code": "24UNM20",
+        "internalMarks": 25,
+        "externalMarks": 66
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18025",
+    "name": "SAIRAJ M",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 24,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 24,
+        "externalMarks": 41
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 20,
+        "externalMarks": 34
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 23,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 23,
+        "externalMarks": 40
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 24,
+        "externalMarks": 35
+      },
+      {
+        "code": "23UECS32A",
+        "internalMarks": 25,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 25,
+        "externalMarks": 36
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 20,
+        "externalMarks": 11
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 25,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 35
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 72
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18026",
+    "name": "SANJAY S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 16,
+        "externalMarks": 2
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 0
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 14,
+        "externalMarks": 0
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 13,
+        "externalMarks": 20
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 22,
+        "externalMarks": 7
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 21,
+        "externalMarks": 40
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 13,
+        "externalMarks": 5
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 22,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 19,
+        "externalMarks": 48
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18027",
+    "name": "SARANRAJ S",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 21,
+        "externalMarks": 39
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 23,
+        "externalMarks": 19
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 22,
+        "externalMarks": 52
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 21,
+        "externalMarks": 45
+      },
+      {
+        "code": "23ULT10",
+        "internalMarks": 24,
+        "externalMarks": 37
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 73
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 24,
+        "externalMarks": 40
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 24,
+        "externalMarks": 39
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 25,
+        "externalMarks": 45
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 24,
+        "externalMarks": 44
+      },
+      {
+        "code": "23ULT40",
+        "internalMarks": 25,
+        "externalMarks": 38
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 25,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 25,
+        "externalMarks": 61
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 45
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 25,
+        "externalMarks": 72
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18028",
+    "name": "SAYED MUHAMMED MOHATHASEEM",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 14,
+        "externalMarks": 16
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 13,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 14,
+        "externalMarks": 54
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 15,
+        "externalMarks": 20
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 20,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 24,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 20,
+        "externalMarks": 32
+      },
+      {
+        "code": "23UCS21",
+        "internalMarks": 16,
+        "externalMarks": 15
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 22,
+        "externalMarks": 1
+      },
+      {
+        "code": "23UECS22A",
+        "internalMarks": 13,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 7
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 19,
+        "externalMarks": 47
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 22,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 72
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 38
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 24,
+        "externalMarks": 72
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18029",
+    "name": "SEHAL AHMED T",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 23,
+        "externalMarks": 31
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 22,
+        "externalMarks": 75
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 18,
+        "externalMarks": 19
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 19,
+        "externalMarks": 43
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 21,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 24,
+        "externalMarks": 75
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 17,
+        "externalMarks": 14
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 22,
+        "externalMarks": 44
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 20,
+        "externalMarks": 30
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 24,
+        "externalMarks": 40
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 24,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 58
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 21,
+        "externalMarks": 33
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 24,
+        "externalMarks": 33
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 24,
+        "externalMarks": 68
+      }
+    ]
+  },
+  {
+    "registerNumber": "31924U18030",
+    "name": "SHARIF UMER N",
+    "batch": "31924U180",
+    "results": [
+      {
+        "code": "23UCS11",
+        "internalMarks": 18,
+        "externalMarks": 34
+      },
+      {
+        "code": "23UECS12A",
+        "internalMarks": 16,
+        "externalMarks": 36
+      },
+      {
+        "code": "23UFCS14",
+        "internalMarks": 18,
+        "externalMarks": 31
+      },
+      {
+        "code": "23ULE10",
+        "internalMarks": 16,
+        "externalMarks": 34
+      },
+      {
+        "code": "23ULU10",
+        "internalMarks": 20,
+        "externalMarks": 63
+      },
+      {
+        "code": "23UPCS15",
+        "internalMarks": 23,
+        "externalMarks": 43
+      },
+      {
+        "code": "23USCS13",
+        "internalMarks": 15,
+        "externalMarks": 14
+      },
+      {
+        "code": "23UCS41",
+        "internalMarks": 21,
+        "externalMarks": 46
+      },
+      {
+        "code": "23UECS42A",
+        "internalMarks": 21,
+        "externalMarks": 14
+      },
+      {
+        "code": "23ULE20",
+        "internalMarks": 17,
+        "externalMarks": 28
+      },
+      {
+        "code": "23ULE30",
+        "internalMarks": 19,
+        "externalMarks": 9
+      },
+      {
+        "code": "23ULE40",
+        "internalMarks": 17,
+        "externalMarks": 25
+      },
+      {
+        "code": "23ULU40",
+        "internalMarks": 21,
+        "externalMarks": 30
+      },
+      {
+        "code": "23UPCS45",
+        "internalMarks": 24,
+        "externalMarks": 42
+      },
+      {
+        "code": "23UPCS46",
+        "internalMarks": 23,
+        "externalMarks": 40
+      },
+      {
+        "code": "23USCS43",
+        "internalMarks": 23,
+        "externalMarks": 31
+      },
+      {
+        "code": "24UNM40A",
+        "internalMarks": 22,
+        "externalMarks": 61
+      }
+    ]
+  }
+]

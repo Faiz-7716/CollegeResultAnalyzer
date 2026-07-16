@@ -1,0 +1,66 @@
+📘 Semester 1 Revaluation Results
+Reg No.	Student Name	Subject Code (Name)	Total Marks	Final Result
+31924U18001	AKASH C	23UECS12A (Num Methods I)	-	NC (No Change)
+23UFCS14 (Prob Solving)	-	NC
+23ULT10 (Tamil I)	-	NC
+31924U18005	MAAZ M G	23USCS13 (HTML)	53	PASS
+31924U18007	MOHAMAD ZABIULLAH S	23UECS12A (Num Methods I)	52	PASS
+31924U18010	MOHAMMED AZHAN T	23UCS11 (C++)	51	PASS
+23UECS12A (Num Methods I)	-	NC
+31924U18013	MOHAMMED IMRAN A	23USCS13 (HTML)	50	PASS
+31924U18022	MOHAMMED YASER C	23UFCS14 (Prob Solving)	47	PASS
+31924U18027	SARANRAJ S	23UECS12A (Num Methods I)	57	PASS
+31924U18028	SAYED MUHAMMED M.	23UCS11 (C++)	46	PASS
+31924U18029	SEHAL AHMED T	23UFCS14 (Prob Solving)	63	PASS
+23USCS13 (HTML)	50	PASS
+
+📗 Semester 2 Revaluation Results
+Reg No.	Student Name	Subject Code (Name)	Total Marks	Final Result
+31924U18001	AKASH C	23UCS21 (Data Structures)	47	PASS
+23ULE20 (English II)	-	NC (No Change)
+31924U18014	MOHAMMED IRBAZ I	23UCS21 (Data Structures)	49	PASS
+31924U18015	MOHAMMED NAHIR A	23ULE20 (English II)	47	PASS
+31924U18019	MOHAMMED SIDDIQUE S	23UECS22A (Num Methods II)	-	NC
+31924U18020	MOHAMMED SUFIYAN A	23USCS23 (Office Auto)	49	PASS
+23UECS22A (Num Methods II)	-	NC
+31924U18022	MOHAMMED YASER C	23UCS21 (Data Structures)	47	PASS
+31924U18027	SARANRAJ S	23ULE20 (English II)	-	NC
+31924U18028	SAYED MUHAMMED M.	23UCS21 (Data Structures)	-	NC
+23UECS22A (Num Methods II)	-	NC
+23USCS23 (Office Auto)	-	NC
+31924U18030	SHARIF UMER N	23UCS21 (Data Structures)	49	PASS
+23UECS22A (Num Methods II)	-	NC
+23USCS23 (Office Auto)	-	NC
+23ULE20 (English II)	-	NC
+
+📙 Semester 3 Revaluation Results
+Reg No.	Student Name	Subject Code (Name)	Total Marks	Final Result
+31924U18001	AKASH C	23ULT30 (Tamil III)	54	PASS
+23UECS32A (Stats I)	-	NC (No Change)
+23USCS33 (Internet)	-	NC
+23ULE30 (English III)	-	NC
+31924U18004	LITHISHWARAN V	23UCS31 (Python)	-	NC
+23UECS32A (Stats I)	-	NC
+23ULT30 (Tamil III)	-	NC
+31924U18010	MOHAMMED AZHAN T	23UECS32A (Stats I)	51	PASS
+31924U18014	MOHAMMED IRBAZ I	23UECS32A (Stats I)	49	PASS
+31924U18017	MOHAMMED RAZI T	23UECS32A (Stats I)	-	NC
+31924U18025	SAIRAJ M	23UECS32A (Stats I)	-	NC
+31924U18028	SAYED MUHAMMED M.	23UECS32A (Stats I)	53	PASS
+31924U18030	SHARIF UMER N	23UCS31 (Python)	49	PASS
+23ULE30 (English III)	-	NC
+
+🎓 Senior Batch (2023-2026) Revaluation Highlights
+Semester 5 Clearances (Nov/Dec 2025):
+23UCS51 (OS): Inamul Hasan P M (44 PASS), Md Zabeehullah Roomy S (44 PASS), Mohammed Aqueel S (66 PASS), Mohammed Maaz N (56 PASS), Yoga V (48 PASS).
+23UCS52 (DBMS): Adnan Yasar N (49 PASS), Gokula Krishnan R (57 PASS), Mohammed Hannan N (58 PASS), Mohammed Maaz N (55 PASS), Mohammed Samman V (53 PASS).
+23UECS53A (Elective I): Mohammed Hamaas N (67 PASS).
+
+Semester 4 Clearances (Apr/May 2025):
+Yoga V successfully cleared 23UECS42A (Stats II) with 51 marks and 23USCS43 (Web Design) with 53 marks. Tajudeen M cleared 23ULT40 (Tamil IV) with 51 marks.
+
+Semester 3 Clearances (Nov/Dec 2025):
+23UCS31 (Python): Kamran K (63 PASS).
+23UECS32A (Stats I): Adnan Yasar N (49 PASS), Chiya Mohammed Saihaan (63 PASS).
+23USCS33 (Internet): Md Faizan V (64 PASS).
+Language Papers: Md Zabeehullah Roomy S (English III - 53 PASS), Mohammed Rashid H (English III - 51 PASS), Shahid Afridi C (EVS - 53 PASS), Tajudeen M (Tamil III - 49 PASS), Mohammed Moinuddin M (Urdu III - 46 PASS).
