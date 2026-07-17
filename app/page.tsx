@@ -55,11 +55,11 @@ export default async function Dashboard() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "3rem" }}>
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "3rem" }}>
         {/* Academic Status Breakdown */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
           <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", textAlign: "center" }}>Academic Status</h3>
-          <div style={{ display: "flex", justifyContent: "space-between", textAlign: "center" }}>
+          <div className="responsive-flex" style={{ display: "flex", justifyContent: "space-between", textAlign: "center" }}>
             <div style={{ flex: 1, paddingRight: "1rem" }}>
               <p className="text-muted" style={{ fontSize: "1.1rem" }}>All Clear</p>
               <p className="h1" style={{ color: "var(--status-success)", marginTop: "0.5rem" }}>{stats.allClearCount}</p>
@@ -94,7 +94,7 @@ export default async function Dashboard() {
         {/* Core vs Language */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>Category Performance</h3>
-          <div style={{ display: "flex", justifyContent: "space-around", textAlign: "center" }}>
+          <div className="responsive-flex" style={{ display: "flex", justifyContent: "space-around", textAlign: "center" }}>
             <div>
               <p className="text-muted" style={{ fontSize: "1.1rem" }}>Core & Allied</p>
               <p className="h1 text-gradient" style={{ marginTop: "0.5rem" }}>{stats.coreAvg}%</p>
@@ -109,13 +109,13 @@ export default async function Dashboard() {
 
       <div className="card glass-panel" style={{ marginBottom: "3rem" }}>
         <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>Subject Insights</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+        <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
           <div>
             <p className="text-muted" style={{ marginBottom: "0.5rem", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Hardest Subject (Lowest Pass Rate)</p>
             <h3 className="h3" style={{ color: "var(--status-error)" }}>{stats.hardestSubject.name}</h3>
             <p style={{ marginTop: "0.25rem", fontWeight: 600 }}>{stats.hardestSubject.code} <span className="badge badge-error" style={{ marginLeft: "0.5rem" }}>{stats.hardestSubject.passRate.toFixed(1)}% Pass</span></p>
           </div>
-          <div style={{ borderLeft: "1px solid var(--border-color)", paddingLeft: "2rem" }}>
+          <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", paddingLeft: "2rem" }}>
             <p className="text-muted" style={{ marginBottom: "0.5rem", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Top Subject (Highest Pass Rate)</p>
             <h3 className="h3" style={{ color: "var(--status-success)" }}>{stats.easiestSubject.name}</h3>
             <p style={{ marginTop: "0.25rem", fontWeight: 600 }}>{stats.easiestSubject.code} <span className="badge badge-success" style={{ marginLeft: "0.5rem" }}>{stats.easiestSubject.passRate.toFixed(1)}% Pass</span></p>

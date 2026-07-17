@@ -61,7 +61,7 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
         <Link href="/students" className="btn btn-secondary" style={{ marginBottom: "1rem" }}>
           &larr; Back to Roster
         </Link>
-        <div className="card glass-panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="card glass-panel responsive-flex" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <h2 className="h2 text-gradient">{student.name}</h2>
             <p className="text-muted" style={{ fontSize: "1.1rem", marginTop: "0.25rem" }}>
@@ -105,13 +105,13 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
 
             return (
               <div key={semNumber} className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>
-                <div style={{ padding: "1.5rem", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div className="responsive-flex" style={{ padding: "1.5rem", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <h3 className="h3">Semester {semNumber}</h3>
                   <div className="badge badge-primary" style={{ fontSize: "1rem", background: "rgba(59, 130, 246, 0.15)" }}>
                     SGPA: <span style={{ color: "var(--accent-primary)", marginLeft: "0.5rem" }}>{semSgpa.toFixed(2)}</span>
                   </div>
                 </div>
-                <div style={{ overflowX: "auto" }}>
+                <div className="table-responsive">
                   <table className="data-table">
                     <thead>
                       <tr>
@@ -151,14 +151,14 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
             );
           })}
 
-          <div className="card glass-panel" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", textAlign: "center", padding: "3rem", background: "var(--bg-glass-hover)" }}>
+          <div className="card glass-panel responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", textAlign: "center", padding: "3rem", background: "var(--bg-glass-hover)" }}>
             <div>
               <h3 className="h2 text-muted" style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>Cumulative Grade Point Average</h3>
               <p className="h1 text-gradient" style={{ fontSize: "3.5rem" }}>
                 {calculateCGPA(sgpas).toFixed(2)}
               </p>
             </div>
-            <div style={{ borderLeft: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <h3 className="h2 text-muted" style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>Core + Allied Percentage</h3>
               <p className="h1 text-gradient" style={{ fontSize: "3.5rem" }}>
                 {coreAlliedPercentage.toFixed(2)}%

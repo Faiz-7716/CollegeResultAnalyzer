@@ -55,7 +55,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
+      <div className="responsive-flex" style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
         <label className="input-label" style={{ margin: 0 }}>Sort By:</label>
         <select 
           className="input-field" 
@@ -83,7 +83,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             <p className="text-muted">No students found in the database.</p>
           </div>
         ) : (
-          <div style={{ overflowX: "auto" }}>
+          <div className="table-responsive">
             <table className="data-table">
               <thead>
                 <tr>

@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "A production-ready system for the B.Sc. CS department, Mazharul Uloom College (31924U180).",
 };
 
+import Navbar from "./components/Navbar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,18 +21,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body suppressHydrationWarning>
-        <header className="main-header">
-          <div className="container nav-container">
-            <Link href="/" className="nav-logo">
-              <span className="text-gradient">Score Analyze</span>
-            </Link>
-            <nav className="nav-links">
-              <Link href="/" className="nav-link">Dashboard</Link>
-              <Link href="/students" className="nav-link">Students</Link>
-              <Link href="/data-entry" className="nav-link">Data Entry</Link>
-            </nav>
-          </div>
-        </header>
+        <Navbar />
         <main className="container page-wrapper">
           {children}
         </main>
