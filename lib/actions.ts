@@ -137,11 +137,11 @@ export async function getDashboardStats() {
   let totalLangMarks = 0;
   let langCount = 0;
 
-  subjects.forEach(sub => {
+  subjects.forEach((sub: any) => {
     if (sub.results.length === 0) return;
 
     // Subject Performance
-    const passes = sub.results.filter(r => r.passStatus).length;
+    const passes = sub.results.filter((r: any) => r.passStatus).length;
     const passRate = (passes / sub.results.length) * 100;
 
     if (passRate < hardestSubject.passRate || hardestSubject.name === "N/A") {
@@ -155,7 +155,7 @@ export async function getDashboardStats() {
     const isCoreOrAllied = sub.code.includes('UCS') || sub.code.includes('UPCS') || sub.code.includes('UECS') || sub.code.includes('CC') || sub.code.includes('EC');
     const isLang = sub.code.includes('ULE') || sub.code.includes('ULT') || sub.code.includes('ULU');
 
-    sub.results.forEach(r => {
+    sub.results.forEach((r: any) => {
       if (isCoreOrAllied) {
         totalCoreMarks += r.total;
         coreCount++;
