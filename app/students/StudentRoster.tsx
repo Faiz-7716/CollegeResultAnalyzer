@@ -17,14 +17,22 @@ type StudentData = {
     languageMarks: number;
     coreAlliedSubjectsCount: number;
     totalSubjectsCount: number;
+    hasArrear: boolean;
     semMarks: Record<number, number>;
   };
 };
 
 export default function StudentRoster({ initialStudents }: { initialStudents: StudentData[] }) {
   const [sortOption, setSortOption] = useState<string>("registerNumber");
+  const [filterOption, setFilterOption] = useState<string>("all");
 
-  const sortedStudents = [...initialStudents].sort((a, b) => {
+  const filteredStudents = initialStudents.filter(student => {
+    if (filterOption === "allClear") return !student.metrics.hasArrear;
+    if (filterOption === "arrears") return student.metrics.hasArrear;
+    return true;
+  });
+
+  const sortedStudents = [...filteredStudents].sort((a, b) => {
     switch (sortOption) {
       case "registerNumber":
         return a.registerNumber.localeCompare(b.registerNumber);
@@ -55,26 +63,42 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
 
   return (
     <div>
-      <div className="responsive-flex" style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
-        <label className="input-label" style={{ margin: 0 }}>Sort By:</label>
-        <select 
-          className="input-field" 
-          style={{ width: "auto", marginBottom: 0 }}
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-        >
-          <option value="registerNumber">Register Number (Default)</option>
-          <option value="cgpa">CGPA</option>
-          <option value="totalMarks">Total Marks (Everything)</option>
-          <option value="coreMarks">Only Core</option>
-          <option value="alliedMarks">Only Allied</option>
-          <option value="coreAndAllied">Allied + Core</option>
-          <option value="languageMarks">Only Language</option>
-          <option value="sem1">Semester 1 Marks</option>
-          <option value="sem2">Semester 2 Marks</option>
-          <option value="sem3">Semester 3 Marks</option>
-          <option value="sem4">Semester 4 Marks</option>
-        </select>
+      <div className="responsive-flex" style={{ display: "flex", gap: "2rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <label className="input-label" style={{ margin: 0 }}>Filter By:</label>
+          <select 
+            className="input-field" 
+            style={{ width: "auto", marginBottom: 0 }}
+            value={filterOption}
+            onChange={(e) => setFilterOption(e.target.value)}
+          >
+            <option value="all">All Students</option>
+            <option value="allClear">All Clear Ranking</option>
+            <option value="arrears">Students with Arrears</option>
+          </select>
+        </div>
+
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <label className="input-label" style={{ margin: 0 }}>Sort By:</label>
+          <select 
+            className="input-field" 
+            style={{ width: "auto", marginBottom: 0 }}
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="registerNumber">Register Number (Default)</option>
+            <option value="cgpa">CGPA</option>
+            <option value="totalMarks">Total Marks (Everything)</option>
+            <option value="coreMarks">Only Core</option>
+            <option value="alliedMarks">Only Allied</option>
+            <option value="coreAndAllied">Allied + Core</option>
+            <option value="languageMarks">Only Language</option>
+            <option value="sem1">Semester 1 Marks</option>
+            <option value="sem2">Semester 2 Marks</option>
+            <option value="sem3">Semester 3 Marks</option>
+            <option value="sem4">Semester 4 Marks</option>
+          </select>
+        </div>
       </div>
 
       <div className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>

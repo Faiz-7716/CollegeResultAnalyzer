@@ -206,6 +206,7 @@ export async function getStudentsWithMetrics() {
     let languageMarks = 0;
     let totalSubjectsCount = 0;
     let coreAlliedSubjectsCount = 0;
+    let hasArrear = false;
     const semMarks: Record<number, number> = {};
 
     // Group results by semester for SGPA/CGPA calculation
@@ -219,6 +220,9 @@ export async function getStudentsWithMetrics() {
       
       totalMarks += total;
       totalSubjectsCount++;
+      if (!result.passStatus) {
+        hasArrear = true;
+      }
 
       // Group sem wise marks
       if (!semMarks[semNumber]) {
@@ -288,6 +292,7 @@ export async function getStudentsWithMetrics() {
         semMarks,
         totalSubjectsCount,
         coreAlliedSubjectsCount,
+        hasArrear,
       }
     };
   });
