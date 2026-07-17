@@ -46,11 +46,28 @@ async function main() {
       const total = totStr === "AAA" ? 0 : parseInt(totStr);
       const passStatus = passStatusStr === "PASS";
       
-      // Find subject
-      const subject = await prisma.subject.findUnique({ where: { code } });
+      // Upsert subject
+      let subject = await prisma.subject.findUnique({ where: { code } });
       if (!subject) {
-        console.log(`⚠️ Subject not found: ${code}`);
-        continue;
+        // Infer semester from code
+        const match = code.match(/[A-Z]+(\d)/);
+        const semNumber = match ? parseInt(match[1]) : 1;
+        
+        const semester = await prisma.semester.upsert({
+          where: { number: semNumber },
+          update: {},
+          create: { number: semNumber },
+        });
+
+        subject = await prisma.subject.create({
+          data: {
+            code,
+            name: code,
+            credits: 4,
+            semesterId: semester.id,
+          }
+        });
+        console.log(`✨ Created new subject: ${code}`);
       }
       
       let grade = "U";
