@@ -24,6 +24,7 @@ type StudentData = {
 
 export default function StudentRoster({ initialStudents }: { initialStudents: StudentData[] }) {
   const [sortOption, setSortOption] = useState<string>("registerNumber");
+  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
   const [filterOption, setFilterOption] = useState<string>("all");
 
   const filteredStudents = initialStudents.filter(student => {
@@ -33,32 +34,47 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
   });
 
   const sortedStudents = [...filteredStudents].sort((a, b) => {
+    let result = 0;
     switch (sortOption) {
       case "registerNumber":
-        return a.registerNumber.localeCompare(b.registerNumber);
+        result = a.registerNumber.localeCompare(b.registerNumber);
+        // default for register is asc, so if sortDir is 'desc', we actually want to reverse it.
+        // Wait, normally default is what people see first. Let's say default is what we have right now.
+        break;
       case "cgpa":
-        return b.metrics.cgpa - a.metrics.cgpa;
+        result = b.metrics.cgpa - a.metrics.cgpa;
+        break;
       case "totalMarks":
-        return b.metrics.totalMarks - a.metrics.totalMarks;
+        result = b.metrics.totalMarks - a.metrics.totalMarks;
+        break;
       case "coreMarks":
-        return b.metrics.coreMarks - a.metrics.coreMarks;
+        result = b.metrics.coreMarks - a.metrics.coreMarks;
+        break;
       case "alliedMarks":
-        return b.metrics.alliedMarks - a.metrics.alliedMarks;
+        result = b.metrics.alliedMarks - a.metrics.alliedMarks;
+        break;
       case "coreAndAllied":
-        return b.metrics.coreAndAllied - a.metrics.coreAndAllied;
+        result = b.metrics.coreAndAllied - a.metrics.coreAndAllied;
+        break;
       case "languageMarks":
-        return b.metrics.languageMarks - a.metrics.languageMarks;
+        result = b.metrics.languageMarks - a.metrics.languageMarks;
+        break;
       case "sem1":
-        return (b.metrics.semMarks[1] || 0) - (a.metrics.semMarks[1] || 0);
+        result = (b.metrics.semMarks[1] || 0) - (a.metrics.semMarks[1] || 0);
+        break;
       case "sem2":
-        return (b.metrics.semMarks[2] || 0) - (a.metrics.semMarks[2] || 0);
+        result = (b.metrics.semMarks[2] || 0) - (a.metrics.semMarks[2] || 0);
+        break;
       case "sem3":
-        return (b.metrics.semMarks[3] || 0) - (a.metrics.semMarks[3] || 0);
+        result = (b.metrics.semMarks[3] || 0) - (a.metrics.semMarks[3] || 0);
+        break;
       case "sem4":
-        return (b.metrics.semMarks[4] || 0) - (a.metrics.semMarks[4] || 0);
+        result = (b.metrics.semMarks[4] || 0) - (a.metrics.semMarks[4] || 0);
+        break;
       default:
-        return 0;
+        result = 0;
     }
+    return sortDir === "desc" ? result : -result;
   });
 
   return (
@@ -104,6 +120,14 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             <option value="sem3">Semester 3 Marks</option>
             <option value="sem4">Semester 4 Marks</option>
           </select>
+
+          <button 
+            className="btn btn-secondary" 
+            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+            onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}
+          >
+            {sortDir === "desc" ? "⬇️ Descending" : "⬆️ Ascending"}
+          </button>
         </div>
       </div>
 
