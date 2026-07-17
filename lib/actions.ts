@@ -199,7 +199,7 @@ export async function getStudentsWithMetrics() {
     },
   });
 
-  return students.map(student => {
+  return students.map((student: any) => {
     let totalMarks = 0;
     let coreMarks = 0;
     let alliedMarks = 0;
@@ -211,7 +211,7 @@ export async function getStudentsWithMetrics() {
     // Group results by semester for SGPA/CGPA calculation
     const semResultsMap: Record<number, { credits: number; gradePoints: number }[]> = {};
 
-    student.results.forEach(result => {
+    student.results.forEach((result: any) => {
       const sub = result.subject;
       const semNumber = sub.semester.number;
       const code = sub.code;
@@ -264,8 +264,8 @@ export async function getStudentsWithMetrics() {
     let totalCredits = 0;
     let totalEarnedPoints = 0;
 
-    Object.values(semResultsMap).forEach(resultsArr => {
-      resultsArr.forEach(r => {
+    Object.values(semResultsMap).forEach((resultsArr: any) => {
+      resultsArr.forEach((r: any) => {
         totalCredits += r.credits;
         totalEarnedPoints += (r.credits * r.gradePoints);
       });
