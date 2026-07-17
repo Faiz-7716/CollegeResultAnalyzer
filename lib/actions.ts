@@ -109,9 +109,9 @@ export async function getDashboardStats() {
   let allClearStudents: { id: string; name: string; registerNumber: string }[] = [];
   let arrearStudents: { id: string; name: string; registerNumber: string }[] = [];
 
-  students.forEach(s => {
+  students.forEach((s: any) => {
     if (s.results.length === 0) return; // Ignore students with no results
-    const hasArrear = s.results.some(r => !r.passStatus);
+    const hasArrear = s.results.some((r: any) => !r.passStatus);
     
     const studentInfo = { id: s.id, name: s.name, registerNumber: s.registerNumber };
     
