@@ -70,7 +70,13 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             className="input-field" 
             style={{ width: "auto", marginBottom: 0 }}
             value={filterOption}
-            onChange={(e) => setFilterOption(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setFilterOption(val);
+              if (val === "allClear") {
+                setSortOption("coreAndAllied");
+              }
+            }}
           >
             <option value="all">All Students</option>
             <option value="allClear">All Clear Ranking</option>
