@@ -374,3 +374,21 @@ body {
   cursor: pointer;
 }
 
+/* Responsive Student Roster Views */
+.mobile-roster-cards {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-roster-table {
+    display: none !important;
+  }
+  .mobile-roster-cards {
+    display: flex !important;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+

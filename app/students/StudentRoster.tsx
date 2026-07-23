@@ -137,65 +137,130 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             <p className="text-muted">No students found in the database.</p>
           </div>
         ) : (
-          <div className="table-responsive">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Register Number</th>
-                  <th>Name</th>
-                  <th>Sem 1</th>
-                  <th>Sem 2</th>
-                  <th>Sem 3</th>
-                  <th>Sem 4</th>
-                  <th>CGPA</th>
-                  <th>Total</th>
-                  <th>Core</th>
-                  <th>Allied</th>
-                  <th>Core + Allied</th>
-                  <th>Average %</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedStudents.map((student, index) => (
-                  <tr key={student.id}>
-                    <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
-                    <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
-                    <td>{student.name}</td>
-                    <td>{student.metrics.semMarks[1] || "-"}</td>
-                    <td>{student.metrics.semMarks[2] || "-"}</td>
-                    <td>{student.metrics.semMarks[3] || "-"}</td>
-                    <td>{student.metrics.semMarks[4] || "-"}</td>
-                    <td style={{ fontWeight: "bold" }}>{student.metrics.cgpa.toFixed(2)}</td>
-                    <td>{student.metrics.totalMarks}</td>
-                    <td>{student.metrics.coreMarks}</td>
-                    <td>{student.metrics.alliedMarks}</td>
-                    <td>
-                      <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
-                      <div className="text-muted" style={{ fontSize: "0.8rem" }}>
-                        {student.metrics.coreAlliedSubjectsCount > 0 
-                          ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
-                          : "0.0"}%
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge badge-primary" style={{ background: "rgba(59, 130, 246, 0.15)", color: "var(--accent-primary)", fontSize: "0.9rem" }}>
-                        {student.metrics.totalSubjectsCount > 0 
-                          ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
-                          : "0.00"}%
-                      </span>
-                    </td>
-                    <td>
-                      <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
-                        View Ledger
-                      </Link>
-                    </td>
+          <>
+            {/* Desktop Table View */}
+            <div className="table-responsive desktop-roster-table">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Register Number</th>
+                    <th>Name</th>
+                    <th>Sem 1</th>
+                    <th>Sem 2</th>
+                    <th>Sem 3</th>
+                    <th>Sem 4</th>
+                    <th>CGPA</th>
+                    <th>Total</th>
+                    <th>Core</th>
+                    <th>Allied</th>
+                    <th>Core + Allied</th>
+                    <th>Average %</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {sortedStudents.map((student, index) => (
+                    <tr key={student.id}>
+                      <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
+                      <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
+                      <td>{student.name}</td>
+                      <td>{student.metrics.semMarks[1] || "-"}</td>
+                      <td>{student.metrics.semMarks[2] || "-"}</td>
+                      <td>{student.metrics.semMarks[3] || "-"}</td>
+                      <td>{student.metrics.semMarks[4] || "-"}</td>
+                      <td style={{ fontWeight: "bold" }}>{student.metrics.cgpa.toFixed(2)}</td>
+                      <td>{student.metrics.totalMarks}</td>
+                      <td>{student.metrics.coreMarks}</td>
+                      <td>{student.metrics.alliedMarks}</td>
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
+                        <div className="text-muted" style={{ fontSize: "0.8rem" }}>
+                          {student.metrics.coreAlliedSubjectsCount > 0 
+                            ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
+                            : "0.0"}%
+                        </div>
+                      </td>
+                      <td>
+                        <span className="badge badge-primary" style={{ background: "rgba(59, 130, 246, 0.15)", color: "var(--accent-primary)", fontSize: "0.9rem" }}>
+                          {student.metrics.totalSubjectsCount > 0 
+                            ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
+                            : "0.00"}%
+                        </span>
+                      </td>
+                      <td>
+                        <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                          View Ledger
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Responsive Cards View */}
+            <div className="mobile-roster-cards">
+              {sortedStudents.map((student, index) => {
+                const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0 
+                  ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
+                  : "0.0";
+                const totalAvgPct = student.metrics.totalSubjectsCount > 0 
+                  ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
+                  : "0.00";
+
+                return (
+                  <div
+                    key={student.id}
+                    className="card glass-panel"
+                    style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <span style={{ fontWeight: 800, color: "var(--accent-primary)", fontSize: "1.1rem" }}>
+                            #{index + 1}
+                          </span>
+                          <span style={{ fontWeight: 700, fontSize: "1.05rem" }}>{student.name}</span>
+                        </div>
+                        <div className="text-muted" style={{ fontSize: "0.85rem", marginTop: "0.15rem" }}>
+                          Reg No: <strong>{student.registerNumber}</strong>
+                        </div>
+                      </div>
+                      <span className={`badge ${student.metrics.hasArrear ? "badge-error" : "badge-success"}`}>
+                        {student.metrics.hasArrear ? "ARREAR" : "ALL CLEAR"}
+                      </span>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem", background: "rgba(248, 250, 252, 0.6)", padding: "0.75rem", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+                      <div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>CGPA</div>
+                        <div style={{ fontWeight: 700, color: "var(--accent-primary)", fontSize: "1.1rem" }}>{student.metrics.cgpa.toFixed(2)}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>Core+Allied</div>
+                        <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>{student.metrics.coreAndAllied}</div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem" }}>{coreAlliedPct}%</div>
+                      </div>
+                      <div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>Average</div>
+                        <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--accent-secondary)" }}>{totalAvgPct}%</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid var(--border-color)", fontSize: "0.8rem" }}>
+                      <div className="text-muted">
+                        Sem Marks: <strong>{student.metrics.semMarks[1] || "-"}</strong> / <strong>{student.metrics.semMarks[2] || "-"}</strong> / <strong>{student.metrics.semMarks[3] || "-"}</strong> / <strong>{student.metrics.semMarks[4] || "-"}</strong>
+                      </div>
+                      <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.35rem 0.85rem", fontSize: "0.8rem" }}>
+                        View Ledger &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>
