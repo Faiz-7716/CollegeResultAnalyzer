@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { calculateSGPA, calculateCGPA } from "@/lib/grading";
+import { getStudentsWithMetrics } from "@/lib/actions";
+import StudentPageClient from "./StudentPageClient";
 
 export default async function StudentLedgerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -23,6 +25,15 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
     notFound();
   }
 
+  // Calculate batch class rank
+  const allStudents = await getStudentsWithMetrics();
+  const sortedByCgpa = [...allStudents].sort((a, b) => b.metrics.cgpa - a.metrics.cgpa);
+  const rankIndex = sortedByCgpa.findIndex((s) => s.id === id);
+  const classRank = {
+    rank: rankIndex !== -1 ? rankIndex + 1 : 1,
+    totalStudents: allStudents.length,
+  };
+
   // Group results by semester
   const semestersMap = new Map<number, any[]>();
   student.results.forEach((result: any) => {
@@ -36,7 +47,6 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
   const sortedSemesters = Array.from(semestersMap.entries()).sort((a, b) => a[0] - b[0]);
 
   const sgpas: { sgpa: number; totalCredits: number }[] = [];
-  
   const arrears = student.results.filter((r: any) => !r.passStatus);
 
   let coreAlliedTotal = 0;
@@ -55,53 +65,40 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
 
   const coreAlliedPercentage = coreAlliedCount > 0 ? (coreAlliedTotal / (coreAlliedCount * 100)) * 100 : 0;
 
-  return (
-    <div className="animate-fade-in">
-      <div style={{ marginBottom: "2rem" }}>
-        <Link href="/students" className="btn btn-secondary" style={{ marginBottom: "1rem" }}>
-          &larr; Back to Roster
-        </Link>
-        <div className="card glass-panel responsive-flex" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <h2 className="h2 text-gradient">{student.name}</h2>
-            <p className="text-muted" style={{ fontSize: "1.1rem", marginTop: "0.25rem" }}>
-              Reg No: <strong>{student.registerNumber}</strong> | Batch: {student.batch}
-            </p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p className="text-muted" style={{ fontSize: "0.9rem" }}>Total Arrears</p>
-            <p className="h3 text-gradient" style={{ color: arrears.length > 0 ? "var(--status-error)" : "var(--status-success)" }}>
-              {arrears.length}
-            </p>
-          </div>
-        </div>
-      </div>
+  // Compute SGPA for each semester
+  sortedSemesters.forEach(([_, results]) => {
+    const subjectResults = results.map((r) => {
+      let gradePoints = 0;
+      switch (r.grade) {
+        case "O": gradePoints = 10; break;
+        case "A+": gradePoints = 9; break;
+        case "A": gradePoints = 8; break;
+        case "B+": gradePoints = 7; break;
+        case "B": gradePoints = 6; break;
+        case "C": gradePoints = 5; break;
+        default: gradePoints = 0;
+      }
+      return { credits: r.subject.credits, gradePoints };
+    });
 
+    const semSgpa = calculateSGPA(subjectResults);
+    const semCredits = results.reduce((acc, r) => acc + r.subject.credits, 0);
+    sgpas.push({ sgpa: semSgpa, totalCredits: semCredits });
+  });
+
+  const calculatedCgpa = calculateCGPA(sgpas);
+
+  // JSX for the Ledger view tab
+  const ledgerView = (
+    <div>
       {sortedSemesters.length === 0 ? (
         <div className="card glass-panel" style={{ padding: "3rem", textAlign: "center" }}>
           <p className="text-muted">No academic records found for this student.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          {sortedSemesters.map(([semNumber, results]) => {
-            const subjectResults = results.map((r) => {
-              // Convert grade letter to points based on standard mapping
-              let gradePoints = 0;
-              switch (r.grade) {
-                case "O": gradePoints = 10; break;
-                case "A+": gradePoints = 9; break;
-                case "A": gradePoints = 8; break;
-                case "B+": gradePoints = 7; break;
-                case "B": gradePoints = 6; break;
-                case "C": gradePoints = 5; break;
-                default: gradePoints = 0;
-              }
-              return { credits: r.subject.credits, gradePoints };
-            });
-
-            const semSgpa = calculateSGPA(subjectResults);
-            const semCredits = results.reduce((acc, r) => acc + r.subject.credits, 0);
-            sgpas.push({ sgpa: semSgpa, totalCredits: semCredits });
+          {sortedSemesters.map(([semNumber, results], idx) => {
+            const semSgpa = sgpas[idx]?.sgpa || 0;
 
             return (
               <div key={semNumber} className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>
@@ -155,7 +152,7 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
             <div>
               <h3 className="h2 text-muted" style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>Cumulative Grade Point Average</h3>
               <p className="h1 text-gradient" style={{ fontSize: "3.5rem" }}>
-                {calculateCGPA(sgpas).toFixed(2)}
+                {calculatedCgpa.toFixed(2)}
               </p>
             </div>
             <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -167,6 +164,48 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
           </div>
         </div>
       )}
+    </div>
+  );
+
+  return (
+    <div className="animate-fade-in">
+      {/* Student Profile Header */}
+      <div style={{ marginBottom: "2rem" }}>
+        <Link href="/students" className="btn btn-secondary" style={{ marginBottom: "1rem" }}>
+          &larr; Back to Roster
+        </Link>
+        <div className="card glass-panel responsive-flex" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h2 className="h2 text-gradient">{student.name}</h2>
+            <p className="text-muted" style={{ fontSize: "1.1rem", marginTop: "0.25rem" }}>
+              Reg No: <strong>{student.registerNumber}</strong> | Batch: {student.batch}
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+            <div style={{ textAlign: "center" }}>
+              <p className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase" }}>Batch Rank</p>
+              <p className="h3 text-gradient" style={{ fontWeight: 700 }}>
+                #{classRank.rank} <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>/ {classRank.totalStudents}</span>
+              </p>
+            </div>
+            <div style={{ textAlign: "center", borderLeft: "1px solid var(--border-color)", paddingLeft: "1.5rem" }}>
+              <p className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase" }}>Total Arrears</p>
+              <p className="h3" style={{ color: arrears.length > 0 ? "var(--status-error)" : "var(--status-success)" }}>
+                {arrears.length}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabbed Client Component */}
+      <StudentPageClient
+        student={student}
+        results={student.results}
+        cgpa={calculatedCgpa}
+        classRank={classRank}
+        ledgerView={ledgerView}
+      />
     </div>
   );
 }

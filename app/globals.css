@@ -293,3 +293,84 @@ body {
     padding-left: 0 !important;
   }
 }
+
+/* Tab Navigation */
+.tab-container {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(241, 245, 249, 0.6);
+}
+
+.tab-btn.active {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+}
+
+/* SVG Chart Tooltips & Animations */
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.92);
+  color: #ffffff;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.825rem;
+  font-weight: 500;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  z-index: 50;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  backdrop-filter: blur(8px);
+}
+
+.chart-bar-hover:hover {
+  filter: brightness(1.15);
+  cursor: pointer;
+}
+
+.chart-donut-segment {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.chart-donut-segment:hover {
+  transform: scale(1.04);
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+.chart-data-node {
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.chart-data-node:hover {
+  r: 7;
+  cursor: pointer;
+}
+
