@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { IconFilter, IconArrowUpDown, IconFileText, IconChevronRight } from "../components/Icons";
 
 type StudentData = {
   id: string;
@@ -38,8 +39,6 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
     switch (sortOption) {
       case "registerNumber":
         result = a.registerNumber.localeCompare(b.registerNumber);
-        // default for register is asc, so if sortDir is 'desc', we actually want to reverse it.
-        // Wait, normally default is what people see first. Let's say default is what we have right now.
         break;
       case "cgpa":
         result = b.metrics.cgpa - a.metrics.cgpa;
@@ -80,8 +79,9 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
   return (
     <div>
       <div className="responsive-flex" style={{ display: "flex", gap: "2rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <label className="input-label" style={{ margin: 0 }}>Filter By:</label>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <IconFilter size={18} color="var(--accent-primary)" />
+          <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Filter By:</label>
           <select 
             className="input-field" 
             style={{ width: "auto", marginBottom: 0 }}
@@ -100,8 +100,9 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
           </select>
         </div>
 
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <label className="input-label" style={{ margin: 0 }}>Sort By:</label>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <IconArrowUpDown size={18} color="var(--accent-primary)" />
+          <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Sort By:</label>
           <select 
             className="input-field" 
             style={{ width: "auto", marginBottom: 0 }}
@@ -123,10 +124,11 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
 
           <button 
             className="btn btn-secondary" 
-            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
             onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}
           >
-            {sortDir === "desc" ? "⬇️ Descending" : "⬆️ Ascending"}
+            <IconArrowUpDown size={14} />
+            <span>{sortDir === "desc" ? "Descending" : "Ascending"}</span>
           </button>
         </div>
       </div>

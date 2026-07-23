@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { IconGraduationCap, IconBarChart3, IconUsers, IconPlusCircle } from "./Icons";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,15 +19,27 @@ export default function Navbar() {
     <header className="main-header" style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255, 255, 255, 0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border-color)" }}>
       <div className="container nav-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "70px" }}>
         
-        <Link href="/" className="nav-logo" onClick={closeMenu} style={{ fontSize: "1.25rem", fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <Link href="/" className="nav-logo" onClick={closeMenu} style={{ fontSize: "1.25rem", fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <div style={{ padding: "0.35rem", background: "var(--accent-gradient)", borderRadius: "var(--radius-sm)", color: "#FFFFFF", display: "flex" }}>
+            <IconGraduationCap size={22} color="#FFFFFF" />
+          </div>
           <span className="text-gradient">Score Analyze</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="nav-links desktop-nav" style={{ display: "flex", gap: "2rem" }}>
-          <Link href="/" className={`nav-link ${activeClass("/")}`} style={linkStyle(isPathActive("/"))}>Dashboard</Link>
-          <Link href="/students" className={`nav-link ${activeClass("/students")}`} style={linkStyle(isPathActive("/students"))}>Students</Link>
-          <Link href="/data-entry" className={`nav-link ${activeClass("/data-entry")}`} style={linkStyle(isPathActive("/data-entry"))}>Data Entry</Link>
+        <nav className="nav-links desktop-nav" style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <Link href="/" className={`nav-link ${activeClass("/")}`} style={linkStyle(isPathActive("/"))}>
+            <IconBarChart3 size={18} color={isPathActive("/") ? "var(--accent-primary)" : "var(--text-secondary)"} />
+            <span>Dashboard</span>
+          </Link>
+          <Link href="/students" className={`nav-link ${activeClass("/students")}`} style={linkStyle(isPathActive("/students"))}>
+            <IconUsers size={18} color={isPathActive("/students") ? "var(--accent-primary)" : "var(--text-secondary)"} />
+            <span>Students</span>
+          </Link>
+          <Link href="/data-entry" className={`nav-link ${activeClass("/data-entry")}`} style={linkStyle(isPathActive("/data-entry"))}>
+            <IconPlusCircle size={18} color={isPathActive("/data-entry") ? "var(--accent-primary)" : "var(--text-secondary)"} />
+            <span>Data Entry</span>
+          </Link>
         </nav>
 
         {/* Mobile Hamburger Button */}
@@ -44,9 +57,18 @@ export default function Navbar() {
       {/* Mobile Navigation Dropdown */}
       <div className={`mobile-nav ${isOpen ? "open" : ""}`}>
         <nav style={{ display: "flex", flexDirection: "column", padding: "1rem" }}>
-          <Link href="/" className={`mobile-nav-link ${activeClass("/")}`} onClick={closeMenu}>Dashboard</Link>
-          <Link href="/students" className={`mobile-nav-link ${activeClass("/students")}`} onClick={closeMenu}>Students</Link>
-          <Link href="/data-entry" className={`mobile-nav-link ${activeClass("/data-entry")}`} onClick={closeMenu}>Data Entry</Link>
+          <Link href="/" className={`mobile-nav-link ${activeClass("/")}`} onClick={closeMenu} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <IconBarChart3 size={18} />
+            <span>Dashboard</span>
+          </Link>
+          <Link href="/students" className={`mobile-nav-link ${activeClass("/students")}`} onClick={closeMenu} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <IconUsers size={18} />
+            <span>Students</span>
+          </Link>
+          <Link href="/data-entry" className={`mobile-nav-link ${activeClass("/data-entry")}`} onClick={closeMenu} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <IconPlusCircle size={18} />
+            <span>Data Entry</span>
+          </Link>
         </nav>
       </div>
 
@@ -97,7 +119,7 @@ export default function Navbar() {
         }
 
         .mobile-nav.open {
-          max-height: 300px; /* arbitrary large enough height */
+          max-height: 300px;
         }
 
         .mobile-nav-link {
@@ -136,9 +158,12 @@ export default function Navbar() {
 
 function linkStyle(isActive: boolean) {
   return {
-    color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
+    color: isActive ? "var(--accent-primary)" : "var(--text-secondary)",
     textDecoration: "none",
-    fontWeight: 500,
+    fontWeight: 600,
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
     transition: "color var(--transition-fast)"
   };
 }

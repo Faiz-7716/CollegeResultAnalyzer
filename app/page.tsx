@@ -1,6 +1,19 @@
 import { getDashboardStats, getStudentsWithMetrics } from "@/lib/actions";
 import Link from "next/link";
 import HomeAnalyticsCharts from "@/app/components/HomeAnalyticsCharts";
+import {
+  IconGraduationCap,
+  IconUsers,
+  IconTrendingUp,
+  IconAward,
+  IconBookOpen,
+  IconTrophy,
+  IconCheckCircle,
+  IconAlertTriangle,
+  IconPlusCircle,
+  IconChevronRight,
+  IconFileText,
+} from "@/app/components/Icons";
 
 export default async function Dashboard() {
   const stats = await getDashboardStats();
@@ -27,8 +40,11 @@ export default async function Dashboard() {
           border: "1px solid rgba(79, 70, 229, 0.15)",
         }}
       >
-        <div style={{ display: "inline-flex", gap: "0.5rem", marginBottom: "1rem" }}>
-          <span className="badge badge-success">Batch 31924U180</span>
+        <div style={{ display: "inline-flex", gap: "0.5rem", marginBottom: "1rem", alignItems: "center" }}>
+          <span className="badge badge-success" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+            <IconGraduationCap size={14} color="var(--status-success)" />
+            Batch 31924U180
+          </span>
           <span className="badge badge-primary" style={{ background: "rgba(79, 70, 229, 0.15)", color: "var(--accent-primary)" }}>
             B.Sc. Computer Science
           </span>
@@ -42,11 +58,14 @@ export default async function Dashboard() {
         </p>
 
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "1.75rem", flexWrap: "wrap" }}>
-          <Link href="/students" className="btn btn-primary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem" }}>
-            👥 Access Roster Matrix &rarr;
+          <Link href="/students" className="btn btn-primary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+            <IconUsers size={18} color="#FFFFFF" />
+            <span>Access Roster Matrix</span>
+            <IconChevronRight size={16} color="#FFFFFF" />
           </Link>
-          <Link href="/data-entry" className="btn btn-secondary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem" }}>
-            ⚡ Data Entry Hub
+          <Link href="/data-entry" className="btn btn-secondary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+            <IconPlusCircle size={18} color="var(--accent-primary)" />
+            <span>Data Entry Hub</span>
           </Link>
         </div>
       </div>
@@ -61,8 +80,13 @@ export default async function Dashboard() {
         }}
       >
         <div className="card glass-panel delay-100" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Total Enrolled Students
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Total Enrolled
+            </div>
+            <div style={{ padding: "0.4rem", background: "rgba(79, 70, 229, 0.1)", borderRadius: "var(--radius-sm)" }}>
+              <IconUsers size={20} color="var(--accent-primary)" />
+            </div>
           </div>
           <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
             {stats.totalStudents}
@@ -74,8 +98,13 @@ export default async function Dashboard() {
         </div>
 
         <div className="card glass-panel delay-200" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Overall Pass Rate
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Overall Pass Rate
+            </div>
+            <div style={{ padding: "0.4rem", background: "rgba(16, 185, 129, 0.1)", borderRadius: "var(--radius-sm)" }}>
+              <IconTrendingUp size={20} color="var(--status-success)" />
+            </div>
           </div>
           <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
             {stats.passPercentage}%
@@ -86,8 +115,13 @@ export default async function Dashboard() {
         </div>
 
         <div className="card glass-panel delay-300" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Average Batch CGPA
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Average Batch CGPA
+            </div>
+            <div style={{ padding: "0.4rem", background: "rgba(99, 102, 241, 0.1)", borderRadius: "var(--radius-sm)" }}>
+              <IconAward size={20} color="var(--accent-secondary)" />
+            </div>
           </div>
           <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
             {avgCGPA}
@@ -98,8 +132,13 @@ export default async function Dashboard() {
         </div>
 
         <div className="card glass-panel delay-300" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Exams Logged
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Exams Logged
+            </div>
+            <div style={{ padding: "0.4rem", background: "rgba(245, 158, 11, 0.1)", borderRadius: "var(--radius-sm)" }}>
+              <IconBookOpen size={20} color="var(--status-warning)" />
+            </div>
           </div>
           <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
             {stats.totalResults}
@@ -119,7 +158,10 @@ export default async function Dashboard() {
       {/* 4. Top 5 Honor Roll Leaderboard */}
       <div className="card glass-panel">
         <div style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem", textAlign: "center" }}>
-          <h2 className="h2 text-gradient">🏆 Batch Honor Roll (Top 5 Performers)</h2>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+            <IconTrophy size={26} color="var(--accent-primary)" />
+            <h2 className="h2 text-gradient">Batch Honor Roll (Top 5 Performers)</h2>
+          </div>
           <p className="text-muted" style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
             Highest achieving students ranked by Cumulative Grade Point Average
           </p>
@@ -196,9 +238,10 @@ export default async function Dashboard() {
                 <Link
                   href={`/students/${student.id}`}
                   className="btn btn-secondary"
-                  style={{ width: "100%", marginTop: "1rem", padding: "0.4rem 0.75rem", fontSize: "0.8rem" }}
+                  style={{ width: "100%", marginTop: "1rem", padding: "0.4rem 0.75rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.35rem" }}
                 >
-                  View Profile &rarr;
+                  <span>View Profile</span>
+                  <IconChevronRight size={14} />
                 </Link>
               </div>
             );
@@ -218,8 +261,9 @@ export default async function Dashboard() {
         {/* All Clear Students */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
-            <h3 className="h3" style={{ color: "var(--status-success)" }}>
-              ✅ All Clear Roster ({stats.allClearCount})
+            <h3 className="h3" style={{ color: "var(--status-success)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <IconCheckCircle size={22} color="var(--status-success)" />
+              <span>All Clear Roster ({stats.allClearCount})</span>
             </h3>
             <span className="badge badge-success">Zero Arrears</span>
           </div>
@@ -244,8 +288,10 @@ export default async function Dashboard() {
                   <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{s.registerNumber}</div>
                   <div className="text-muted" style={{ fontSize: "0.825rem" }}>{s.name}</div>
                 </div>
-                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem" }}>
-                  Ledger &rarr;
+                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
+                  <IconFileText size={12} />
+                  <span>Ledger</span>
+                  <IconChevronRight size={12} />
                 </span>
               </Link>
             ))}
@@ -255,8 +301,9 @@ export default async function Dashboard() {
         {/* Arrear Students */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
-            <h3 className="h3" style={{ color: "var(--status-error)" }}>
-              ⚠️ Active Arrears List ({stats.arrearCount})
+            <h3 className="h3" style={{ color: "var(--status-error)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <IconAlertTriangle size={22} color="var(--status-error)" />
+              <span>Active Arrears List ({stats.arrearCount})</span>
             </h3>
             <span className="badge badge-error">Needs Intervention</span>
           </div>
@@ -281,8 +328,10 @@ export default async function Dashboard() {
                   <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{s.registerNumber}</div>
                   <div className="text-muted" style={{ fontSize: "0.825rem" }}>{s.name}</div>
                 </div>
-                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem", borderColor: "rgba(239, 68, 68, 0.3)", color: "var(--status-error)" }}>
-                  Review &rarr;
+                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem", borderColor: "rgba(239, 68, 68, 0.3)", color: "var(--status-error)", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
+                  <IconFileText size={12} color="var(--status-error)" />
+                  <span>Review</span>
+                  <IconChevronRight size={12} color="var(--status-error)" />
                 </span>
               </Link>
             ))}
