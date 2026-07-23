@@ -2,24 +2,48 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { checkAdminSession, logoutAdmin } from "@/lib/loginActions";
 import {
   IconGraduationCap,
   IconBarChart3,
   IconUsers,
   IconPlusCircle,
   IconChevronRight,
+  IconLock,
+  IconShieldCheck,
+  IconLogOut,
 } from "./Icons";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   const isPathActive = (path: string) => pathname === path;
   const activeClass = (path: string) => (isPathActive(path) ? "active" : "");
+
+  // Check admin session status on mount and path changes
+  useEffect(() => {
+    async function verifyAuth() {
+      const res = await checkAdminSession();
+      setIsAdmin(res.isAuthenticated);
+    }
+    verifyAuth();
+  }, [pathname]);
+
+  // Handle Admin Logout
+  const handleLogout = async () => {
+    await logoutAdmin();
+    setIsAdmin(false);
+    closeMenu();
+    router.push("/");
+    router.refresh();
+  };
 
   // Close mobile sidebar on window resize if resized to desktop width
   useEffect(() => {
@@ -78,7 +102,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="nav-links desktop-nav" style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <nav className="nav-links desktop-nav" style={{ display: "flex", gap: "1.75rem", alignItems: "center" }}>
             <Link href="/" className={`nav-link ${activeClass("/")}`} style={linkStyle(isPathActive("/"))}>
               <IconBarChart3 size={18} color={isPathActive("/") ? "var(--accent-primary)" : "var(--text-secondary)"} />
               <span>Dashboard</span>
@@ -87,10 +111,39 @@ export default function Navbar() {
               <IconUsers size={18} color={isPathActive("/students") ? "var(--accent-primary)" : "var(--text-secondary)"} />
               <span>Students</span>
             </Link>
+
+            {/* Data Entry Link (Requires Admin or directs to login) */}
             <Link href="/data-entry" className={`nav-link ${activeClass("/data-entry")}`} style={linkStyle(isPathActive("/data-entry"))}>
               <IconPlusCircle size={18} color={isPathActive("/data-entry") ? "var(--accent-primary)" : "var(--text-secondary)"} />
               <span>Data Entry</span>
             </Link>
+
+            {/* Auth Button */}
+            {isAdmin ? (
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span className="badge badge-success" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", padding: "0.35rem 0.75rem" }}>
+                  <IconShieldCheck size={14} color="var(--status-success)" />
+                  Admin Session Active
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-secondary"
+                  style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
+                >
+                  <IconLogOut size={14} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="btn btn-primary"
+                style={{ padding: "0.45rem 1rem", fontSize: "0.875rem", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+              >
+                <IconLock size={15} color="#FFFFFF" />
+                <span>Admin Login</span>
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Hamburger Button */}
@@ -194,6 +247,36 @@ export default function Navbar() {
               </div>
               <IconChevronRight size={16} opacity={isPathActive("/data-entry") ? 1 : 0.4} />
             </Link>
+
+            {/* Mobile Auth Button */}
+            <div style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border-color)" }}>
+              {isAdmin ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  <div className="badge badge-success" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", padding: "0.5rem" }}>
+                    <IconShieldCheck size={16} color="var(--status-success)" />
+                    Admin Session Active
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-secondary"
+                    style={{ width: "100%", padding: "0.65rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.4rem" }}
+                  >
+                    <IconLogOut size={16} />
+                    <span>Logout Session</span>
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="btn btn-primary"
+                  onClick={closeMenu}
+                  style={{ width: "100%", padding: "0.75rem", fontSize: "0.95rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
+                >
+                  <IconLock size={18} color="#FFFFFF" />
+                  <span>Admin Login Portal</span>
+                </Link>
+              )}
+            </div>
           </nav>
 
           {/* Sidebar Footer Information */}

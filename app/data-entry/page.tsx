@@ -1,7 +1,14 @@
 import { getAllStudents, getAllSemesters, getAllSubjects } from "@/lib/actions";
+import { verifyAdminSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import DataEntryForms from "./DataEntryForms";
 
 export default async function DataEntryPage() {
+  const session = await verifyAdminSession();
+  if (!session) {
+    redirect("/login?redirectTo=/data-entry");
+  }
+
   const [students, semesters, subjects] = await Promise.all([
     getAllStudents(),
     getAllSemesters(),

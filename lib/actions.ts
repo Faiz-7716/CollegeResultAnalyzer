@@ -3,9 +3,15 @@
 import prisma from "./prisma";
 import { revalidatePath } from "next/cache";
 import { calculateGrade } from "./grading";
+import { verifyAdminSession } from "./auth";
 
 export async function addStudent(data: { registerNumber: string; name: string; batch: string }) {
   try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
     const student = await prisma.student.create({ data });
     revalidatePath("/students");
     return { success: true, student };
@@ -16,6 +22,11 @@ export async function addStudent(data: { registerNumber: string; name: string; b
 
 export async function addSemester(number: number) {
   try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
     const sem = await prisma.semester.create({ data: { number } });
     return { success: true, semester: sem };
   } catch (error) {
@@ -25,6 +36,11 @@ export async function addSemester(number: number) {
 
 export async function addSubject(data: { code: string; name: string; credits: number; semesterId: string }) {
   try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
     const subject = await prisma.subject.create({ data });
     return { success: true, subject };
   } catch (error) {
@@ -39,6 +55,11 @@ export async function addResult(data: {
   externalMarks: number;
 }) {
   try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
     const total = data.internalMarks + data.externalMarks;
     const { grade, pass } = calculateGrade(total);
 
