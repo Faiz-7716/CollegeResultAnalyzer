@@ -309,9 +309,9 @@ export default function Navbar() {
         }
 
         .sidebar-link.active {
-          background: var(--accent-gradient);
+          background: var(--accent-primary);
           color: #FFFFFF !important;
-          box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.22);
         }
 
         @media (max-width: 768px) {

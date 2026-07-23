@@ -36,8 +36,8 @@ export default async function Dashboard() {
         style={{
           padding: "2.5rem 2rem",
           textAlign: "center",
-          background: "linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, rgba(59, 130, 246, 0.04) 100%)",
-          border: "1px solid rgba(79, 70, 229, 0.15)",
+          background: "#FFFFFF",
+          border: "2px solid var(--accent-primary)",
         }}
       >
         <div style={{ display: "inline-flex", gap: "0.5rem", marginBottom: "1rem", alignItems: "center" }}>
@@ -181,11 +181,11 @@ export default async function Dashboard() {
         >
           {honorRoll.map((student, idx) => {
             const rankBadgeColors = [
-              "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", // Gold #1
-              "linear-gradient(135deg, #94A3B8 0%, #64748B 100%)", // Silver #2
-              "linear-gradient(135deg, #B45309 0%, #78350F 100%)", // Bronze #3
-              "var(--accent-gradient)",
-              "var(--accent-gradient)",
+              "#D97706", // Solid Amber Gold #1
+              "#475569", // Solid Slate Silver #2
+              "#92400E", // Solid Bronze #3
+              "#4F46E5", // Solid Indigo #4
+              "#2563EB", // Solid Royal Blue #5
             ];
 
             const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0
