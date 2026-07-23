@@ -473,45 +473,69 @@ export default function StudentAnalyticsDashboard({
             </select>
           </div>
 
-          <div style={{ overflowX: "auto" }} className="custom-scrollbar">
-            <div style={{ minWidth: barChartResults.length * 55 + "px", height: "240px", position: "relative" }}>
-              <svg width="100%" height="100%" viewBox={`0 0 ${Math.max(barChartResults.length * 60, 450)} 220`} preserveAspectRatio="none">
-                {/* Threshold line for 40 total pass */}
-                <line x1="0" y1="132" x2="100%" y2="132" stroke="var(--status-error)" strokeDasharray="3 3" strokeWidth="1.5" opacity="0.7" />
-                <text x="5" y="126" fill="var(--status-error)" fontSize="9" fontWeight="600">Min Pass Threshold (40 Total)</text>
+          <div style={{ width: "100%", height: "260px", position: "relative" }}>
+            <svg width="100%" height="100%" viewBox="0 0 1000 240" preserveAspectRatio="none">
+              {/* Threshold line for 40 total pass mark */}
+              <line x1="40" y1="122" x2="960" y2="122" stroke="var(--status-error)" strokeDasharray="4 4" strokeWidth="1.5" opacity="0.75" />
+              <text x="45" y="115" fill="var(--status-error)" fontSize="10" fontWeight="600">Min Pass Threshold (40 Total)</text>
 
-                {barChartResults.map((r, idx) => {
-                  const x = idx * 60 + 20;
-                  const intHeight = (r.internalMarks / 100) * 180;
-                  const extHeight = (r.externalMarks / 100) * 180;
-                  const intY = 180 - intHeight;
-                  const extY = 180 - extHeight;
+              {(() => {
+                const totalItems = barChartResults.length;
+                if (totalItems === 0) return null;
+
+                const availableWidth = 900; // from x=50 to x=950
+                const slotWidth = availableWidth / totalItems;
+                const barWidth = Math.max(Math.min(slotWidth * 0.32, 16), 3);
+                const rotateLabels = totalItems > 10;
+
+                return barChartResults.map((r, idx) => {
+                  const centerX = 50 + (idx + 0.5) * slotWidth;
+                  const intX = centerX - barWidth - 1;
+                  const extX = centerX + 1;
+
+                  const intHeight = (r.internalMarks / 100) * 170;
+                  const extHeight = (r.externalMarks / 100) * 170;
+                  const intY = 190 - intHeight;
+                  const extY = 190 - extHeight;
 
                   return (
-                    <g key={r.id} className="chart-bar-hover" onMouseEnter={() => setHoveredBar(r)} onMouseLeave={() => setHoveredBar(null)}>
-                      {/* Internal Bar */}
-                      <rect x={x} y={intY} width="16" height={intHeight} fill="#6366F1" rx="3" />
-                      {/* External Bar */}
-                      <rect x={x + 20} y={extY} width="16" height={extHeight} fill="#3B82F6" rx="3" />
+                    <g
+                      key={r.id}
+                      className="chart-bar-hover"
+                      onMouseEnter={() => setHoveredBar(r)}
+                      onMouseLeave={() => setHoveredBar(null)}
+                    >
+                      {/* Internal Bar (Max 25) */}
+                      <rect x={intX} y={intY} width={barWidth} height={intHeight} fill="#6366F1" rx="2" />
+                      {/* External Bar (Max 75) */}
+                      <rect x={extX} y={extY} width={barWidth} height={extHeight} fill="#3B82F6" rx="2" />
 
-                      {/* Code label */}
-                      <text x={x + 18} y="200" fill="var(--text-secondary)" fontSize="9" fontWeight="600" textAnchor="middle">
-                        {r.subject.code.length > 8 ? r.subject.code.substring(0, 8) : r.subject.code}
+                      {/* Subject Code Label */}
+                      <text
+                        x={centerX}
+                        y={rotateLabels ? "202" : "210"}
+                        fill="var(--text-secondary)"
+                        fontSize={totalItems > 15 ? "8" : "10"}
+                        fontWeight="600"
+                        textAnchor={rotateLabels ? "end" : "middle"}
+                        transform={rotateLabels ? `rotate(-40, ${centerX}, 202)` : undefined}
+                      >
+                        {r.subject.code}
                       </text>
                     </g>
                   );
-                })}
-              </svg>
+                });
+              })()}
+            </svg>
 
-              {hoveredBar && (
-                <div className="chart-tooltip" style={{ bottom: "50px", left: "50%", transform: "translateX(-50%)" }}>
-                  <div style={{ fontWeight: 700, color: "#818CF8" }}>{hoveredBar.subject.code}: {hoveredBar.subject.name}</div>
-                  <div>Internal: <strong>{hoveredBar.internalMarks}</strong> / 25</div>
-                  <div>External: <strong>{hoveredBar.externalMarks}</strong> / 75</div>
-                  <div>Total: <strong>{hoveredBar.total}</strong> / 100 ({hoveredBar.passStatus ? "PASS" : "ARREAR"})</div>
-                </div>
-              )}
-            </div>
+            {hoveredBar && (
+              <div className="chart-tooltip" style={{ bottom: "60px", left: "50%", transform: "translateX(-50%)" }}>
+                <div style={{ fontWeight: 700, color: "#818CF8" }}>{hoveredBar.subject.code}: {hoveredBar.subject.name}</div>
+                <div>Internal: <strong>{hoveredBar.internalMarks}</strong> / 25</div>
+                <div>External: <strong>{hoveredBar.externalMarks}</strong> / 75</div>
+                <div>Total: <strong>{hoveredBar.total}</strong> / 100 ({hoveredBar.passStatus ? "PASS" : "ARREAR"})</div>
+              </div>
+            )}
           </div>
 
           <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", marginTop: "1rem", fontSize: "0.85rem" }}>
