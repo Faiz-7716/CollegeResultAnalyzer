@@ -57,27 +57,33 @@ export default function HomeAnalyticsCharts({
           </div>
         </div>
 
-        <div style={{ position: "relative", width: "100%", height: "240px" }}>
-          <svg width="100%" height="100%" viewBox="0 0 600 220" preserveAspectRatio="none">
-            {/* Gridlines 0%, 25%, 50%, 75%, 100% */}
+        <div style={{ position: "relative", width: "100%", height: "320px" }}>
+          <svg width="100%" height="100%" viewBox="0 0 1000 260" preserveAspectRatio="none">
+            {/* Y-Axis Gridlines 0%, 25%, 50%, 75%, 100% */}
             {[100, 75, 50, 25, 0].map((val) => {
-              const y = 180 - (val / 100) * 150;
+              const y = 220 - (val / 100) * 190;
               return (
                 <g key={val}>
-                  <line x1="40" y1={y} x2="570" y2={y} stroke="var(--border-color)" strokeDasharray="3 3" strokeWidth="1" opacity="0.6" />
-                  <text x="32" y={y + 4} fill="var(--text-secondary)" fontSize="10" textAnchor="end">{val}%</text>
+                  <line x1="45" y1={y} x2="955" y2={y} stroke="var(--border-color)" strokeDasharray="4 4" strokeWidth="1" opacity="0.6" />
+                  <text x="35" y={y + 4} fill="var(--text-secondary)" fontSize="11" fontWeight="600" textAnchor="end">{val}%</text>
                 </g>
               );
             })}
 
-            {/* Bars for Sem 1, 2, 3, 4 */}
+            {/* Spacious Semester Bar Groups (Sem 1 to 4) */}
             {semPassStats.map((sem, idx) => {
-              const x = 70 + idx * 130;
-              const passHeight = (sem.passRate / 100) * 150;
-              const avgHeight = (sem.avgMarks / 100) * 150;
+              const slotWidth = 900 / 4; // 225px per semester slot
+              const centerX = 50 + (idx + 0.5) * slotWidth;
 
-              const passY = 180 - passHeight;
-              const avgY = 180 - avgHeight;
+              const barW = 38;
+              const passX = centerX - barW - 6;
+              const avgX = centerX + 6;
+
+              const passH = (sem.passRate / 100) * 190;
+              const avgH = (sem.avgMarks / 100) * 190;
+
+              const passY = 220 - passH;
+              const avgY = 220 - avgH;
 
               return (
                 <g
@@ -86,13 +92,20 @@ export default function HomeAnalyticsCharts({
                   onMouseEnter={() => setHoveredSem(sem)}
                   onMouseLeave={() => setHoveredSem(null)}
                 >
-                  {/* Pass Rate Bar */}
-                  <rect x={x} y={passY} width="26" height={passHeight} fill="#4F46E5" rx="3" />
-                  {/* Avg Marks Bar */}
-                  <rect x={x + 30} y={avgY} width="26" height={avgHeight} fill="#10B981" rx="3" />
+                  {/* Pass Rate Bar (Solid Indigo) */}
+                  <rect x={passX} y={passY} width={barW} height={passH} fill="#4F46E5" rx="4" />
+                  <text x={passX + barW / 2} y={Math.max(passY - 6, 20)} fill="#4F46E5" fontSize="11" fontWeight="800" textAnchor="middle">
+                    {sem.passRate}%
+                  </text>
 
-                  {/* Label */}
-                  <text x={x + 28} y="202" fill="var(--text-secondary)" fontSize="11" fontWeight="700" textAnchor="middle">
+                  {/* Avg Score Bar (Solid Emerald) */}
+                  <rect x={avgX} y={avgY} width={barW} height={avgH} fill="#059669" rx="4" />
+                  <text x={avgX + barW / 2} y={Math.max(avgY - 6, 20)} fill="#059669" fontSize="11" fontWeight="800" textAnchor="middle">
+                    {sem.avgMarks}
+                  </text>
+
+                  {/* Semester Label */}
+                  <text x={centerX} y="246" fill="var(--text-primary)" fontSize="13" fontWeight="800" textAnchor="middle">
                     Semester {sem.semester}
                   </text>
                 </g>
@@ -101,11 +114,11 @@ export default function HomeAnalyticsCharts({
           </svg>
 
           {hoveredSem && (
-            <div className="chart-tooltip" style={{ top: "40px", left: `${(hoveredSem.semester - 1) * 22 + 15}%` }}>
-              <div style={{ fontWeight: 700, color: "#818CF8" }}>Semester {hoveredSem.semester} Overview</div>
+            <div className="chart-tooltip" style={{ top: "30px", left: `${(hoveredSem.semester - 1) * 23 + 12}%` }}>
+              <div style={{ fontWeight: 800, color: "#818CF8", fontSize: "0.9rem" }}>Semester {hoveredSem.semester} Overview</div>
               <div>Pass Rate: <strong>{hoveredSem.passRate}%</strong></div>
               <div>Avg Score: <strong>{hoveredSem.avgMarks}</strong> / 100</div>
-              <div>Total Exams: {hoveredSem.totalExams}</div>
+              <div>Total Exams: <strong>{hoveredSem.totalExams}</strong></div>
             </div>
           )}
         </div>
