@@ -124,9 +124,12 @@ export async function getDashboardStats() {
     }
   });
 
-  // 2. Subject Performance (Hardest/Easiest) & Core vs Language
+  // 2. Subject Performance & Subject Leaderboard
   const subjects = await prisma.subject.findMany({
-    include: { results: true }
+    include: {
+      results: true,
+      semester: true,
+    }
   });
 
   let hardestSubject = { name: "N/A", passRate: 100, code: "" };
@@ -137,12 +140,36 @@ export async function getDashboardStats() {
   let totalLangMarks = 0;
   let langCount = 0;
 
+  const subjectLeaderboard: { id: string; code: string; name: string; totalEnrolled: number; passed: number; passRate: number; semNumber: number }[] = [];
+  const semMap: Record<number, { totalExams: number; passedExams: number; totalMarks: number }> = {};
+
   subjects.forEach((sub: any) => {
     if (sub.results.length === 0) return;
 
-    // Subject Performance
+    const totalEnrolled = sub.results.length;
     const passes = sub.results.filter((r: any) => r.passStatus).length;
-    const passRate = (passes / sub.results.length) * 100;
+    const passRate = Number(((passes / totalEnrolled) * 100).toFixed(1));
+    const semNumber = sub.semester.number;
+
+    subjectLeaderboard.push({
+      id: sub.id,
+      code: sub.code,
+      name: sub.name,
+      totalEnrolled,
+      passed: passes,
+      passRate,
+      semNumber,
+    });
+
+    if (!semMap[semNumber]) {
+      semMap[semNumber] = { totalExams: 0, passedExams: 0, totalMarks: 0 };
+    }
+
+    sub.results.forEach((r: any) => {
+      semMap[semNumber].totalExams++;
+      if (r.passStatus) semMap[semNumber].passedExams++;
+      semMap[semNumber].totalMarks += r.total;
+    });
 
     if (passRate < hardestSubject.passRate || hardestSubject.name === "N/A") {
       hardestSubject = { name: sub.name, passRate, code: sub.code };
@@ -166,6 +193,22 @@ export async function getDashboardStats() {
     });
   });
 
+  // Sort subjects by passRate ascending (hardest to easiest)
+  subjectLeaderboard.sort((a, b) => a.passRate - b.passRate);
+
+  // Semesters summary stats
+  const semPassStats = [1, 2, 3, 4].map((semNum) => {
+    const data = semMap[semNum] || { totalExams: 0, passedExams: 0, totalMarks: 0 };
+    const passRate = data.totalExams > 0 ? Number(((data.passedExams / data.totalExams) * 100).toFixed(1)) : 0;
+    const avgMarks = data.totalExams > 0 ? Number((data.totalMarks / data.totalExams).toFixed(1)) : 0;
+    return {
+      semester: semNum,
+      passRate,
+      avgMarks,
+      totalExams: data.totalExams,
+    };
+  });
+
   const coreAvg = coreCount > 0 ? (totalCoreMarks / (coreCount * 100) * 100).toFixed(1) : "0.0";
   const langAvg = langCount > 0 ? (totalLangMarks / (langCount * 100) * 100).toFixed(1) : "0.0";
 
@@ -179,6 +222,8 @@ export async function getDashboardStats() {
     arrearStudents,
     hardestSubject,
     easiestSubject,
+    subjectLeaderboard,
+    semPassStats,
     coreAvg,
     langAvg
   };

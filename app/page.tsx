@@ -1,143 +1,292 @@
 import { getDashboardStats, getStudentsWithMetrics } from "@/lib/actions";
 import Link from "next/link";
+import HomeAnalyticsCharts from "@/app/components/HomeAnalyticsCharts";
 
 export default async function Dashboard() {
   const stats = await getDashboardStats();
   const students = await getStudentsWithMetrics();
-  
-  // Sort students by CGPA descending to get top scorers
-  const topScorers = [...students].sort((a, b) => b.metrics.cgpa - a.metrics.cgpa).slice(0, 3);
-  
-  // Calculate average batch CGPA
-  const totalCGPA = students.reduce((sum: number, s: { metrics: { cgpa: number } }) => sum + s.metrics.cgpa, 0);
+
+  // Top 5 Honor Roll students sorted by CGPA
+  const honorRoll = [...students]
+    .sort((a, b) => b.metrics.cgpa - a.metrics.cgpa)
+    .slice(0, 5);
+
+  // Department Average CGPA
+  const totalCGPA = students.reduce((sum, s) => sum + s.metrics.cgpa, 0);
   const avgCGPA = students.length > 0 ? (totalCGPA / students.length).toFixed(2) : "0.00";
 
   return (
-    <div className="animate-fade-in">
-      <div style={{ textAlign: "center", marginBottom: "3rem", marginTop: "2rem" }}>
-        <div className="badge badge-success" style={{ marginBottom: "1rem" }}>Batch 31924U180</div>
-        <h1 className="h1">
-          Academic <span className="text-gradient">Performance Ledger</span>
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+      {/* 1. Hero Command Bar */}
+      <div
+        className="card glass-panel"
+        style={{
+          padding: "2.5rem 2rem",
+          textAlign: "center",
+          background: "linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, rgba(59, 130, 246, 0.04) 100%)",
+          border: "1px solid rgba(79, 70, 229, 0.15)",
+        }}
+      >
+        <div style={{ display: "inline-flex", gap: "0.5rem", marginBottom: "1rem" }}>
+          <span className="badge badge-success">Batch 31924U180</span>
+          <span className="badge badge-primary" style={{ background: "rgba(79, 70, 229, 0.15)", color: "var(--accent-primary)" }}>
+            B.Sc. Computer Science
+          </span>
+        </div>
+
+        <h1 className="h1" style={{ fontSize: "2.75rem" }}>
+          Departmental <span className="text-gradient">Performance Intelligence Hub</span>
         </h1>
-        <p className="text-muted" style={{ maxWidth: "600px", margin: "1rem auto", fontSize: "1.1rem" }}>
-          Department of B.Sc. Computer Science, Mazharul Uloom College. Track student progression, GPAs, and arrears efficiently.
+        <p className="text-muted" style={{ maxWidth: "700px", margin: "1rem auto", fontSize: "1.1rem" }}>
+          Mazharul Uloom College. Real-time academic tracking, credit accumulation analytics, SGPA trends, and arrear intelligence.
         </p>
-        
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2rem" }}>
-          <Link href="/students" className="btn btn-primary">
-            View All Students
+
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "1.75rem", flexWrap: "wrap" }}>
+          <Link href="/students" className="btn btn-primary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem" }}>
+            👥 Access Roster Matrix &rarr;
           </Link>
-          <Link href="/data-entry" className="btn btn-secondary">
-            Manage Data
+          <Link href="/data-entry" className="btn btn-secondary" style={{ padding: "0.85rem 1.75rem", fontSize: "1rem" }}>
+            ⚡ Data Entry Hub
           </Link>
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem", marginBottom: "3rem" }}>
-        <div className="card glass-panel delay-100" style={{ textAlign: "center" }}>
-          <h3 className="h3 text-muted">Total Students</h3>
-          <p className="h1 text-gradient" style={{ marginTop: "1rem" }}>{stats.totalStudents}</p>
+      {/* 2. High-Level KPI Metric Cards */}
+      <div
+        className="responsive-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "1.25rem",
+        }}
+      >
+        <div className="card glass-panel delay-100" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Total Enrolled Students
+          </div>
+          <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
+            {stats.totalStudents}
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", fontSize: "0.8rem" }}>
+            <span className="badge badge-success">{stats.allClearCount} All Clear</span>
+            <span className="badge badge-error">{stats.arrearCount} Arrears</span>
+          </div>
         </div>
-        
-        <div className="card glass-panel delay-200" style={{ textAlign: "center" }}>
-          <h3 className="h3 text-muted">Exams Logged</h3>
-          <p className="h1 text-gradient" style={{ marginTop: "1rem" }}>{stats.totalResults}</p>
+
+        <div className="card glass-panel delay-200" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Overall Pass Rate
+          </div>
+          <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
+            {stats.passPercentage}%
+          </div>
+          <div className="text-muted" style={{ fontSize: "0.85rem" }}>
+            Aggregate pass ratio across all subjects
+          </div>
         </div>
-        
-        <div className="card glass-panel delay-300" style={{ textAlign: "center" }}>
-          <h3 className="h3 text-muted">Overall Pass Rate</h3>
-          <p className="h1 text-gradient" style={{ marginTop: "1rem" }}>{stats.passPercentage}%</p>
+
+        <div className="card glass-panel delay-300" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Average Batch CGPA
+          </div>
+          <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
+            {avgCGPA}
+          </div>
+          <div className="text-muted" style={{ fontSize: "0.85rem" }}>
+            Core Avg: <strong>{stats.coreAvg}%</strong> | Lang: <strong>{stats.langAvg}%</strong>
+          </div>
         </div>
-        
-        <div className="card glass-panel delay-300" style={{ textAlign: "center" }}>
-          <h3 className="h3 text-muted">Average CGPA</h3>
-          <p className="h1 text-gradient" style={{ marginTop: "1rem" }}>{avgCGPA}</p>
+
+        <div className="card glass-panel delay-300" style={{ padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Exams Logged
+          </div>
+          <div className="h1 text-gradient" style={{ fontSize: "3rem", margin: "0.5rem 0" }}>
+            {stats.totalResults}
+          </div>
+          <div className="text-muted" style={{ fontSize: "0.85rem" }}>
+            Across 4 Semesters of Examinations
+          </div>
         </div>
       </div>
 
-      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "3rem" }}>
-        {/* Academic Status Breakdown */}
+      {/* 3. Batch Visual Performance Charts & Difficulty Matrix */}
+      <HomeAnalyticsCharts
+        semPassStats={stats.semPassStats}
+        subjectLeaderboard={stats.subjectLeaderboard}
+      />
+
+      {/* 4. Top 5 Honor Roll Leaderboard */}
+      <div className="card glass-panel">
+        <div style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem", textAlign: "center" }}>
+          <h2 className="h2 text-gradient">🏆 Batch Honor Roll (Top 5 Performers)</h2>
+          <p className="text-muted" style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
+            Highest achieving students ranked by Cumulative Grade Point Average
+          </p>
+        </div>
+
+        <div
+          className="responsive-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "1.25rem",
+          }}
+        >
+          {honorRoll.map((student, idx) => {
+            const rankBadgeColors = [
+              "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", // Gold #1
+              "linear-gradient(135deg, #94A3B8 0%, #64748B 100%)", // Silver #2
+              "linear-gradient(135deg, #B45309 0%, #78350F 100%)", // Bronze #3
+              "var(--accent-gradient)",
+              "var(--accent-gradient)",
+            ];
+
+            const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0
+              ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1)
+              : "0.0";
+
+            return (
+              <div
+                key={student.id}
+                className="card glass-panel"
+                style={{
+                  padding: "1.5rem 1.25rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    width: "42px",
+                    height: "42px",
+                    borderRadius: "50%",
+                    background: rankBadgeColors[idx],
+                    color: "#FFFFFF",
+                    fontWeight: 800,
+                    fontSize: "1.2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "0.75rem",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.15)",
+                  }}
+                >
+                  #{idx + 1}
+                </div>
+
+                <h3 className="h3" style={{ fontSize: "1.1rem", marginBottom: "0.25rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "100%" }}>
+                  {student.name}
+                </h3>
+                <p className="text-muted" style={{ fontSize: "0.8rem", marginBottom: "0.75rem" }}>
+                  {student.registerNumber}
+                </p>
+
+                <div className="badge badge-success" style={{ fontSize: "0.95rem", padding: "0.35rem 0.85rem", marginBottom: "0.5rem" }}>
+                  CGPA: {student.metrics.cgpa.toFixed(2)}
+                </div>
+
+                <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                  Core+Allied: <strong>{coreAlliedPct}%</strong>
+                </div>
+
+                <Link
+                  href={`/students/${student.id}`}
+                  className="btn btn-secondary"
+                  style={{ width: "100%", marginTop: "1rem", padding: "0.4rem 0.75rem", fontSize: "0.8rem" }}
+                >
+                  View Profile &rarr;
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 5. Academic Standing Matrix (All Clear vs Arrears List) */}
+      <div
+        className="responsive-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "1.5rem",
+        }}
+      >
+        {/* All Clear Students */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
-          <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", textAlign: "center" }}>Academic Status</h3>
-          <div className="responsive-flex" style={{ display: "flex", justifyContent: "space-between", textAlign: "center" }}>
-            <div style={{ flex: 1, paddingRight: "1rem" }}>
-              <p className="text-muted" style={{ fontSize: "1.1rem" }}>All Clear</p>
-              <p className="h1" style={{ color: "var(--status-success)", marginTop: "0.5rem" }}>{stats.allClearCount}</p>
-              <div style={{ marginTop: "1rem", maxHeight: "200px", overflowY: "auto", textAlign: "left", fontSize: "0.85rem" }} className="custom-scrollbar">
-                {stats.allClearStudents.map(s => (
-                  <div key={s.id} style={{ padding: "0.5rem 0", borderBottom: "1px solid var(--border-color)" }}>
-                    <Link href={`/students/${s.id}`} style={{ textDecoration: "none", color: "var(--text-primary)" }}>
-                      <span style={{ fontWeight: 600 }}>{s.registerNumber}</span> <br/>
-                      <span className="text-muted">{s.name}</span>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={{ flex: 1, borderLeft: "1px solid var(--border-color)", paddingLeft: "1rem" }}>
-              <p className="text-muted" style={{ fontSize: "1.1rem" }}>Active Arrears</p>
-              <p className="h1" style={{ color: "var(--status-error)", marginTop: "0.5rem" }}>{stats.arrearCount}</p>
-              <div style={{ marginTop: "1rem", maxHeight: "200px", overflowY: "auto", textAlign: "left", fontSize: "0.85rem" }} className="custom-scrollbar">
-                {stats.arrearStudents.map(s => (
-                  <div key={s.id} style={{ padding: "0.5rem 0", borderBottom: "1px solid var(--border-color)" }}>
-                    <Link href={`/students/${s.id}`} style={{ textDecoration: "none", color: "var(--text-primary)" }}>
-                      <span style={{ fontWeight: 600 }}>{s.registerNumber}</span> <br/>
-                      <span className="text-muted">{s.name}</span>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
+            <h3 className="h3" style={{ color: "var(--status-success)" }}>
+              ✅ All Clear Roster ({stats.allClearCount})
+            </h3>
+            <span className="badge badge-success">Zero Arrears</span>
+          </div>
+
+          <div style={{ maxHeight: "280px", overflowY: "auto" }} className="custom-scrollbar">
+            {stats.allClearStudents.map((s) => (
+              <Link
+                key={s.id}
+                href={`/students/${s.id}`}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0.65rem 0.5rem",
+                  borderBottom: "1px solid var(--border-color)",
+                  textDecoration: "none",
+                  color: "var(--text-primary)",
+                  transition: "background var(--transition-fast)",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{s.registerNumber}</div>
+                  <div className="text-muted" style={{ fontSize: "0.825rem" }}>{s.name}</div>
+                </div>
+                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem" }}>
+                  Ledger &rarr;
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* Core vs Language */}
-        <div className="card glass-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>Category Performance</h3>
-          <div className="responsive-flex" style={{ display: "flex", justifyContent: "space-around", textAlign: "center" }}>
-            <div>
-              <p className="text-muted" style={{ fontSize: "1.1rem" }}>Core & Allied</p>
-              <p className="h1 text-gradient" style={{ marginTop: "0.5rem" }}>{stats.coreAvg}%</p>
-            </div>
-            <div style={{ borderLeft: "1px solid var(--border-color)", paddingLeft: "2rem" }}>
-              <p className="text-muted" style={{ fontSize: "1.1rem" }}>Language</p>
-              <p className="h1 text-gradient" style={{ marginTop: "0.5rem" }}>{stats.langAvg}%</p>
-            </div>
+        {/* Arrear Students */}
+        <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
+            <h3 className="h3" style={{ color: "var(--status-error)" }}>
+              ⚠️ Active Arrears List ({stats.arrearCount})
+            </h3>
+            <span className="badge badge-error">Needs Intervention</span>
           </div>
-        </div>
-      </div>
 
-      <div className="card glass-panel" style={{ marginBottom: "3rem" }}>
-        <h3 className="h2" style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>Subject Insights</h3>
-        <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
-          <div>
-            <p className="text-muted" style={{ marginBottom: "0.5rem", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Hardest Subject (Lowest Pass Rate)</p>
-            <h3 className="h3" style={{ color: "var(--status-error)" }}>{stats.hardestSubject.name}</h3>
-            <p style={{ marginTop: "0.25rem", fontWeight: 600 }}>{stats.hardestSubject.code} <span className="badge badge-error" style={{ marginLeft: "0.5rem" }}>{stats.hardestSubject.passRate.toFixed(1)}% Pass</span></p>
+          <div style={{ maxHeight: "280px", overflowY: "auto" }} className="custom-scrollbar">
+            {stats.arrearStudents.map((s) => (
+              <Link
+                key={s.id}
+                href={`/students/${s.id}`}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0.65rem 0.5rem",
+                  borderBottom: "1px solid var(--border-color)",
+                  textDecoration: "none",
+                  color: "var(--text-primary)",
+                  transition: "background var(--transition-fast)",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{s.registerNumber}</div>
+                  <div className="text-muted" style={{ fontSize: "0.825rem" }}>{s.name}</div>
+                </div>
+                <span className="btn btn-secondary" style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem", borderColor: "rgba(239, 68, 68, 0.3)", color: "var(--status-error)" }}>
+                  Review &rarr;
+                </span>
+              </Link>
+            ))}
           </div>
-          <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", paddingLeft: "2rem" }}>
-            <p className="text-muted" style={{ marginBottom: "0.5rem", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Top Subject (Highest Pass Rate)</p>
-            <h3 className="h3" style={{ color: "var(--status-success)" }}>{stats.easiestSubject.name}</h3>
-            <p style={{ marginTop: "0.25rem", fontWeight: 600 }}>{stats.easiestSubject.code} <span className="badge badge-success" style={{ marginLeft: "0.5rem" }}>{stats.easiestSubject.passRate.toFixed(1)}% Pass</span></p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="h2" style={{ marginBottom: "1.5rem", textAlign: "center" }}>Top Scorers (CGPA)</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-          {topScorers.map((scorer, index) => (
-            <div key={scorer.id} className="card glass-panel" style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-              <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: "var(--accent-primary)", opacity: 0.8 }}>
-                #{index + 1}
-              </div>
-              <div>
-                <h3 className="h3" style={{ marginBottom: "0.25rem" }}>{scorer.name}</h3>
-                <p className="text-muted" style={{ marginBottom: "0.5rem" }}>{scorer.registerNumber}</p>
-                <div className="badge badge-success">CGPA: {scorer.metrics.cgpa.toFixed(2)}</div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
