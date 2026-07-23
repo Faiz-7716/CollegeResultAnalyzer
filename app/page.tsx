@@ -41,8 +41,12 @@ export default async function Dashboard() {
         }}
       >
         <div style={{ display: "inline-flex", gap: "0.5rem", marginBottom: "1rem", alignItems: "center" }}>
+          <img
+            src="/logo.png"
+            alt="MUC CS Logo"
+            style={{ height: "42px", width: "auto", objectFit: "contain", borderRadius: "var(--radius-sm)" }}
+          />
           <span className="badge badge-success" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
-            <IconGraduationCap size={14} color="var(--status-success)" />
             Batch 31924U180
           </span>
           <span className="badge badge-primary" style={{ background: "rgba(79, 70, 229, 0.15)", color: "var(--accent-primary)" }}>
@@ -50,8 +54,8 @@ export default async function Dashboard() {
           </span>
         </div>
 
-        <h1 className="h1" style={{ fontSize: "2.75rem" }}>
-          Departmental <span className="text-gradient">Performance Intelligence Hub</span>
+        <h1 className="h1" style={{ fontSize: "2.85rem" }}>
+          MUC CS <span className="text-gradient">Result & Academic Ledger</span>
         </h1>
         <p className="text-muted" style={{ maxWidth: "700px", margin: "1rem auto", fontSize: "1.1rem" }}>
           Mazharul Uloom College. Real-time academic tracking, credit accumulation analytics, SGPA trends, and arrear intelligence.

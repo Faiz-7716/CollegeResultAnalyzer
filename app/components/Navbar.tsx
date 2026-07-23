@@ -19,11 +19,13 @@ export default function Navbar() {
     <header className="main-header" style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255, 255, 255, 0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border-color)" }}>
       <div className="container nav-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "70px" }}>
         
-        <Link href="/" className="nav-logo" onClick={closeMenu} style={{ fontSize: "1.25rem", fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <div style={{ padding: "0.35rem", background: "var(--accent-gradient)", borderRadius: "var(--radius-sm)", color: "#FFFFFF", display: "flex" }}>
-            <IconGraduationCap size={22} color="#FFFFFF" />
-          </div>
-          <span className="text-gradient">Score Analyze</span>
+        <Link href="/" className="nav-logo" onClick={closeMenu} style={{ fontSize: "1.35rem", fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: "0.65rem" }}>
+          <img
+            src="/logo.png"
+            alt="MUC CS Logo"
+            style={{ height: "38px", width: "auto", objectFit: "contain", borderRadius: "var(--radius-sm)" }}
+          />
+          <span className="text-gradient" style={{ letterSpacing: "-0.01em" }}>MUC CS Result</span>
         </Link>
 
         {/* Desktop Navigation */}

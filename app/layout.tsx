@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
+import Navbar from "./components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Academic Performance & Ledger Tracking System",
-  description: "A production-ready system for the B.Sc. CS department, Mazharul Uloom College (31924U180).",
+  title: "MUC CS Result | Department of Computer Science",
+  description: "Academic Performance & Ledger Tracking System for B.Sc. CS Department, Mazharul Uloom College (Batch 31924U180).",
 };
-
-import Navbar from "./components/Navbar";
 
 export default function RootLayout({
   children,
@@ -19,6 +17,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body suppressHydrationWarning>
         <Navbar />
