@@ -30,6 +30,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
   const [sortOption, setSortOption] = useState<string>("registerNumber");
   const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
   const [filterOption, setFilterOption] = useState<string>("all");
+  const [selectedCgpaView, setSelectedCgpaView] = useState<"cgpa" | "part1Cgpa" | "part2Cgpa" | "part3Cgpa">("cgpa");
 
   const filteredStudents = initialStudents.filter(student => {
     if (filterOption === "allClear") return !student.metrics.hasArrear;
@@ -166,6 +167,24 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
     document.body.removeChild(link);
   };
 
+  const getCgpaDisplay = (student: StudentData, view: string) => {
+    switch (view) {
+      case "part1Cgpa": return (student.metrics.part1Cgpa || 0).toFixed(2);
+      case "part2Cgpa": return (student.metrics.part2Cgpa || 0).toFixed(2);
+      case "part3Cgpa": return (student.metrics.part3Cgpa || 0).toFixed(2);
+      default: return student.metrics.cgpa.toFixed(2);
+    }
+  };
+
+  const getCgpaColor = (view: string) => {
+    switch (view) {
+      case "part1Cgpa": return "#059669";
+      case "part2Cgpa": return "var(--accent-primary)";
+      case "part3Cgpa": return "#D97706";
+      default: return "var(--text-primary)";
+    }
+  };
+
   return (
     <div>
       {/* Controls Bar: Filter, Sort, and Excel Export */}
@@ -184,6 +203,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                 setFilterOption(val);
                 if (val === "allClear") {
                   setSortOption("part2Cgpa");
+                  setSelectedCgpaView("part2Cgpa");
                 }
               }}
             >
@@ -201,7 +221,13 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
               className="input-field" 
               style={{ width: "auto", marginBottom: 0 }}
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSortOption(val);
+                if (["cgpa", "part1Cgpa", "part2Cgpa", "part3Cgpa"].includes(val)) {
+                  setSelectedCgpaView(val as any);
+                }
+              }}
             >
               <option value="registerNumber">Register Number (Default)</option>
               <option value="cgpa">Overall CGPA</option>
@@ -265,51 +291,84 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                     <th>Rank</th>
                     <th>Register Number</th>
                     <th>Name</th>
-                    <th>Overall CGPA</th>
-                    <th style={{ color: "#059669" }}>Part 1 (Lang) CGPA</th>
-                    <th style={{ color: "var(--accent-primary)" }}>Part 2 (Allied+Core) CGPA</th>
-                    <th style={{ color: "#D97706" }}>Part 3 (Others) CGPA</th>
-                    <th>Sem 1-4 Totals</th>
-                    <th>Total Marks</th>
+                    <th>Sem 1</th>
+                    <th>Sem 2</th>
+                    <th>Sem 3</th>
+                    <th>Sem 4</th>
+                    {/* Header CGPA Selector Column */}
+                    <th style={{ background: "rgba(79, 70, 229, 0.08)", minWidth: "150px" }}>
+                      <select
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          fontWeight: 700,
+                          fontSize: "0.85rem",
+                          color: "var(--accent-primary)",
+                          cursor: "pointer",
+                          padding: "0.2rem 0",
+                          outline: "none",
+                          width: "100%",
+                        }}
+                        value={selectedCgpaView}
+                        onChange={(e) => {
+                          const val = e.target.value as any;
+                          setSelectedCgpaView(val);
+                          setSortOption(val);
+                        }}
+                      >
+                        <option value="cgpa">Overall CGPA ▾</option>
+                        <option value="part1Cgpa">Part 1 (Lang) CGPA ▾</option>
+                        <option value="part2Cgpa">Part 2 (Allied+Core) ▾</option>
+                        <option value="part3Cgpa">Part 3 (Others) CGPA ▾</option>
+                      </select>
+                    </th>
+                    <th>Total</th>
+                    <th>Core</th>
+                    <th>Allied</th>
                     <th>Core + Allied</th>
+                    <th>Average %</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedStudents.map((student, index) => {
-                    const p1 = (student.metrics.part1Cgpa || 0).toFixed(2);
-                    const p2 = (student.metrics.part2Cgpa || 0).toFixed(2);
-                    const p3 = (student.metrics.part3Cgpa || 0).toFixed(2);
-
-                    return (
-                      <tr key={student.id}>
-                        <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
-                        <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
-                        <td style={{ fontWeight: 600 }}>{student.name}</td>
-                        <td style={{ fontWeight: "bold", fontSize: "1.05rem" }}>{student.metrics.cgpa.toFixed(2)}</td>
-                        <td style={{ fontWeight: 700, color: "#059669" }}>{p1}</td>
-                        <td style={{ fontWeight: 700, color: "var(--accent-primary)" }}>{p2}</td>
-                        <td style={{ fontWeight: 700, color: "#D97706" }}>{p3}</td>
-                        <td className="text-muted" style={{ fontSize: "0.85rem" }}>
-                          {student.metrics.semMarks[1] || "-"} / {student.metrics.semMarks[2] || "-"} / {student.metrics.semMarks[3] || "-"} / {student.metrics.semMarks[4] || "-"}
-                        </td>
-                        <td style={{ fontWeight: 600 }}>{student.metrics.totalMarks}</td>
-                        <td>
-                          <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
-                          <div className="text-muted" style={{ fontSize: "0.8rem" }}>
-                            {student.metrics.coreAlliedSubjectsCount > 0 
-                              ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
-                              : "0.0"}%
-                          </div>
-                        </td>
-                        <td>
-                          <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
-                            View Ledger
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {sortedStudents.map((student, index) => (
+                    <tr key={student.id}>
+                      <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
+                      <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
+                      <td style={{ fontWeight: 600 }}>{student.name}</td>
+                      <td>{student.metrics.semMarks[1] || "-"}</td>
+                      <td>{student.metrics.semMarks[2] || "-"}</td>
+                      <td>{student.metrics.semMarks[3] || "-"}</td>
+                      <td>{student.metrics.semMarks[4] || "-"}</td>
+                      {/* Dynamic Column cell matching header selector */}
+                      <td style={{ fontWeight: 800, fontSize: "1.05rem", color: getCgpaColor(selectedCgpaView), background: "rgba(79, 70, 229, 0.03)" }}>
+                        {getCgpaDisplay(student, selectedCgpaView)}
+                      </td>
+                      <td>{student.metrics.totalMarks}</td>
+                      <td>{student.metrics.coreMarks}</td>
+                      <td>{student.metrics.alliedMarks}</td>
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
+                        <div className="text-muted" style={{ fontSize: "0.8rem" }}>
+                          {student.metrics.coreAlliedSubjectsCount > 0 
+                            ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
+                            : "0.0"}%
+                        </div>
+                      </td>
+                      <td>
+                        <span className="badge badge-primary" style={{ background: "rgba(59, 130, 246, 0.15)", color: "var(--accent-primary)", fontSize: "0.9rem" }}>
+                          {student.metrics.totalSubjectsCount > 0 
+                            ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
+                            : "0.00"}%
+                        </span>
+                      </td>
+                      <td>
+                        <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                          View Ledger
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -361,8 +420,8 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid var(--border-color)", fontSize: "0.8rem" }}>
-                      <div>
-                        Overall CGPA: <strong style={{ color: "var(--accent-primary)", fontSize: "0.95rem" }}>{student.metrics.cgpa.toFixed(2)}</strong>
+                      <div className="text-muted">
+                        Sem Marks: <strong>{student.metrics.semMarks[1] || "-"}</strong> / <strong>{student.metrics.semMarks[2] || "-"}</strong> / <strong>{student.metrics.semMarks[3] || "-"}</strong> / <strong>{student.metrics.semMarks[4] || "-"}</strong>
                       </div>
                       <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.35rem 0.85rem", fontSize: "0.8rem" }}>
                         View Ledger &rarr;
