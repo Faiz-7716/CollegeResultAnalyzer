@@ -25,6 +25,9 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
     notFound();
   }
 
+  // Serialize Prisma student object to avoid Date serialization errors in Client Component
+  const serializedStudent = JSON.parse(JSON.stringify(student));
+
   // Calculate batch class rank
   const allStudents = await getStudentsWithMetrics();
   const sortedByCgpa = [...allStudents].sort((a, b) => b.metrics.cgpa - a.metrics.cgpa);
@@ -36,7 +39,7 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
 
   // Group results by semester
   const semestersMap = new Map<number, any[]>();
-  student.results.forEach((result: any) => {
+  serializedStudent.results.forEach((result: any) => {
     const semNumber = result.subject.semester.number;
     if (!semestersMap.has(semNumber)) {
       semestersMap.set(semNumber, []);
@@ -47,12 +50,12 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
   const sortedSemesters = Array.from(semestersMap.entries()).sort((a, b) => a[0] - b[0]);
 
   const sgpas: { sgpa: number; totalCredits: number }[] = [];
-  const arrears = student.results.filter((r: any) => !r.passStatus);
+  const arrears = serializedStudent.results.filter((r: any) => !r.passStatus);
 
   let coreAlliedTotal = 0;
   let coreAlliedCount = 0;
 
-  student.results.forEach((r: any) => {
+  serializedStudent.results.forEach((r: any) => {
     const code = r.subject.code;
     const isCore = code.includes('UCS') || code.includes('UPCS') || code.includes('CC');
     const isAllied = code.includes('UECS') || code.includes('EC');
@@ -122,7 +125,7 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
                       </tr>
                     </thead>
                     <tbody>
-                      {results.map((result) => (
+                      {results.map((result: any) => (
                         <tr key={result.id}>
                           <td style={{ fontWeight: 500 }}>{result.subject.code}</td>
                           <td>{result.subject.name}</td>
@@ -176,9 +179,9 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
         </Link>
         <div className="card glass-panel responsive-flex" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <h2 className="h2 text-gradient">{student.name}</h2>
+            <h2 className="h2 text-gradient">{serializedStudent.name}</h2>
             <p className="text-muted" style={{ fontSize: "1.1rem", marginTop: "0.25rem" }}>
-              Reg No: <strong>{student.registerNumber}</strong> | Batch: {student.batch}
+              Reg No: <strong>{serializedStudent.registerNumber}</strong> | Batch: {serializedStudent.batch}
             </p>
           </div>
           <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
@@ -200,8 +203,8 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
 
       {/* Tabbed Client Component */}
       <StudentPageClient
-        student={student}
-        results={student.results}
+        student={serializedStudent}
+        results={serializedStudent.results}
         cgpa={calculatedCgpa}
         classRank={classRank}
         ledgerView={ledgerView}

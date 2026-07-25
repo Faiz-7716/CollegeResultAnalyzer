@@ -4,6 +4,7 @@ import StudentRoster from "./StudentRoster";
 
 export default async function StudentsPage() {
   const students = await getStudentsWithMetrics();
+  const serializedStudents = JSON.parse(JSON.stringify(students));
 
   return (
     <div className="animate-fade-in">
@@ -14,7 +15,7 @@ export default async function StudentsPage() {
         </Link>
       </div>
 
-      <StudentRoster initialStudents={students} />
+      <StudentRoster initialStudents={serializedStudents} />
     </div>
   );
 }
