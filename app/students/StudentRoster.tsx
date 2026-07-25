@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IconFilter, IconArrowUpDown, IconFileText, IconChevronRight } from "../components/Icons";
+import { IconFilter, IconArrowUpDown, IconFileText, IconSparkles } from "../components/Icons";
 
 type StudentData = {
   id: string;
@@ -76,67 +76,159 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
     return sortDir === "desc" ? result : -result;
   });
 
+  // High-Quality Excel / CSV Export Generator
+  const handleExportCSV = () => {
+    const headers = [
+      "Rank",
+      "Register Number",
+      "Student Name",
+      "Batch",
+      "Academic Standing",
+      "Sem 1 Total",
+      "Sem 2 Total",
+      "Sem 3 Total",
+      "Sem 4 Total",
+      "Core Marks",
+      "Allied Marks",
+      "Core + Allied Total",
+      "Core + Allied %",
+      "Language Marks",
+      "Overall Total Marks",
+      "Average %",
+      "CGPA"
+    ];
+
+    const rows = sortedStudents.map((student, index) => {
+      const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0 
+        ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(2) 
+        : "0.00";
+      const totalAvgPct = student.metrics.totalSubjectsCount > 0 
+        ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
+        : "0.00";
+      const status = student.metrics.hasArrear ? "ACTIVE ARREAR" : "ALL CLEAR";
+
+      return [
+        index + 1,
+        `="${student.registerNumber}"`, // Forces Excel text format for Register Numbers
+        `"${student.name.replace(/"/g, '""')}"`,
+        `"${student.batch}"`,
+        `"${status}"`,
+        student.metrics.semMarks[1] || 0,
+        student.metrics.semMarks[2] || 0,
+        student.metrics.semMarks[3] || 0,
+        student.metrics.semMarks[4] || 0,
+        student.metrics.coreMarks,
+        student.metrics.alliedMarks,
+        student.metrics.coreAndAllied,
+        `${coreAlliedPct}%`,
+        student.metrics.languageMarks,
+        student.metrics.totalMarks,
+        `${totalAvgPct}%`,
+        student.metrics.cgpa.toFixed(2)
+      ];
+    });
+
+    // Add UTF-8 BOM (\uFEFF) for crisp Excel column rendering
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    
+    const filterLabel = filterOption === "allClear" ? "All_Clear_Rankings" : filterOption === "arrears" ? "Arrears_List" : "All_Students";
+    const dateStr = new Date().toISOString().split("T")[0];
+    
+    link.setAttribute("href", url);
+    link.setAttribute("download", `MUC_CS_Results_${filterLabel}_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div>
-      <div className="responsive-flex" style={{ display: "flex", gap: "2rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-          <IconFilter size={18} color="var(--accent-primary)" />
-          <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Filter By:</label>
-          <select 
-            className="input-field" 
-            style={{ width: "auto", marginBottom: 0 }}
-            value={filterOption}
-            onChange={(e) => {
-              const val = e.target.value;
-              setFilterOption(val);
-              if (val === "allClear") {
-                setSortOption("coreAndAllied");
-              }
-            }}
-          >
-            <option value="all">All Students</option>
-            <option value="allClear">All Clear Ranking</option>
-            <option value="arrears">Students with Arrears</option>
-          </select>
+      {/* Controls Bar: Filter, Sort, and Excel Export */}
+      <div className="responsive-flex" style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+          {/* Filter Dropdown */}
+          <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+            <IconFilter size={18} color="var(--accent-primary)" />
+            <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Filter By:</label>
+            <select 
+              className="input-field" 
+              style={{ width: "auto", marginBottom: 0 }}
+              value={filterOption}
+              onChange={(e) => {
+                const val = e.target.value;
+                setFilterOption(val);
+                if (val === "allClear") {
+                  setSortOption("coreAndAllied");
+                }
+              }}
+            >
+              <option value="all">All Students ({initialStudents.length})</option>
+              <option value="allClear">All Clear Ranking</option>
+              <option value="arrears">Students with Arrears</option>
+            </select>
+          </div>
+
+          {/* Sort Dropdown */}
+          <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+            <IconArrowUpDown size={18} color="var(--accent-primary)" />
+            <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Sort By:</label>
+            <select 
+              className="input-field" 
+              style={{ width: "auto", marginBottom: 0 }}
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="registerNumber">Register Number (Default)</option>
+              <option value="cgpa">CGPA</option>
+              <option value="totalMarks">Total Marks (Everything)</option>
+              <option value="coreMarks">Only Core</option>
+              <option value="alliedMarks">Only Allied</option>
+              <option value="coreAndAllied">Allied + Core</option>
+              <option value="languageMarks">Only Language</option>
+              <option value="sem1">Semester 1 Marks</option>
+              <option value="sem2">Semester 2 Marks</option>
+              <option value="sem3">Semester 3 Marks</option>
+              <option value="sem4">Semester 4 Marks</option>
+            </select>
+
+            <button 
+              className="btn btn-secondary" 
+              style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
+              onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}
+            >
+              <IconArrowUpDown size={14} />
+              <span>{sortDir === "desc" ? "Descending" : "Ascending"}</span>
+            </button>
+          </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-          <IconArrowUpDown size={18} color="var(--accent-primary)" />
-          <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Sort By:</label>
-          <select 
-            className="input-field" 
-            style={{ width: "auto", marginBottom: 0 }}
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="registerNumber">Register Number (Default)</option>
-            <option value="cgpa">CGPA</option>
-            <option value="totalMarks">Total Marks (Everything)</option>
-            <option value="coreMarks">Only Core</option>
-            <option value="alliedMarks">Only Allied</option>
-            <option value="coreAndAllied">Allied + Core</option>
-            <option value="languageMarks">Only Language</option>
-            <option value="sem1">Semester 1 Marks</option>
-            <option value="sem2">Semester 2 Marks</option>
-            <option value="sem3">Semester 3 Marks</option>
-            <option value="sem4">Semester 4 Marks</option>
-          </select>
-
-          <button 
-            className="btn btn-secondary" 
-            style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
-            onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}
-          >
-            <IconArrowUpDown size={14} />
-            <span>{sortDir === "desc" ? "Descending" : "Ascending"}</span>
-          </button>
-        </div>
+        {/* High-Quality Excel / CSV Export Button */}
+        <button
+          className="btn btn-primary"
+          onClick={handleExportCSV}
+          style={{
+            padding: "0.55rem 1.25rem",
+            fontSize: "0.9rem",
+            background: "var(--status-success)",
+            color: "#FFFFFF",
+            boxShadow: "0 4px 12px rgba(5, 150, 105, 0.25)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <IconFileText size={18} color="#FFFFFF" />
+          <span>Export Excel / CSV ({sortedStudents.length})</span>
+        </button>
       </div>
 
       <div className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>
         {sortedStudents.length === 0 ? (
           <div style={{ padding: "3rem", textAlign: "center" }}>
-            <p className="text-muted">No students found in the database.</p>
+            <p className="text-muted">No students found matching the selected filter criteria.</p>
           </div>
         ) : (
           <>
