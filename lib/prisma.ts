@@ -1,8 +1,19 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import path from 'path'
+import fs from 'fs'
+
+const getDbPath = () => {
+  const prismaPath = path.resolve(process.cwd(), 'prisma', 'dev.db')
+  if (fs.existsSync(prismaPath) && fs.statSync(prismaPath).size > 0) {
+    return prismaPath
+  }
+  return path.resolve(process.cwd(), 'dev.db')
+}
 
 const prismaClientSingleton = () => {
-  const adapter = new PrismaBetterSqlite3({ url: "file:./dev.db" })
+  const dbPath = getDbPath()
+  const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` })
   return new PrismaClient({ adapter })
 }
 
