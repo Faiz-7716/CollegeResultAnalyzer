@@ -330,18 +330,51 @@ export async function getStudentsWithMetrics() {
       });
     });
 
-    // Calculate CGPA
+    // Calculate CGPA & Part-wise CGPAs
     let totalCredits = 0;
     let totalEarnedPoints = 0;
 
-    Object.values(semResultsMap).forEach((resultsArr: any) => {
-      resultsArr.forEach((r: any) => {
-        totalCredits += r.credits;
-        totalEarnedPoints += (r.credits * r.gradePoints);
-      });
+    let p1Credits = 0, p1Points = 0;
+    let p2Credits = 0, p2Points = 0;
+    let p3Credits = 0, p3Points = 0;
+
+    student.results.forEach((result: any) => {
+      const sub = result.subject;
+      const code = sub.code.toUpperCase();
+      const credits = sub.credits || 0;
+      let gp = 0;
+      switch (result.grade) {
+        case 'O': gp = 10; break;
+        case 'A+': gp = 9; break;
+        case 'A': gp = 8; break;
+        case 'B+': gp = 7; break;
+        case 'B': gp = 6; break;
+        case 'C': gp = 5; break;
+        default: gp = 0;
+      }
+
+      totalCredits += credits;
+      totalEarnedPoints += (credits * gp);
+
+      const isLang = code.includes('ULE') || code.includes('ULT') || code.includes('ULU');
+      const isCoreOrAllied = code.includes('UCS') || code.includes('UPCS') || code.includes('UECS') || code.includes('CC') || code.includes('EC');
+
+      if (isLang) {
+        p1Credits += credits;
+        p1Points += credits * gp;
+      } else if (isCoreOrAllied) {
+        p2Credits += credits;
+        p2Points += credits * gp;
+      } else {
+        p3Credits += credits;
+        p3Points += credits * gp;
+      }
     });
 
     const cgpa = totalCredits > 0 ? Number((totalEarnedPoints / totalCredits).toFixed(2)) : 0;
+    const part1Cgpa = p1Credits > 0 ? Number((p1Points / p1Credits).toFixed(2)) : 0;
+    const part2Cgpa = p2Credits > 0 ? Number((p2Points / p2Credits).toFixed(2)) : 0;
+    const part3Cgpa = p3Credits > 0 ? Number((p3Points / p3Credits).toFixed(2)) : 0;
 
     return {
       id: student.id,
@@ -350,6 +383,9 @@ export async function getStudentsWithMetrics() {
       batch: student.batch,
       metrics: {
         cgpa,
+        part1Cgpa,
+        part2Cgpa,
+        part3Cgpa,
         totalMarks,
         coreMarks,
         alliedMarks,

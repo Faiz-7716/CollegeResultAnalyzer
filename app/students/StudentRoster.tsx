@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IconFilter, IconArrowUpDown, IconFileText, IconSparkles } from "../components/Icons";
+import { IconFilter, IconArrowUpDown, IconFileText } from "../components/Icons";
 
 type StudentData = {
   id: string;
@@ -11,6 +11,9 @@ type StudentData = {
   batch: string;
   metrics: {
     cgpa: number;
+    part1Cgpa?: number;
+    part2Cgpa?: number;
+    part3Cgpa?: number;
     totalMarks: number;
     coreMarks: number;
     alliedMarks: number;
@@ -42,6 +45,15 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
         break;
       case "cgpa":
         result = b.metrics.cgpa - a.metrics.cgpa;
+        break;
+      case "part1Cgpa":
+        result = (b.metrics.part1Cgpa || 0) - (a.metrics.part1Cgpa || 0);
+        break;
+      case "part2Cgpa":
+        result = (b.metrics.part2Cgpa || 0) - (a.metrics.part2Cgpa || 0);
+        break;
+      case "part3Cgpa":
+        result = (b.metrics.part3Cgpa || 0) - (a.metrics.part3Cgpa || 0);
         break;
       case "totalMarks":
         result = b.metrics.totalMarks - a.metrics.totalMarks;
@@ -84,6 +96,10 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
       "Student Name",
       "Batch",
       "Academic Standing",
+      "Overall CGPA",
+      "Part 1 Language CGPA",
+      "Part 2 Allied + Core CGPA",
+      "Part 3 Others CGPA",
       "Sem 1 Total",
       "Sem 2 Total",
       "Sem 3 Total",
@@ -94,8 +110,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
       "Core + Allied %",
       "Language Marks",
       "Overall Total Marks",
-      "Average %",
-      "CGPA"
+      "Average %"
     ];
 
     const rows = sortedStudents.map((student, index) => {
@@ -107,12 +122,20 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
         : "0.00";
       const status = student.metrics.hasArrear ? "ACTIVE ARREAR" : "ALL CLEAR";
 
+      const p1 = (student.metrics.part1Cgpa || 0).toFixed(2);
+      const p2 = (student.metrics.part2Cgpa || 0).toFixed(2);
+      const p3 = (student.metrics.part3Cgpa || 0).toFixed(2);
+
       return [
         index + 1,
         `="${student.registerNumber}"`, // Forces Excel text format for Register Numbers
         `"${student.name.replace(/"/g, '""')}"`,
         `"${student.batch}"`,
         `"${status}"`,
+        student.metrics.cgpa.toFixed(2),
+        p1,
+        p2,
+        p3,
         student.metrics.semMarks[1] || 0,
         student.metrics.semMarks[2] || 0,
         student.metrics.semMarks[3] || 0,
@@ -123,8 +146,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
         `${coreAlliedPct}%`,
         student.metrics.languageMarks,
         student.metrics.totalMarks,
-        `${totalAvgPct}%`,
-        student.metrics.cgpa.toFixed(2)
+        `${totalAvgPct}%`
       ];
     });
 
@@ -161,7 +183,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                 const val = e.target.value;
                 setFilterOption(val);
                 if (val === "allClear") {
-                  setSortOption("coreAndAllied");
+                  setSortOption("part2Cgpa");
                 }
               }}
             >
@@ -182,12 +204,15 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
               onChange={(e) => setSortOption(e.target.value)}
             >
               <option value="registerNumber">Register Number (Default)</option>
-              <option value="cgpa">CGPA</option>
+              <option value="cgpa">Overall CGPA</option>
+              <option value="part1Cgpa">Part 1: Language CGPA</option>
+              <option value="part2Cgpa">Part 2: Allied + Core CGPA</option>
+              <option value="part3Cgpa">Part 3: Others CGPA</option>
               <option value="totalMarks">Total Marks (Everything)</option>
               <option value="coreMarks">Only Core</option>
               <option value="alliedMarks">Only Allied</option>
-              <option value="coreAndAllied">Allied + Core</option>
-              <option value="languageMarks">Only Language</option>
+              <option value="coreAndAllied">Allied + Core Marks</option>
+              <option value="languageMarks">Only Language Marks</option>
               <option value="sem1">Semester 1 Marks</option>
               <option value="sem2">Semester 2 Marks</option>
               <option value="sem3">Semester 3 Marks</option>
@@ -240,55 +265,51 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                     <th>Rank</th>
                     <th>Register Number</th>
                     <th>Name</th>
-                    <th>Sem 1</th>
-                    <th>Sem 2</th>
-                    <th>Sem 3</th>
-                    <th>Sem 4</th>
-                    <th>CGPA</th>
-                    <th>Total</th>
-                    <th>Core</th>
-                    <th>Allied</th>
+                    <th>Overall CGPA</th>
+                    <th style={{ color: "#059669" }}>Part 1 (Lang) CGPA</th>
+                    <th style={{ color: "var(--accent-primary)" }}>Part 2 (Allied+Core) CGPA</th>
+                    <th style={{ color: "#D97706" }}>Part 3 (Others) CGPA</th>
+                    <th>Sem 1-4 Totals</th>
+                    <th>Total Marks</th>
                     <th>Core + Allied</th>
-                    <th>Average %</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedStudents.map((student, index) => (
-                    <tr key={student.id}>
-                      <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
-                      <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
-                      <td>{student.name}</td>
-                      <td>{student.metrics.semMarks[1] || "-"}</td>
-                      <td>{student.metrics.semMarks[2] || "-"}</td>
-                      <td>{student.metrics.semMarks[3] || "-"}</td>
-                      <td>{student.metrics.semMarks[4] || "-"}</td>
-                      <td style={{ fontWeight: "bold" }}>{student.metrics.cgpa.toFixed(2)}</td>
-                      <td>{student.metrics.totalMarks}</td>
-                      <td>{student.metrics.coreMarks}</td>
-                      <td>{student.metrics.alliedMarks}</td>
-                      <td>
-                        <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
-                        <div className="text-muted" style={{ fontSize: "0.8rem" }}>
-                          {student.metrics.coreAlliedSubjectsCount > 0 
-                            ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
-                            : "0.0"}%
-                        </div>
-                      </td>
-                      <td>
-                        <span className="badge badge-primary" style={{ background: "rgba(59, 130, 246, 0.15)", color: "var(--accent-primary)", fontSize: "0.9rem" }}>
-                          {student.metrics.totalSubjectsCount > 0 
-                            ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
-                            : "0.00"}%
-                        </span>
-                      </td>
-                      <td>
-                        <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
-                          View Ledger
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                  {sortedStudents.map((student, index) => {
+                    const p1 = (student.metrics.part1Cgpa || 0).toFixed(2);
+                    const p2 = (student.metrics.part2Cgpa || 0).toFixed(2);
+                    const p3 = (student.metrics.part3Cgpa || 0).toFixed(2);
+
+                    return (
+                      <tr key={student.id}>
+                        <td style={{ fontWeight: "bold", color: "var(--accent-primary)" }}>#{index + 1}</td>
+                        <td style={{ fontWeight: 500 }}>{student.registerNumber}</td>
+                        <td style={{ fontWeight: 600 }}>{student.name}</td>
+                        <td style={{ fontWeight: "bold", fontSize: "1.05rem" }}>{student.metrics.cgpa.toFixed(2)}</td>
+                        <td style={{ fontWeight: 700, color: "#059669" }}>{p1}</td>
+                        <td style={{ fontWeight: 700, color: "var(--accent-primary)" }}>{p2}</td>
+                        <td style={{ fontWeight: 700, color: "#D97706" }}>{p3}</td>
+                        <td className="text-muted" style={{ fontSize: "0.85rem" }}>
+                          {student.metrics.semMarks[1] || "-"} / {student.metrics.semMarks[2] || "-"} / {student.metrics.semMarks[3] || "-"} / {student.metrics.semMarks[4] || "-"}
+                        </td>
+                        <td style={{ fontWeight: 600 }}>{student.metrics.totalMarks}</td>
+                        <td>
+                          <div style={{ fontWeight: 600 }}>{student.metrics.coreAndAllied}</div>
+                          <div className="text-muted" style={{ fontSize: "0.8rem" }}>
+                            {student.metrics.coreAlliedSubjectsCount > 0 
+                              ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
+                              : "0.0"}%
+                          </div>
+                        </td>
+                        <td>
+                          <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                            View Ledger
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -296,12 +317,9 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             {/* Mobile Responsive Cards View */}
             <div className="mobile-roster-cards">
               {sortedStudents.map((student, index) => {
-                const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0 
-                  ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1) 
-                  : "0.0";
-                const totalAvgPct = student.metrics.totalSubjectsCount > 0 
-                  ? ((student.metrics.totalMarks / (student.metrics.totalSubjectsCount * 100)) * 100).toFixed(2) 
-                  : "0.00";
+                const p1 = (student.metrics.part1Cgpa || 0).toFixed(2);
+                const p2 = (student.metrics.part2Cgpa || 0).toFixed(2);
+                const p3 = (student.metrics.part3Cgpa || 0).toFixed(2);
 
                 return (
                   <div
@@ -326,25 +344,25 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
                       </span>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem", background: "rgba(248, 250, 252, 0.6)", padding: "0.75rem", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+                    {/* 3 Part CGPA Grid */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem", background: "rgba(248, 250, 252, 0.8)", padding: "0.75rem", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
                       <div>
-                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>CGPA</div>
-                        <div style={{ fontWeight: 700, color: "var(--accent-primary)", fontSize: "1.1rem" }}>{student.metrics.cgpa.toFixed(2)}</div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", fontWeight: 600 }}>Part 1 (Lang)</div>
+                        <div style={{ fontWeight: 800, color: "#059669", fontSize: "1.05rem" }}>{p1}</div>
                       </div>
                       <div>
-                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>Core+Allied</div>
-                        <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>{student.metrics.coreAndAllied}</div>
-                        <div className="text-muted" style={{ fontSize: "0.7rem" }}>{coreAlliedPct}%</div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", fontWeight: 600 }}>Part 2 (Allied+Core)</div>
+                        <div style={{ fontWeight: 800, color: "var(--accent-primary)", fontSize: "1.05rem" }}>{p2}</div>
                       </div>
                       <div>
-                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase" }}>Average</div>
-                        <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--accent-secondary)" }}>{totalAvgPct}%</div>
+                        <div className="text-muted" style={{ fontSize: "0.7rem", textTransform: "uppercase", fontWeight: 600 }}>Part 3 (Others)</div>
+                        <div style={{ fontWeight: 800, color: "#D97706", fontSize: "1.05rem" }}>{p3}</div>
                       </div>
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid var(--border-color)", fontSize: "0.8rem" }}>
-                      <div className="text-muted">
-                        Sem Marks: <strong>{student.metrics.semMarks[1] || "-"}</strong> / <strong>{student.metrics.semMarks[2] || "-"}</strong> / <strong>{student.metrics.semMarks[3] || "-"}</strong> / <strong>{student.metrics.semMarks[4] || "-"}</strong>
+                      <div>
+                        Overall CGPA: <strong style={{ color: "var(--accent-primary)", fontSize: "0.95rem" }}>{student.metrics.cgpa.toFixed(2)}</strong>
                       </div>
                       <Link href={`/students/${student.id}`} className="btn btn-secondary" style={{ padding: "0.35rem 0.85rem", fontSize: "0.8rem" }}>
                         View Ledger &rarr;

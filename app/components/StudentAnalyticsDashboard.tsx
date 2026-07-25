@@ -83,6 +83,44 @@ export default function StudentAnalyticsDashboard({
     };
   });
 
+  // Compute Part 1, Part 2, Part 3 CGPAs
+  let p1Credits = 0, p1Points = 0;
+  let p2Credits = 0, p2Points = 0;
+  let p3Credits = 0, p3Points = 0;
+
+  results.forEach((r) => {
+    const code = r.subject.code.toUpperCase();
+    const credits = r.subject.credits || 0;
+    let gp = 0;
+    switch (r.grade) {
+      case "O": gp = 10; break;
+      case "A+": gp = 9; break;
+      case "A": gp = 8; break;
+      case "B+": gp = 7; break;
+      case "B": gp = 6; break;
+      case "C": gp = 5; break;
+      default: gp = 0;
+    }
+
+    const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+    const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
+
+    if (isLang) {
+      p1Credits += credits;
+      p1Points += credits * gp;
+    } else if (isCoreOrAllied) {
+      p2Credits += credits;
+      p2Points += credits * gp;
+    } else {
+      p3Credits += credits;
+      p3Points += credits * gp;
+    }
+  });
+
+  const part1Cgpa = p1Credits > 0 ? (p1Points / p1Credits).toFixed(2) : "0.00";
+  const part2Cgpa = p2Credits > 0 ? (p2Points / p2Credits).toFixed(2) : "0.00";
+  const part3Cgpa = p3Credits > 0 ? (p3Points / p3Credits).toFixed(2) : "0.00";
+
   // Calculate trend direction
   let trendLabel = "Stable";
   let trendColor = "var(--accent-primary)";
@@ -211,20 +249,20 @@ export default function StudentAnalyticsDashboard({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      {/* 4 Algorithmic Metric Header Cards */}
+      {/* 4 Primary CGPA & Standing Metric Header Cards */}
       <div
         className="responsive-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "1.25rem",
         }}
       >
-        <div className="card glass-panel" style={{ position: "relative", overflow: "hidden" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Cumulative CGPA
+        <div className="card glass-panel" style={{ position: "relative", overflow: "hidden", borderLeft: "4px solid var(--accent-primary)" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Overall CGPA
           </div>
-          <div className="h1 text-gradient" style={{ marginTop: "0.5rem", fontSize: "2.75rem" }}>
+          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "var(--accent-primary)", fontWeight: 800 }}>
             {cgpa.toFixed(2)}
           </div>
           <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
@@ -232,11 +270,50 @@ export default function StudentAnalyticsDashboard({
           </div>
         </div>
 
+        <div className="card glass-panel" style={{ borderLeft: "4px solid #10B981" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Part 1: Language CGPA
+          </div>
+          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#10B981", fontWeight: 800 }}>
+            {part1Cgpa}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+            Tamil / English / Urdu ({p1Credits} Credits)
+          </div>
+        </div>
+
+        <div className="card glass-panel" style={{ borderLeft: "4px solid #3B82F6" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Part 2: Allied + Core CGPA
+          </div>
+          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#3B82F6", fontWeight: 800 }}>
+            {part2Cgpa}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+            CS Core & Allied Math ({p2Credits} Credits)
+          </div>
+        </div>
+
+        <div className="card glass-panel" style={{ borderLeft: "4px solid #F59E0B" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Part 3: Others CGPA
+          </div>
+          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#F59E0B", fontWeight: 800 }}>
+            {part3Cgpa}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+            Foundation CS, NME & Skills ({p3Credits} Credits)
+          </div>
+        </div>
+      </div>
+
+      {/* Academic Standing & Subject Highlights */}
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem" }}>
         <div className="card glass-panel">
           <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
             Academic Standing
           </div>
-          <div className="h1" style={{ marginTop: "0.5rem", fontSize: "2.5rem", color: arrearsCount > 0 ? "var(--status-error)" : "var(--status-success)" }}>
+          <div className="h1" style={{ marginTop: "0.5rem", fontSize: "2.25rem", color: arrearsCount > 0 ? "var(--status-error)" : "var(--status-success)" }}>
             {arrearsCount === 0 ? "ALL CLEAR" : `${arrearsCount} ARREAR${arrearsCount > 1 ? "S" : ""}`}
           </div>
           <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>

@@ -158,17 +158,71 @@ export default function StudentPageClient({
                 );
               })}
 
-              <div className="card glass-panel responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", textAlign: "center", padding: "2.5rem", background: "#FFFFFF", border: "2px solid var(--accent-primary)" }}>
-                <div>
-                  <h3 className="h3 text-muted" style={{ marginBottom: "0.75rem", fontSize: "1.1rem" }}>Cumulative Grade Point Average (CGPA)</h3>
-                  <p className="h1" style={{ fontSize: "3.5rem", color: "var(--accent-primary)", fontWeight: 800 }}>
+              {/* Part-wise CGPA & Summary Cards */}
+              <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.25rem" }}>
+                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid var(--accent-primary)" }}>
+                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Overall CGPA</h4>
+                  <p className="h1" style={{ fontSize: "2.75rem", color: "var(--accent-primary)", fontWeight: 800, marginTop: "0.25rem" }}>
                     {cgpa.toFixed(2)}
                   </p>
                 </div>
-                <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <h3 className="h3 text-muted" style={{ marginBottom: "0.75rem", fontSize: "1.1rem" }}>Core + Allied Percentage</h3>
-                  <p className="h1" style={{ fontSize: "3.5rem", color: "var(--status-success)", fontWeight: 800 }}>
-                    {coreAlliedPercentage.toFixed(2)}%
+
+                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #10B981" }}>
+                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 1: Language CGPA</h4>
+                  <p className="h1" style={{ fontSize: "2.75rem", color: "#10B981", fontWeight: 800, marginTop: "0.25rem" }}>
+                    {(() => {
+                      let p1C = 0, p1P = 0;
+                      results.forEach((r: any) => {
+                        const code = r.subject.code.toUpperCase();
+                        if (code.includes("ULE") || code.includes("ULT") || code.includes("ULU")) {
+                          let gp = 0;
+                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                          p1C += r.subject.credits;
+                          p1P += r.subject.credits * gp;
+                        }
+                      });
+                      return p1C > 0 ? (p1P / p1C).toFixed(2) : "0.00";
+                    })()}
+                  </p>
+                </div>
+
+                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #3B82F6" }}>
+                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 2: Allied + Core CGPA</h4>
+                  <p className="h1" style={{ fontSize: "2.75rem", color: "#3B82F6", fontWeight: 800, marginTop: "0.25rem" }}>
+                    {(() => {
+                      let p2C = 0, p2P = 0;
+                      results.forEach((r: any) => {
+                        const code = r.subject.code.toUpperCase();
+                        if (code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC")) {
+                          let gp = 0;
+                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                          p2C += r.subject.credits;
+                          p2P += r.subject.credits * gp;
+                        }
+                      });
+                      return p2C > 0 ? (p2P / p2C).toFixed(2) : "0.00";
+                    })()}
+                  </p>
+                </div>
+
+                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #F59E0B" }}>
+                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 3: Others CGPA</h4>
+                  <p className="h1" style={{ fontSize: "2.75rem", color: "#F59E0B", fontWeight: 800, marginTop: "0.25rem" }}>
+                    {(() => {
+                      let p3C = 0, p3P = 0;
+                      results.forEach((r: any) => {
+                        const code = r.subject.code.toUpperCase();
+                        const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+                        const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
+                        if (!isLang && !isCoreOrAllied) {
+                          let gp = 0;
+                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                          p3C += r.subject.credits;
+                          p3P += r.subject.credits * gp;
+                        }
+                      });
+                      return p3C > 0 ? (p3P / p3C).toFixed(2) : "0.00";
+                    })()}
                   </p>
                 </div>
               </div>
