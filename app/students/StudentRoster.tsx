@@ -187,16 +187,39 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
 
   return (
     <div>
-      {/* Controls Bar: Filter, Sort, and Excel Export */}
-      <div className="responsive-flex" style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
-          {/* Filter Dropdown */}
-          <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-            <IconFilter size={18} color="var(--accent-primary)" />
-            <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Filter By:</label>
+      {/* Designed Controls Bar Card Container */}
+      <div
+        className="card glass-panel responsive-flex"
+        style={{
+          display: "flex",
+          gap: "1.25rem",
+          marginBottom: "1.5rem",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          padding: "1rem 1.5rem",
+          background: "#FFFFFF",
+          border: "1px solid var(--border-color)",
+          boxShadow: "0 4px 20px -2px rgba(15, 23, 42, 0.05)",
+          borderRadius: "var(--radius-lg)",
+        }}
+      >
+        <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", flexWrap: "wrap" }}>
+          {/* Filter Pill Group */}
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", background: "rgba(241, 245, 249, 0.85)", padding: "0.35rem 0.85rem", borderRadius: "999px", border: "1px solid var(--border-color)" }}>
+            <IconFilter size={16} color="var(--accent-primary)" />
+            <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)" }}>Filter:</span>
             <select 
-              className="input-field" 
-              style={{ width: "auto", marginBottom: 0 }}
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                color: "var(--text-primary)",
+                cursor: "pointer",
+                outline: "none",
+                paddingRight: "0.5rem",
+              }}
               value={filterOption}
               onChange={(e) => {
                 const val = e.target.value;
@@ -213,13 +236,21 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
             </select>
           </div>
 
-          {/* Sort Dropdown */}
-          <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-            <IconArrowUpDown size={18} color="var(--accent-primary)" />
-            <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Sort By:</label>
+          {/* Sort Pill Group */}
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", background: "rgba(241, 245, 249, 0.85)", padding: "0.35rem 0.85rem", borderRadius: "999px", border: "1px solid var(--border-color)" }}>
+            <IconArrowUpDown size={16} color="var(--accent-primary)" />
+            <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)" }}>Sort:</span>
             <select 
-              className="input-field" 
-              style={{ width: "auto", marginBottom: 0 }}
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                color: "var(--text-primary)",
+                cursor: "pointer",
+                outline: "none",
+                paddingRight: "0.5rem",
+              }}
               value={sortOption}
               onChange={(e) => {
                 const val = e.target.value;
@@ -247,11 +278,22 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
 
             <button 
               className="btn btn-secondary" 
-              style={{ padding: "0.5rem 1rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
+              style={{
+                padding: "0.25rem 0.65rem",
+                fontSize: "0.8rem",
+                borderRadius: "999px",
+                border: "1px solid var(--border-color)",
+                background: "#FFFFFF",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                fontWeight: 600,
+                cursor: "pointer"
+              }}
               onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}
             >
-              <IconArrowUpDown size={14} />
-              <span>{sortDir === "desc" ? "Descending" : "Ascending"}</span>
+              <IconArrowUpDown size={12} />
+              <span>{sortDir === "desc" ? "Desc" : "Asc"}</span>
             </button>
           </div>
         </div>
@@ -262,13 +304,18 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
           onClick={handleExportCSV}
           style={{
             padding: "0.55rem 1.25rem",
-            fontSize: "0.9rem",
+            fontSize: "0.875rem",
+            fontWeight: 700,
             background: "var(--status-success)",
             color: "#FFFFFF",
-            boxShadow: "0 4px 12px rgba(5, 150, 105, 0.25)",
+            borderRadius: "999px",
+            boxShadow: "0 4px 14px rgba(5, 150, 105, 0.3)",
             display: "inline-flex",
             alignItems: "center",
             gap: "0.5rem",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.2s ease"
           }}
         >
           <IconFileText size={18} color="#FFFFFF" />
