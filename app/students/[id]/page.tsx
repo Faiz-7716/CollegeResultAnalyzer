@@ -37,7 +37,7 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
     totalStudents: allStudents.length,
   };
 
-  // Group results by semester
+  // Group results by semester for CGPA calculation
   const semestersMap = new Map<number, any[]>();
   serializedStudent.results.forEach((result: any) => {
     const semNumber = result.subject.semester.number;
@@ -48,29 +48,12 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
   });
 
   const sortedSemesters = Array.from(semestersMap.entries()).sort((a, b) => a[0] - b[0]);
-
   const sgpas: { sgpa: number; totalCredits: number }[] = [];
   const arrears = serializedStudent.results.filter((r: any) => !r.passStatus);
 
-  let coreAlliedTotal = 0;
-  let coreAlliedCount = 0;
-
-  serializedStudent.results.forEach((r: any) => {
-    const code = r.subject.code;
-    const isCore = code.includes('UCS') || code.includes('UPCS') || code.includes('CC');
-    const isAllied = code.includes('UECS') || code.includes('EC');
-    
-    if (isCore || isAllied) {
-      coreAlliedTotal += r.total;
-      coreAlliedCount++;
-    }
-  });
-
-  const coreAlliedPercentage = coreAlliedCount > 0 ? (coreAlliedTotal / (coreAlliedCount * 100)) * 100 : 0;
-
   // Compute SGPA for each semester
   sortedSemesters.forEach(([_, results]) => {
-    const subjectResults = results.map((r) => {
+    const subjectResults = results.map((r: any) => {
       let gradePoints = 0;
       switch (r.grade) {
         case "O": gradePoints = 10; break;
@@ -85,90 +68,11 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
     });
 
     const semSgpa = calculateSGPA(subjectResults);
-    const semCredits = results.reduce((acc, r) => acc + r.subject.credits, 0);
+    const semCredits = results.reduce((acc: number, r: any) => acc + r.subject.credits, 0);
     sgpas.push({ sgpa: semSgpa, totalCredits: semCredits });
   });
 
   const calculatedCgpa = calculateCGPA(sgpas);
-
-  // JSX for the Ledger view tab
-  const ledgerView = (
-    <div>
-      {sortedSemesters.length === 0 ? (
-        <div className="card glass-panel" style={{ padding: "3rem", textAlign: "center" }}>
-          <p className="text-muted">No academic records found for this student.</p>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          {sortedSemesters.map(([semNumber, results], idx) => {
-            const semSgpa = sgpas[idx]?.sgpa || 0;
-
-            return (
-              <div key={semNumber} className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>
-                <div className="responsive-flex" style={{ padding: "1.5rem", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <h3 className="h3">Semester {semNumber}</h3>
-                  <div className="badge badge-primary" style={{ fontSize: "1rem", background: "rgba(59, 130, 246, 0.15)" }}>
-                    SGPA: <span style={{ color: "var(--accent-primary)", marginLeft: "0.5rem" }}>{semSgpa.toFixed(2)}</span>
-                  </div>
-                </div>
-                <div className="table-responsive">
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Subject Code</th>
-                        <th>Subject Name</th>
-                        <th>Credits</th>
-                        <th>Int/Ext</th>
-                        <th>Total</th>
-                        <th>Grade</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {results.map((result: any) => (
-                        <tr key={result.id}>
-                          <td style={{ fontWeight: 500 }}>{result.subject.code}</td>
-                          <td>{result.subject.name}</td>
-                          <td>{result.subject.credits}</td>
-                          <td className="text-muted">{result.internalMarks} / {result.externalMarks}</td>
-                          <td style={{ fontWeight: 600 }}>{result.total}</td>
-                          <td>
-                            <span className="text-gradient" style={{ fontWeight: 700, fontSize: "1.1rem" }}>
-                              {result.grade}
-                            </span>
-                          </td>
-                          <td>
-                            <span className={`badge ${result.passStatus ? 'badge-success' : 'badge-error'}`}>
-                              {result.passStatus ? "PASS" : "ARREAR"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="card glass-panel responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", textAlign: "center", padding: "3rem", background: "var(--bg-glass-hover)" }}>
-            <div>
-              <h3 className="h2 text-muted" style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>Cumulative Grade Point Average</h3>
-              <p className="h1 text-gradient" style={{ fontSize: "3.5rem" }}>
-                {calculatedCgpa.toFixed(2)}
-              </p>
-            </div>
-            <div className="mobile-no-border" style={{ borderLeft: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <h3 className="h2 text-muted" style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>Core + Allied Percentage</h3>
-              <p className="h1 text-gradient" style={{ fontSize: "3.5rem" }}>
-                {coreAlliedPercentage.toFixed(2)}%
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
 
   return (
     <div className="animate-fade-in">
@@ -207,7 +111,6 @@ export default async function StudentLedgerPage({ params }: { params: Promise<{ 
         results={serializedStudent.results}
         cgpa={calculatedCgpa}
         classRank={classRank}
-        ledgerView={ledgerView}
       />
     </div>
   );
