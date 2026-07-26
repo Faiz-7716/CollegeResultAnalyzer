@@ -467,18 +467,34 @@ body {
   }
 }
 
-/* Official Print Media Formatting */
+/* Official A4 Print Media Formatting */
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
 @media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  
   body * {
     visibility: hidden;
   }
+  
   .no-print {
     display: none !important;
   }
+  
   #printable-official-report,
   #printable-official-report * {
     visibility: visible;
   }
+  
   .report-modal-overlay {
     position: absolute !important;
     left: 0 !important;
@@ -489,14 +505,33 @@ body {
     backdrop-filter: none !important;
     padding: 0 !important;
     margin: 0 !important;
+    box-shadow: none !important;
   }
+  
   #printable-official-report {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
     width: 100% !important;
+    max-width: 210mm !important;
     padding: 0 !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
+  }
+
+  /* Prevent Page Break Cuts inside Tables and Sections */
+  .sem-report-block,
+  .meta-report-table,
+  .summary-report-table,
+  .signature-report-block,
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  h1, h2, h3, .sem-header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 }
 

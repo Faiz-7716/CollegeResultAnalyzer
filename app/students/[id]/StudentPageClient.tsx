@@ -522,7 +522,7 @@ export default function StudentPageClient({
               </div>
 
               {/* Student Metadata Box */}
-              <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "1.5rem", fontSize: "0.875rem", border: "1px solid #000000" }}>
+              <table className="meta-report-table" style={{ width: "100%", borderCollapse: "collapse", marginBottom: "1.5rem", fontSize: "0.875rem", border: "1px solid #000000" }}>
                 <tbody>
                   <tr style={{ borderBottom: "1px solid #000000" }}>
                     <td style={{ padding: "0.5rem 0.75rem", width: "18%", fontWeight: 700, background: "#F8FAFC", borderRight: "1px solid #000000" }}>Candidate Name</td>
@@ -544,8 +544,8 @@ export default function StudentPageClient({
                 {sortedSemesters.map(([semNumber, semResults], idx) => {
                   const semSgpa = sgpas[idx]?.sgpa || 0;
                   return (
-                    <div key={semNumber} style={{ border: "1px solid #000000", overflow: "hidden" }}>
-                      <div style={{ background: "#F1F5F9", padding: "0.5rem 0.75rem", borderBottom: "1px solid #000000", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 800, fontSize: "0.85rem" }}>
+                    <div key={semNumber} className="sem-report-block" style={{ border: "1px solid #000000", overflow: "hidden" }}>
+                      <div className="sem-header" style={{ background: "#F1F5F9", padding: "0.5rem 0.75rem", borderBottom: "1px solid #000000", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 800, fontSize: "0.85rem" }}>
                         <span>SEMESTER {semNumber} EXAMINATIONS</span>
                         <span>SEMESTER SGPA: {semSgpa.toFixed(2)}</span>
                       </div>
@@ -585,7 +585,7 @@ export default function StudentPageClient({
               </div>
 
               {/* Summary Performance Grid */}
-              <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "2rem", border: "1px solid #000000", textAlign: "center", fontSize: "0.85rem" }}>
+              <table className="summary-report-table" style={{ width: "100%", borderCollapse: "collapse", marginBottom: "2rem", border: "1px solid #000000", textAlign: "center", fontSize: "0.85rem" }}>
                 <thead>
                   <tr style={{ background: "#F1F5F9", borderBottom: "1px solid #000000", fontWeight: 800, textTransform: "uppercase" }}>
                     <td style={{ padding: "0.5rem", borderRight: "1px solid #000000" }}>Overall CGPA</td>
@@ -615,7 +615,7 @@ export default function StudentPageClient({
               </table>
 
               {/* Official Signatures & Verification Block */}
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4rem", paddingTop: "1rem", textAlign: "center", fontSize: "0.85rem", fontWeight: 700, color: "#000000" }}>
+              <div className="signature-report-block" style={{ display: "flex", justifyContent: "space-between", marginTop: "4rem", paddingTop: "1rem", textAlign: "center", fontSize: "0.85rem", fontWeight: 700, color: "#000000" }}>
                 <div>
                   <div style={{ borderTop: "1px stroke #000000", width: "160px", marginBottom: "0.5rem" }}></div>
                   <div>Verified By</div>
