@@ -499,70 +499,76 @@ export default function StudentPageClient({
             </div>
 
             {/* Printable Official Document Body */}
-            <div id="printable-official-report" style={{ padding: "2.5rem", overflowY: "auto", color: "#0F172A", background: "#FFFFFF" }}>
-              {/* College Official Letterhead */}
-              <div style={{ textAlign: "center", borderBottom: "2px solid #0F172A", paddingBottom: "1.25rem", marginBottom: "1.5rem" }}>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
-                  <img src="/logo.png" alt="MUC Logo" style={{ height: "54px" }} />
-                  <div>
-                    <h1 style={{ fontSize: "1.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em", color: "#0F172A", margin: 0 }}>
-                      MAZHARUL ULOOM COLLEGE
-                    </h1>
-                    <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#475569", margin: "0.15rem 0 0 0" }}>
-                      Ambur - 635 802, Tirupattur District | Affiliated to Thiruvalluvar University
-                    </p>
-                  </div>
-                </div>
-                <div style={{ fontSize: "1rem", fontWeight: 800, color: "#4F46E5", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.5rem", background: "#F1F5F9", padding: "0.4rem 1rem", borderRadius: "4px", display: "inline-block" }}>
-                  DEPARTMENT OF COMPUTER SCIENCE — ACADEMIC MARKSHEET LEDGER REPORT
+            <div id="printable-official-report" style={{ padding: "2.5rem", overflowY: "auto", color: "#000000", background: "#FFFFFF", fontFamily: "'Inter', sans-serif" }}>
+              {/* College Official Letterhead (No Logo Image) */}
+              <div style={{ textAlign: "center", borderBottom: "3px double #000000", paddingBottom: "1rem", marginBottom: "1.5rem" }}>
+                <h1 style={{ fontSize: "1.8rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.04em", color: "#000000", margin: 0 }}>
+                  MAZHARUL ULOOM COLLEGE
+                </h1>
+                <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#333333", margin: "0.25rem 0 0 0" }}>
+                  Recognized by UGC under Section 2(f) & 12(B) | Affiliated to Thiruvalluvar University
+                </p>
+                <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", margin: "0.15rem 0 0 0" }}>
+                  AMBUR - 635 802, TIRUPATTUR DISTRICT, TAMIL NADU
+                </p>
+                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#000000", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.75rem", borderTop: "1px solid #000000", borderBottom: "1px solid #000000", padding: "0.4rem 0" }}>
+                  DEPARTMENT OF COMPUTER SCIENCE — CONSOLIDATED STATEMENT OF MARKS
                 </div>
               </div>
 
               {/* Student Metadata Box */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", background: "#F8FAFC", padding: "1.25rem", borderRadius: "6px", border: "1px solid #E2E8F0", marginBottom: "1.75rem", fontSize: "0.9rem" }}>
-                <div>
-                  <div style={{ marginBottom: "0.35rem" }}>Student Name: <strong style={{ fontSize: "1.05rem", color: "#0F172A" }}>{student.name}</strong></div>
-                  <div>Register Number: <strong>{student.registerNumber}</strong></div>
-                </div>
-                <div>
-                  <div style={{ marginBottom: "0.35rem" }}>Degree & Batch: <strong>B.Sc. Computer Science ({student.batch})</strong></div>
-                  <div>Batch Class Rank: <strong style={{ color: "#4F46E5" }}>#{classRank.rank} of {classRank.totalStudents}</strong> | CGPA: <strong>{cgpa.toFixed(2)}</strong></div>
-                </div>
-              </div>
+              <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "1.5rem", fontSize: "0.875rem", border: "1px solid #000000" }}>
+                <tbody>
+                  <tr style={{ borderBottom: "1px solid #000000" }}>
+                    <td style={{ padding: "0.5rem 0.75rem", width: "18%", fontWeight: 700, background: "#F8FAFC", borderRight: "1px solid #000000" }}>Candidate Name</td>
+                    <td style={{ padding: "0.5rem 0.75rem", width: "32%", fontWeight: 800, fontSize: "1rem", borderRight: "1px solid #000000" }}>{student.name}</td>
+                    <td style={{ padding: "0.5rem 0.75rem", width: "18%", fontWeight: 700, background: "#F8FAFC", borderRight: "1px solid #000000" }}>Register Number</td>
+                    <td style={{ padding: "0.5rem 0.75rem", width: "32%", fontWeight: 800, fontSize: "1rem" }}>{student.registerNumber}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: "0.5rem 0.75rem", fontWeight: 700, background: "#F8FAFC", borderRight: "1px solid #000000" }}>Degree & Course</td>
+                    <td style={{ padding: "0.5rem 0.75rem", fontWeight: 600, borderRight: "1px solid #000000" }}>B.Sc. Computer Science</td>
+                    <td style={{ padding: "0.5rem 0.75rem", fontWeight: 700, background: "#F8FAFC", borderRight: "1px solid #000000" }}>Batch / Year</td>
+                    <td style={{ padding: "0.5rem 0.75rem", fontWeight: 600 }}>{student.batch} (2023 - 2026)</td>
+                  </tr>
+                </tbody>
+              </table>
 
               {/* Semesters & Marks Table */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "2rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "1.75rem" }}>
                 {sortedSemesters.map(([semNumber, semResults], idx) => {
                   const semSgpa = sgpas[idx]?.sgpa || 0;
                   return (
-                    <div key={semNumber} style={{ border: "1px solid #CBD5E1", borderRadius: "6px", overflow: "hidden" }}>
-                      <div style={{ background: "#F1F5F9", padding: "0.65rem 1rem", borderBottom: "1px solid #CBD5E1", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 700, fontSize: "0.9rem" }}>
+                    <div key={semNumber} style={{ border: "1px solid #000000", overflow: "hidden" }}>
+                      <div style={{ background: "#F1F5F9", padding: "0.5rem 0.75rem", borderBottom: "1px solid #000000", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 800, fontSize: "0.85rem" }}>
                         <span>SEMESTER {semNumber} EXAMINATIONS</span>
-                        <span style={{ color: "#4F46E5" }}>SGPA: {semSgpa.toFixed(2)}</span>
+                        <span>SEMESTER SGPA: {semSgpa.toFixed(2)}</span>
                       </div>
-                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
+                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.825rem" }}>
                         <thead>
-                          <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #CBD5E1", textTransform: "uppercase", fontSize: "0.75rem", color: "#475569" }}>
-                            <th style={{ padding: "0.5rem", textAlign: "left" }}>Code</th>
-                            <th style={{ padding: "0.5rem", textAlign: "left" }}>Subject Title</th>
-                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Credits</th>
-                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Int / Ext</th>
-                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Total</th>
-                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Grade</th>
-                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Status</th>
+                          <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #000000", textTransform: "uppercase", fontSize: "0.75rem", fontWeight: 700 }}>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1" }}>Subject Code</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1" }}>Subject Title</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #CBD5E1" }}>Credits</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #CBD5E1" }}>Internal (25)</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #CBD5E1" }}>External (75)</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #CBD5E1" }}>Total (100)</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #CBD5E1" }}>Grade</th>
+                            <th style={{ padding: "0.4rem 0.5rem", textAlign: "center" }}>Result</th>
                           </tr>
                         </thead>
                         <tbody>
                           {semResults.map((r: any) => (
-                            <tr key={r.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
-                              <td style={{ padding: "0.5rem", fontWeight: 700 }}>{r.subject.code}</td>
-                              <td style={{ padding: "0.5rem" }}>{r.subject.name}</td>
-                              <td style={{ padding: "0.5rem", textAlign: "center" }}>{r.subject.credits}</td>
-                              <td style={{ padding: "0.5rem", textAlign: "center" }}>{r.internalMarks} / {r.externalMarks}</td>
-                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 700 }}>{r.total}</td>
-                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 800 }}>{r.grade}</td>
-                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 700, color: r.passStatus ? "#059669" : "#DC2626" }}>
-                                {r.passStatus ? "PASS" : "ARREAR"}
+                            <tr key={r.id} style={{ borderBottom: "1px solid #E2E8F0" }}>
+                              <td style={{ padding: "0.4rem 0.5rem", fontWeight: 700, borderRight: "1px solid #E2E8F0" }}>{r.subject.code}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", borderRight: "1px solid #E2E8F0" }}>{r.subject.name}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #E2E8F0" }}>{r.subject.credits}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #E2E8F0" }}>{r.internalMarks}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", borderRight: "1px solid #E2E8F0" }}>{r.externalMarks}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", fontWeight: 700, borderRight: "1px solid #E2E8F0" }}>{r.total}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", fontWeight: 800, borderRight: "1px solid #E2E8F0" }}>{r.grade}</td>
+                              <td style={{ padding: "0.4rem 0.5rem", textAlign: "center", fontWeight: 800, color: r.passStatus ? "#000000" : "#DC2626" }}>
+                                {r.passStatus ? "PASS" : "RA"}
                               </td>
                             </tr>
                           ))}
@@ -573,38 +579,52 @@ export default function StudentPageClient({
                 })}
               </div>
 
-              {/* Part-Wise CGPA Summary Grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "0.75rem", background: "#F8FAFC", padding: "1rem", borderRadius: "6px", border: "1px solid #CBD5E1", textAlign: "center", marginBottom: "2.5rem" }}>
-                <div>
-                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Overall CGPA</div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#4F46E5" }}>{cgpa.toFixed(2)}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 1 (Lang)</div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#059669" }}>{part1CgpaStr}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 2 (Allied+Core)</div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#2563EB" }}>{part2CgpaStr}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 3 (Others)</div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#D97706" }}>{part3CgpaStr}</div>
-                </div>
-              </div>
+              {/* Summary Performance Grid */}
+              <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "2rem", border: "1px solid #000000", textAlign: "center", fontSize: "0.85rem" }}>
+                <thead>
+                  <tr style={{ background: "#F1F5F9", borderBottom: "1px solid #000000", fontWeight: 800, textTransform: "uppercase" }}>
+                    <td style={{ padding: "0.5rem", borderRight: "1px solid #000000" }}>Overall CGPA</td>
+                    <td style={{ padding: "0.5rem", borderRight: "1px solid #000000" }}>Part 1 (Language) CGPA</td>
+                    <td style={{ padding: "0.5rem", borderRight: "1px solid #000000" }}>Part 2 (Allied + Core) CGPA</td>
+                    <td style={{ padding: "0.5rem", borderRight: "1px solid #000000" }}>Part 3 (Others) CGPA</td>
+                    <td style={{ padding: "0.5rem" }}>Classification</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ fontWeight: 800 }}>
+                    <td style={{ padding: "0.6rem", fontSize: "1.25rem", borderRight: "1px solid #000000" }}>{cgpa.toFixed(2)}</td>
+                    <td style={{ padding: "0.6rem", fontSize: "1.25rem", borderRight: "1px solid #000000" }}>{part1CgpaStr}</td>
+                    <td style={{ padding: "0.6rem", fontSize: "1.25rem", borderRight: "1px solid #000000" }}>{part2CgpaStr}</td>
+                    <td style={{ padding: "0.6rem", fontSize: "1.25rem", borderRight: "1px solid #000000" }}>{part3CgpaStr}</td>
+                    <td style={{ padding: "0.6rem", fontSize: "0.95rem" }}>
+                      {(() => {
+                        const hasArrears = results.some((r: any) => !r.passStatus);
+                        if (hasArrears) return "RE-APPEAR (ARREAR)";
+                        if (cgpa >= 7.5) return "FIRST CLASS WITH DISTINCTION";
+                        if (cgpa >= 6.0) return "FIRST CLASS";
+                        return "SECOND CLASS";
+                      })()}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-              {/* Official Signature Placeholders */}
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "3rem", paddingTop: "1rem", borderTop: "1px stroke #94A3B8", textAlign: "center", fontSize: "0.85rem", fontWeight: 700, color: "#334155" }}>
+              {/* Official Signatures & Verification Block */}
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4rem", paddingTop: "1rem", textAlign: "center", fontSize: "0.85rem", fontWeight: 700, color: "#000000" }}>
                 <div>
-                  <div style={{ height: "45px" }}></div>
+                  <div style={{ borderTop: "1px stroke #000000", width: "160px", marginBottom: "0.5rem" }}></div>
+                  <div>Verified By</div>
+                </div>
+                <div>
+                  <div style={{ borderTop: "1px stroke #000000", width: "160px", marginBottom: "0.5rem" }}></div>
                   <div>Head of Department</div>
                 </div>
                 <div>
-                  <div style={{ height: "45px" }}></div>
+                  <div style={{ borderTop: "1px stroke #000000", width: "160px", marginBottom: "0.5rem" }}></div>
                   <div>Controller of Examinations</div>
                 </div>
                 <div>
-                  <div style={{ height: "45px" }}></div>
+                  <div style={{ borderTop: "1px stroke #000000", width: "160px", marginBottom: "0.5rem" }}></div>
                   <div>Principal</div>
                 </div>
               </div>
