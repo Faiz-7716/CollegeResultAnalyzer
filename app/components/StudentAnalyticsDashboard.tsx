@@ -51,11 +51,16 @@ export default function StudentAnalyticsDashboard({
     semMap.get(sem)!.push(r);
   });
 
-  const sortedSemesters = Array.from(semMap.keys()).sort((a, b) => a - b);
+  const sortedSemesters = Array.from(semMap.entries()).sort((a, b) => a[0] - b[0]);
 
   // Calculate SGPA for each semester
-  const sgpaTrendData = sortedSemesters.map((sem) => {
-    const semResults = semMap.get(sem) || [];
+  let runningCumCredits = 0;
+  let runningCumPoints = 0;
+
+  const sgpaTrendData = sortedSemesters.map(([sem, semResults]) => {
+    let semCredits = 0;
+    let semPoints = 0;
+
     const subjectGrades = semResults.map((r) => {
       let gp = 0;
       switch (r.grade) {
@@ -67,19 +72,26 @@ export default function StudentAnalyticsDashboard({
         case "C": gp = 5; break;
         default: gp = 0;
       }
+      semCredits += r.subject.credits;
+      semPoints += r.subject.credits * gp;
       return { credits: r.subject.credits, gradePoints: gp };
     });
 
+    runningCumCredits += semCredits;
+    runningCumPoints += semPoints;
+
     const sgpa = calculateSGPA(subjectGrades);
+    const runningCgpa = runningCumCredits > 0 ? Number((runningCumPoints / runningCumCredits).toFixed(2)) : 0;
     const passedCount = semResults.filter((r) => r.passStatus).length;
     const totalCount = semResults.length;
 
     return {
       semester: sem,
       sgpa: Number(sgpa.toFixed(2)),
+      runningCgpa,
       passedCount,
       totalCount,
-      totalCredits: semResults.reduce((acc, curr) => acc + curr.subject.credits, 0),
+      totalCredits: semCredits,
     };
   });
 
@@ -479,7 +491,68 @@ export default function StudentAnalyticsDashboard({
         </div>
       </div>
 
-      {/* Grid: Line Chart (SGPA Progression) & Donut Chart (Grade Distribution) */}
+      {/* Semester-by-Semester Overall CGPA Growth Milestones Grid */}
+      <div className="card glass-panel">
+        <div style={{ marginBottom: "1.25rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+          <div>
+            <h3 className="h3">Semester-by-Semester Overall CGPA Growth Progression</h3>
+            <p className="text-muted" style={{ fontSize: "0.85rem" }}>Milestone tracking of semester SGPA vs. cumulative overall CGPA accumulation</p>
+          </div>
+          <span className="badge badge-success" style={{ fontWeight: 800, fontSize: "0.85rem", padding: "0.35rem 0.85rem" }}>
+            Current CGPA: {cgpa.toFixed(2)}
+          </span>
+        </div>
+
+        <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+          {sgpaTrendData.map((step, idx) => {
+            const prevCgpa = idx > 0 ? sgpaTrendData[idx - 1].runningCgpa : step.runningCgpa;
+            const diff = Number((step.runningCgpa - prevCgpa).toFixed(2));
+
+            return (
+              <div
+                key={step.semester}
+                style={{
+                  background: "linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)",
+                  padding: "1.25rem",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-color)",
+                  boxShadow: "0 4px 12px -2px rgba(0,0,0,0.03)",
+                  position: "relative",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
+                  <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#4F46E5", textTransform: "uppercase", letterSpacing: "0.05em", background: "rgba(79, 70, 229, 0.1)", padding: "0.15rem 0.5rem", borderRadius: "4px" }}>
+                    Semester {step.semester}
+                  </span>
+                  {idx > 0 && (
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: diff >= 0 ? "#059669" : "#DC2626", background: diff >= 0 ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)", padding: "0.15rem 0.45rem", borderRadius: "4px" }}>
+                      {diff >= 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", margin: "0.5rem 0" }}>
+                  <div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", textTransform: "uppercase", fontWeight: 700 }}>Sem SGPA</div>
+                    <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#4F46E5", lineHeight: 1.1 }}>{step.sgpa.toFixed(2)}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", textTransform: "uppercase", fontWeight: 700 }}>Overall CGPA</div>
+                    <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#059669", lineHeight: 1.1 }}>{step.runningCgpa.toFixed(2)}</div>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.5rem", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: "0.4rem", display: "flex", justifyContent: "space-between" }}>
+                  <span>Credits: <strong>{step.totalCredits}</strong></span>
+                  <span>Exams Passed: <strong>{step.passedCount}/{step.totalCount}</strong></span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Grid: Dual-Line Chart (SGPA vs Cumulative CGPA) & Donut Chart (Grade Distribution) */}
       <div
         className="responsive-grid"
         style={{
@@ -488,23 +561,30 @@ export default function StudentAnalyticsDashboard({
           gap: "1.5rem",
         }}
       >
-        {/* SGPA Trend Area Line Chart */}
+        {/* SGPA & Cumulative CGPA Trend Dual-Line Chart */}
         <div className="card glass-panel" style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
             <div>
-              <h3 className="h3">SGPA Semester Progression</h3>
-              <p className="text-muted" style={{ fontSize: "0.85rem" }}>Academic performance across semesters</p>
+              <h3 className="h3">SGPA vs. Cumulative CGPA Growth</h3>
+              <p className="text-muted" style={{ fontSize: "0.85rem" }}>Semester GPA vs. Cumulative CGPA progression curve</p>
             </div>
-            <span className="badge" style={{ background: "rgba(79, 70, 229, 0.1)", color: trendColor, fontWeight: 600 }}>
-              {trendLabel}
-            </span>
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center", fontSize: "0.75rem", fontWeight: 700 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <span style={{ width: "12px", height: "3px", background: "#4F46E5", borderRadius: "2px" }}></span>
+                <span>SGPA</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <span style={{ width: "12px", height: "3px", background: "#059669", borderRadius: "2px" }}></span>
+                <span>Cum. CGPA</span>
+              </div>
+            </div>
           </div>
 
           <div style={{ position: "relative", width: "100%", height: "260px" }}>
             <svg width="100%" height="100%" viewBox="0 0 500 220" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="sgpaGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.4" />
+                  <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.3" />
                   <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
@@ -520,22 +600,33 @@ export default function StudentAnalyticsDashboard({
                 );
               })}
 
-              {/* Trend Area & Line */}
+              {/* Trend Area & Dual Lines */}
               {sgpaTrendData.length > 0 && (() => {
-                const points = sgpaTrendData.map((d, idx) => {
+                const pointsSgpa = sgpaTrendData.map((d, idx) => {
                   const x = sgpaTrendData.length === 1 ? 260 : 60 + (idx / (sgpaTrendData.length - 1)) * 400;
                   const y = 180 - (d.sgpa / 10) * 150;
                   return { x, y, data: d };
                 });
 
-                const pathD = points.reduce((acc, p, i) => `${acc} ${i === 0 ? "M" : "L"} ${p.x} ${p.y}`, "");
-                const areaD = `${pathD} L ${points[points.length - 1].x} 180 L ${points[0].x} 180 Z`;
+                const pointsCgpa = sgpaTrendData.map((d, idx) => {
+                  const x = sgpaTrendData.length === 1 ? 260 : 60 + (idx / (sgpaTrendData.length - 1)) * 400;
+                  const y = 180 - (d.runningCgpa / 10) * 150;
+                  return { x, y, data: d };
+                });
+
+                const pathSgpa = pointsSgpa.reduce((acc, p, i) => `${acc} ${i === 0 ? "M" : "L"} ${p.x} ${p.y}`, "");
+                const pathCgpa = pointsCgpa.reduce((acc, p, i) => `${acc} ${i === 0 ? "M" : "L"} ${p.x} ${p.y}`, "");
+                const areaD = `${pathSgpa} L ${pointsSgpa[pointsSgpa.length - 1].x} 180 L ${pointsSgpa[0].x} 180 Z`;
 
                 return (
                   <>
                     <path d={areaD} fill="url(#sgpaGrad)" />
-                    <path d={pathD} fill="none" stroke="#4F46E5" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                    {points.map((p, idx) => (
+                    {/* Cumulative CGPA Line (Green) */}
+                    <path d={pathCgpa} fill="none" stroke="#059669" strokeWidth="3" strokeDasharray="5 5" strokeLinecap="round" strokeLinejoin="round" />
+                    {/* SGPA Line (Indigo) */}
+                    <path d={pathSgpa} fill="none" stroke="#4F46E5" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                    
+                    {pointsSgpa.map((p, idx) => (
                       <g key={idx}>
                         <circle
                           cx={p.x}
@@ -544,6 +635,17 @@ export default function StudentAnalyticsDashboard({
                           fill="#FFFFFF"
                           stroke="#4F46E5"
                           strokeWidth="3"
+                          className="chart-data-node"
+                          onMouseEnter={() => setHoveredPoint(p)}
+                          onMouseLeave={() => setHoveredPoint(null)}
+                        />
+                        <circle
+                          cx={pointsCgpa[idx].x}
+                          cy={pointsCgpa[idx].y}
+                          r="4.5"
+                          fill="#FFFFFF"
+                          stroke="#059669"
+                          strokeWidth="2.5"
                           className="chart-data-node"
                           onMouseEnter={() => setHoveredPoint(p)}
                           onMouseLeave={() => setHoveredPoint(null)}
@@ -567,10 +669,10 @@ export default function StudentAnalyticsDashboard({
                   top: `${(hoveredPoint.y / 220) * 70}%`,
                 }}
               >
-                <div style={{ fontWeight: 700, color: "#818CF8" }}>Semester {hoveredPoint.data.semester}</div>
-                <div>SGPA: <strong>{hoveredPoint.data.sgpa}</strong></div>
+                <div style={{ fontWeight: 700, color: "#818CF8" }}>Semester {hoveredPoint.data.semester} Milestone</div>
+                <div>Sem SGPA: <strong>{hoveredPoint.data.sgpa.toFixed(2)}</strong></div>
+                <div>Cumulative CGPA: <strong style={{ color: "#10B981" }}>{hoveredPoint.data.runningCgpa.toFixed(2)}</strong></div>
                 <div>Passed: {hoveredPoint.data.passedCount} / {hoveredPoint.data.totalCount} Subjects</div>
-                <div>Credits: {hoveredPoint.data.totalCredits}</div>
               </div>
             )}
           </div>
@@ -677,7 +779,7 @@ export default function StudentAnalyticsDashboard({
               onChange={(e) => setSelectedSemFilter(Number(e.target.value))}
             >
               <option value={0}>All Semesters</option>
-              {sortedSemesters.map((s) => (
+              {sortedSemesters.map(([s]) => (
                 <option key={s} value={s}>Semester {s}</option>
               ))}
             </select>
