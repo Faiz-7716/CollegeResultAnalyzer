@@ -95,6 +95,36 @@ export async function addResult(data: {
   }
 }
 
+export async function updateResultMarks(resultId: string, internalMarks: number, externalMarks: number) {
+  try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
+    const total = internalMarks + externalMarks;
+    const { grade, pass } = calculateGrade(total);
+
+    const updated = await prisma.result.update({
+      where: { id: resultId },
+      data: {
+        internalMarks,
+        externalMarks,
+        total,
+        grade,
+        passStatus: pass,
+      },
+    });
+
+    revalidatePath(`/students/${updated.studentId}`);
+    revalidatePath("/students");
+    revalidatePath("/");
+    return { success: true, result: updated };
+  } catch (error) {
+    return { success: false, error: "Failed to update marks." };
+  }
+}
+
 export async function getAllStudents() {
   return await prisma.student.findMany({
     orderBy: { registerNumber: "asc" },

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StudentAnalyticsDashboard from "@/app/components/StudentAnalyticsDashboard";
 import { calculateSGPA } from "@/lib/grading";
-import { IconFileText, IconBarChart3 } from "@/app/components/Icons";
+import { IconFileText, IconBarChart3, IconPrinter, IconEdit, IconCheckCircle, IconX } from "@/app/components/Icons";
+import { checkAdminSession } from "@/lib/loginActions";
+import { updateResultMarks } from "@/lib/actions";
 
 interface StudentPageClientProps {
   student: any;
@@ -19,6 +21,57 @@ export default function StudentPageClient({
   classRank,
 }: StudentPageClientProps) {
   const [activeTab, setActiveTab] = useState<"dashboard" | "ledger">("dashboard");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  // Edit Marks Modal State
+  const [editingResult, setEditingResult] = useState<{
+    id: string;
+    subjectCode: string;
+    subjectName: string;
+    internalMarks: number;
+    externalMarks: number;
+  } | null>(null);
+  const [editInternal, setEditInternal] = useState<number>(0);
+  const [editExternal, setEditExternal] = useState<number>(0);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+
+  // Official Report Print Modal State
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function checkAuth() {
+      const res = await checkAdminSession();
+      setIsAdmin(res.isAuthenticated);
+    }
+    checkAuth();
+  }, []);
+
+  // Open Edit Modal
+  const handleOpenEdit = (result: any) => {
+    setEditingResult({
+      id: result.id,
+      subjectCode: result.subject.code,
+      subjectName: result.subject.name,
+      internalMarks: result.internalMarks,
+      externalMarks: result.externalMarks,
+    });
+    setEditInternal(result.internalMarks);
+    setEditExternal(result.externalMarks);
+  };
+
+  // Submit Edited Marks
+  const handleSaveMarks = async () => {
+    if (!editingResult) return;
+    setIsSaving(true);
+    const res = await updateResultMarks(editingResult.id, editInternal, editExternal);
+    setIsSaving(false);
+    if (res.success) {
+      setEditingResult(null);
+      window.location.reload();
+    } else {
+      alert(res.error || "Failed to update marks");
+    }
+  };
 
   // Group results by semester
   const semestersMap = new Map<number, any[]>();
@@ -31,24 +84,7 @@ export default function StudentPageClient({
   });
 
   const sortedSemesters = Array.from(semestersMap.entries()).sort((a, b) => a[0] - b[0]);
-
   const sgpas: { sgpa: number; totalCredits: number }[] = [];
-
-  let coreAlliedTotal = 0;
-  let coreAlliedCount = 0;
-
-  results.forEach((r: any) => {
-    const code = r.subject.code;
-    const isCore = code.includes('UCS') || code.includes('UPCS') || code.includes('CC');
-    const isAllied = code.includes('UECS') || code.includes('EC');
-    
-    if (isCore || isAllied) {
-      coreAlliedTotal += r.total;
-      coreAlliedCount++;
-    }
-  });
-
-  const coreAlliedPercentage = coreAlliedCount > 0 ? (coreAlliedTotal / (coreAlliedCount * 100)) * 100 : 0;
 
   // Compute SGPA for each semester
   sortedSemesters.forEach(([_, semResults]) => {
@@ -71,23 +107,83 @@ export default function StudentPageClient({
     sgpas.push({ sgpa: semSgpa, totalCredits: semCredits });
   });
 
+  // Calculate Part-wise CGPAs
+  let p1C = 0, p1P = 0;
+  let p2C = 0, p2P = 0;
+  let p3C = 0, p3P = 0;
+
+  results.forEach((r: any) => {
+    const code = r.subject.code.toUpperCase();
+    const credits = r.subject.credits || 0;
+    let gp = 0;
+    switch (r.grade) {
+      case "O": gp = 10; break;
+      case "A+": gp = 9; break;
+      case "A": gp = 8; break;
+      case "B+": gp = 7; break;
+      case "B": gp = 6; break;
+      case "C": gp = 5; break;
+      default: gp = 0;
+    }
+
+    const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+    const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
+
+    if (isLang) {
+      p1C += credits; p1P += credits * gp;
+    } else if (isCoreOrAllied) {
+      p2C += credits; p2P += credits * gp;
+    } else {
+      p3C += credits; p3P += credits * gp;
+    }
+  });
+
+  const part1CgpaStr = p1C > 0 ? (p1P / p1C).toFixed(2) : "0.00";
+  const part2CgpaStr = p2C > 0 ? (p2P / p2C).toFixed(2) : "0.00";
+  const part3CgpaStr = p3C > 0 ? (p3P / p3C).toFixed(2) : "0.00";
+
   return (
     <div>
-      {/* Tab Navigation */}
-      <div className="tab-container">
+      {/* Action Header Controls Bar */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
+        {/* Tab Navigation */}
+        <div className="tab-container" style={{ margin: 0 }}>
+          <button
+            className={`tab-btn ${activeTab === "dashboard" ? "active" : ""}`}
+            onClick={() => setActiveTab("dashboard")}
+          >
+            <IconBarChart3 size={18} />
+            <span>Visual Analytics Dashboard</span>
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "ledger" ? "active" : ""}`}
+            onClick={() => setActiveTab("ledger")}
+          >
+            <IconFileText size={18} />
+            <span>Detailed Marksheet Ledger</span>
+          </button>
+        </div>
+
+        {/* Official Report Generator Button */}
         <button
-          className={`tab-btn ${activeTab === "dashboard" ? "active" : ""}`}
-          onClick={() => setActiveTab("dashboard")}
+          className="btn btn-primary no-print"
+          onClick={() => setShowReportModal(true)}
+          style={{
+            padding: "0.6rem 1.25rem",
+            fontSize: "0.9rem",
+            fontWeight: 700,
+            background: "var(--accent-primary)",
+            color: "#FFFFFF",
+            borderRadius: "999px",
+            boxShadow: "0 4px 14px rgba(79, 70, 229, 0.25)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            cursor: "pointer",
+          }}
         >
-          <IconBarChart3 size={18} />
-          <span>Visual Analytics Dashboard</span>
-        </button>
-        <button
-          className={`tab-btn ${activeTab === "ledger" ? "active" : ""}`}
-          onClick={() => setActiveTab("ledger")}
-        >
-          <IconFileText size={18} />
-          <span>Detailed Marksheet Ledger</span>
+          <IconPrinter size={18} color="#FFFFFF" />
+          <span>Generate Official Marksheet Report</span>
         </button>
       </div>
 
@@ -129,6 +225,7 @@ export default function StudentPageClient({
                             <th>Total Marks</th>
                             <th>Grade</th>
                             <th>Result Status</th>
+                            {isAdmin && <th>Action</th>}
                           </tr>
                         </thead>
                         <tbody>
@@ -149,6 +246,18 @@ export default function StudentPageClient({
                                   {result.passStatus ? "PASS" : "ARREAR"}
                                 </span>
                               </td>
+                              {isAdmin && (
+                                <td>
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={() => handleOpenEdit(result)}
+                                    style={{ padding: "0.25rem 0.65rem", fontSize: "0.75rem", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}
+                                  >
+                                    <IconEdit size={12} />
+                                    <span>Edit</span>
+                                  </button>
+                                </td>
+                              )}
                             </tr>
                           ))}
                         </tbody>
@@ -221,19 +330,7 @@ export default function StudentPageClient({
                   </div>
                   <div style={{ margin: "0.75rem 0" }}>
                     <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#059669", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-                      {(() => {
-                        let p1C = 0, p1P = 0;
-                        results.forEach((r: any) => {
-                          const code = r.subject.code.toUpperCase();
-                          if (code.includes("ULE") || code.includes("ULT") || code.includes("ULU")) {
-                            let gp = 0;
-                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                            p1C += r.subject.credits;
-                            p1P += r.subject.credits * gp;
-                          }
-                        });
-                        return p1C > 0 ? (p1P / p1C).toFixed(2) : "0.00";
-                      })()}
+                      {part1CgpaStr}
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(16, 185, 129, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
@@ -268,19 +365,7 @@ export default function StudentPageClient({
                   </div>
                   <div style={{ margin: "0.75rem 0" }}>
                     <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#2563EB", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-                      {(() => {
-                        let p2C = 0, p2P = 0;
-                        results.forEach((r: any) => {
-                          const code = r.subject.code.toUpperCase();
-                          if (code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC")) {
-                            let gp = 0;
-                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                            p2C += r.subject.credits;
-                            p2P += r.subject.credits * gp;
-                          }
-                        });
-                        return p2C > 0 ? (p2P / p2C).toFixed(2) : "0.00";
-                      })()}
+                      {part2CgpaStr}
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(59, 130, 246, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
@@ -315,21 +400,7 @@ export default function StudentPageClient({
                   </div>
                   <div style={{ margin: "0.75rem 0" }}>
                     <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#D97706", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-                      {(() => {
-                        let p3C = 0, p3P = 0;
-                        results.forEach((r: any) => {
-                          const code = r.subject.code.toUpperCase();
-                          const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
-                          const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
-                          if (!isLang && !isCoreOrAllied) {
-                            let gp = 0;
-                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                            p3C += r.subject.credits;
-                            p3P += r.subject.credits * gp;
-                          }
-                        });
-                        return p3C > 0 ? (p3P / p3C).toFixed(2) : "0.00";
-                      })()}
+                      {part3CgpaStr}
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(245, 158, 11, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
@@ -340,6 +411,205 @@ export default function StudentPageClient({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Admin Edit Marks Modal */}
+      {editingResult && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(4px)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+          <div className="card glass-panel" style={{ width: "100%", maxWidth: "480px", padding: "2rem", background: "#FFFFFF" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem" }}>
+              <div>
+                <h3 className="h3" style={{ color: "var(--accent-primary)" }}>Edit Subject Marks</h3>
+                <p className="text-muted" style={{ fontSize: "0.85rem" }}>{editingResult.subjectCode} - {editingResult.subjectName}</p>
+              </div>
+              <button onClick={() => setEditingResult(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-secondary)" }}>
+                <IconX size={20} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div>
+                <label className="input-label">Internal Marks (Max 25)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={25}
+                  className="input-field"
+                  value={editInternal}
+                  onChange={(e) => setEditInternal(Number(e.target.value))}
+                />
+              </div>
+
+              <div>
+                <label className="input-label">External Marks (Max 75)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={75}
+                  className="input-field"
+                  value={editExternal}
+                  onChange={(e) => setEditExternal(Number(e.target.value))}
+                />
+              </div>
+
+              <div style={{ padding: "0.85rem", background: "rgba(241, 245, 249, 0.8)", borderRadius: "var(--radius-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span>Calculated Total: <strong>{editInternal + editExternal} / 100</strong></span>
+                <span className={`badge ${editInternal + editExternal >= 40 && editExternal >= 30 ? 'badge-success' : 'badge-error'}`}>
+                  {editInternal + editExternal >= 40 && editExternal >= 30 ? "PASS" : "ARREAR"}
+                </span>
+              </div>
+
+              <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end", marginTop: "0.5rem" }}>
+                <button className="btn btn-secondary" onClick={() => setEditingResult(null)} disabled={isSaving}>
+                  Cancel
+                </button>
+                <button className="btn btn-primary" onClick={handleSaveMarks} disabled={isSaving}>
+                  {isSaving ? "Saving..." : "Save Updated Marks"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Official Marksheet Report Modal & Printable View */}
+      {showReportModal && (
+        <div className="report-modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem", overflowY: "auto" }}>
+          <div style={{ background: "#FFFFFF", width: "100%", maxWidth: "850px", borderRadius: "var(--radius-lg)", boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)", overflow: "hidden", display: "flex", flexDirection: "column", maxHeight: "90vh" }}>
+            {/* Modal Controls Bar */}
+            <div className="no-print" style={{ padding: "1rem 1.5rem", background: "#0F172A", color: "#FFFFFF", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontWeight: 700, fontSize: "1rem" }}>Official Student Marksheet Report Preview</div>
+              <div style={{ display: "flex", gap: "0.75rem" }}>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => window.print()}
+                  style={{ padding: "0.45rem 1rem", fontSize: "0.85rem", background: "var(--status-success)", border: "none" }}
+                >
+                  <IconPrinter size={16} color="#FFFFFF" />
+                  <span>Print / Save PDF</span>
+                </button>
+                <button
+                  onClick={() => setShowReportModal(false)}
+                  style={{ background: "transparent", border: "none", color: "#94A3B8", cursor: "pointer" }}
+                >
+                  <IconX size={22} />
+                </button>
+              </div>
+            </div>
+
+            {/* Printable Official Document Body */}
+            <div id="printable-official-report" style={{ padding: "2.5rem", overflowY: "auto", color: "#0F172A", background: "#FFFFFF" }}>
+              {/* College Official Letterhead */}
+              <div style={{ textAlign: "center", borderBottom: "2px solid #0F172A", paddingBottom: "1.25rem", marginBottom: "1.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
+                  <img src="/logo.png" alt="MUC Logo" style={{ height: "54px" }} />
+                  <div>
+                    <h1 style={{ fontSize: "1.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em", color: "#0F172A", margin: 0 }}>
+                      MAZHARUL ULOOM COLLEGE
+                    </h1>
+                    <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#475569", margin: "0.15rem 0 0 0" }}>
+                      Ambur - 635 802, Tirupattur District | Affiliated to Thiruvalluvar University
+                    </p>
+                  </div>
+                </div>
+                <div style={{ fontSize: "1rem", fontWeight: 800, color: "#4F46E5", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.5rem", background: "#F1F5F9", padding: "0.4rem 1rem", borderRadius: "4px", display: "inline-block" }}>
+                  DEPARTMENT OF COMPUTER SCIENCE — ACADEMIC MARKSHEET LEDGER REPORT
+                </div>
+              </div>
+
+              {/* Student Metadata Box */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", background: "#F8FAFC", padding: "1.25rem", borderRadius: "6px", border: "1px solid #E2E8F0", marginBottom: "1.75rem", fontSize: "0.9rem" }}>
+                <div>
+                  <div style={{ marginBottom: "0.35rem" }}>Student Name: <strong style={{ fontSize: "1.05rem", color: "#0F172A" }}>{student.name}</strong></div>
+                  <div>Register Number: <strong>{student.registerNumber}</strong></div>
+                </div>
+                <div>
+                  <div style={{ marginBottom: "0.35rem" }}>Degree & Batch: <strong>B.Sc. Computer Science ({student.batch})</strong></div>
+                  <div>Batch Class Rank: <strong style={{ color: "#4F46E5" }}>#{classRank.rank} of {classRank.totalStudents}</strong> | CGPA: <strong>{cgpa.toFixed(2)}</strong></div>
+                </div>
+              </div>
+
+              {/* Semesters & Marks Table */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "2rem" }}>
+                {sortedSemesters.map(([semNumber, semResults], idx) => {
+                  const semSgpa = sgpas[idx]?.sgpa || 0;
+                  return (
+                    <div key={semNumber} style={{ border: "1px solid #CBD5E1", borderRadius: "6px", overflow: "hidden" }}>
+                      <div style={{ background: "#F1F5F9", padding: "0.65rem 1rem", borderBottom: "1px solid #CBD5E1", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 700, fontSize: "0.9rem" }}>
+                        <span>SEMESTER {semNumber} EXAMINATIONS</span>
+                        <span style={{ color: "#4F46E5" }}>SGPA: {semSgpa.toFixed(2)}</span>
+                      </div>
+                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
+                        <thead>
+                          <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #CBD5E1", textTransform: "uppercase", fontSize: "0.75rem", color: "#475569" }}>
+                            <th style={{ padding: "0.5rem", textAlign: "left" }}>Code</th>
+                            <th style={{ padding: "0.5rem", textAlign: "left" }}>Subject Title</th>
+                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Credits</th>
+                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Int / Ext</th>
+                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Total</th>
+                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Grade</th>
+                            <th style={{ padding: "0.5rem", textAlign: "center" }}>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {semResults.map((r: any) => (
+                            <tr key={r.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
+                              <td style={{ padding: "0.5rem", fontWeight: 700 }}>{r.subject.code}</td>
+                              <td style={{ padding: "0.5rem" }}>{r.subject.name}</td>
+                              <td style={{ padding: "0.5rem", textAlign: "center" }}>{r.subject.credits}</td>
+                              <td style={{ padding: "0.5rem", textAlign: "center" }}>{r.internalMarks} / {r.externalMarks}</td>
+                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 700 }}>{r.total}</td>
+                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 800 }}>{r.grade}</td>
+                              <td style={{ padding: "0.5rem", textAlign: "center", fontWeight: 700, color: r.passStatus ? "#059669" : "#DC2626" }}>
+                                {r.passStatus ? "PASS" : "ARREAR"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Part-Wise CGPA Summary Grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "0.75rem", background: "#F8FAFC", padding: "1rem", borderRadius: "6px", border: "1px solid #CBD5E1", textAlign: "center", marginBottom: "2.5rem" }}>
+                <div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Overall CGPA</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#4F46E5" }}>{cgpa.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 1 (Lang)</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#059669" }}>{part1CgpaStr}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 2 (Allied+Core)</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#2563EB" }}>{part2CgpaStr}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748B", textTransform: "uppercase", fontWeight: 700 }}>Part 3 (Others)</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 850, color: "#D97706" }}>{part3CgpaStr}</div>
+                </div>
+              </div>
+
+              {/* Official Signature Placeholders */}
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "3rem", paddingTop: "1rem", borderTop: "1px stroke #94A3B8", textAlign: "center", fontSize: "0.85rem", fontWeight: 700, color: "#334155" }}>
+                <div>
+                  <div style={{ height: "45px" }}></div>
+                  <div>Head of Department</div>
+                </div>
+                <div>
+                  <div style={{ height: "45px" }}></div>
+                  <div>Controller of Examinations</div>
+                </div>
+                <div>
+                  <div style={{ height: "45px" }}></div>
+                  <div>Principal</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
