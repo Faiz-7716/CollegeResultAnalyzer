@@ -410,7 +410,158 @@ export default async function Dashboard() {
         </div>
       </div>
 
-      {/* 5. Academic Standing Matrix (All Clear vs Arrears List) */}
+      {/* 5. Semester Growth Rate & Momentum Leaders */}
+      {(() => {
+        // Find students with highest growth rate
+        const growthRanked = [...students]
+          .filter((s) => s.metrics.initialSemSgpa > 0)
+          .sort((a, b) => b.metrics.overallGrowth - a.metrics.overallGrowth);
+
+        const topImprover = growthRanked[0];
+        const top5Improvers = growthRanked.slice(0, 5);
+
+        if (!topImprover) return null;
+
+        return (
+          <div
+            className="card glass-panel"
+            style={{
+              padding: "2rem 1.75rem",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%)",
+              border: "1px solid rgba(16, 185, 129, 0.25)",
+              boxShadow: "0 12px 32px -8px rgba(16, 185, 129, 0.08)",
+            }}
+          >
+            <div style={{ marginBottom: "2rem", textAlign: "center" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", background: "rgba(16, 185, 129, 0.12)", padding: "0.4rem 1.25rem", borderRadius: "999px", marginBottom: "0.6rem" }}>
+                <IconTrendingUp size={22} color="#059669" />
+                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#059669", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  Semester-over-Semester Growth
+                </span>
+              </div>
+              <h2 className="h2 text-gradient" style={{ fontSize: "1.85rem", fontWeight: 850 }}>
+                Academic Growth & Momentum Leaders
+              </h2>
+              <p className="text-muted" style={{ fontSize: "0.9rem", marginTop: "0.35rem" }}>
+                Highest SGPA score progression from Semester 1 to Latest Semester
+              </p>
+            </div>
+
+            {/* Spotlight Card: #1 Most Improved Student */}
+            <div
+              className="card glass-panel"
+              style={{
+                padding: "1.75rem",
+                background: "linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%)",
+                border: "2px solid #10B981",
+                borderRadius: "var(--radius-lg)",
+                marginBottom: "2rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "1.5rem",
+                boxShadow: "0 8px 24px -4px rgba(16, 185, 129, 0.2)",
+              }}
+            >
+              <div style={{ flex: 1, minWidth: "260px" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "#059669", color: "#FFFFFF", fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.75rem", borderRadius: "999px", marginBottom: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  🚀 #1 Highest Academic Improver in Batch
+                </div>
+                <h3 style={{ fontSize: "1.65rem", fontWeight: 900, color: "#065F46", margin: 0 }}>
+                  {topImprover.name}
+                </h3>
+                <p style={{ fontSize: "0.85rem", color: "#047857", fontWeight: 700, margin: "0.25rem 0 1rem 0" }}>
+                  Register Number: {topImprover.registerNumber} | Current CGPA: {topImprover.metrics.cgpa.toFixed(2)}
+                </p>
+
+                <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                  <div style={{ background: "rgba(255,255,255,0.7)", padding: "0.5rem 1rem", borderRadius: "var(--radius-sm)" }}>
+                    <span style={{ fontSize: "0.7rem", color: "#047857", fontWeight: 700, textTransform: "uppercase", display: "block" }}>Starting (Sem 1)</span>
+                    <strong style={{ fontSize: "1.3rem", color: "#065F46", fontWeight: 900 }}>{topImprover.metrics.initialSemSgpa.toFixed(2)} SGPA</strong>
+                  </div>
+                  <div style={{ fontSize: "1.75rem", color: "#059669", fontWeight: 900 }}>➔</div>
+                  <div style={{ background: "rgba(255,255,255,0.7)", padding: "0.5rem 1rem", borderRadius: "var(--radius-sm)" }}>
+                    <span style={{ fontSize: "0.7rem", color: "#047857", fontWeight: 700, textTransform: "uppercase", display: "block" }}>Latest Semester</span>
+                    <strong style={{ fontSize: "1.3rem", color: "#065F46", fontWeight: 900 }}>{topImprover.metrics.latestSemSgpa.toFixed(2)} SGPA</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ textAlign: "center", background: "#FFFFFF", padding: "1.5rem 2rem", borderRadius: "var(--radius-md)", border: "1px solid rgba(16, 185, 129, 0.3)", boxShadow: "0 4px 14px rgba(0,0,0,0.05)", minWidth: "200px" }}>
+                <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#059669", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  Highest Growth Increase
+                </div>
+                <div style={{ fontSize: "3.25rem", fontWeight: 900, color: "#059669", lineHeight: 1.05 }}>
+                  +{topImprover.metrics.overallGrowth.toFixed(2)}
+                </div>
+                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "#047857", marginTop: "0.35rem" }}>
+                  +{topImprover.metrics.growthPercentage}% Growth Progression
+                </div>
+              </div>
+            </div>
+
+            {/* Top 5 Growth Leaders Grid */}
+            <h4 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#065F46", marginBottom: "1rem" }}>
+              Top 5 Most Improved Scholars Roster
+            </h4>
+            <div
+              className="responsive-grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+                gap: "1.25rem",
+              }}
+            >
+              {top5Improvers.map((st, i) => (
+                <div
+                  key={st.id}
+                  style={{
+                    background: "#FFFFFF",
+                    padding: "1.25rem",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid rgba(16, 185, 129, 0.2)",
+                    boxShadow: "0 4px 12px -2px rgba(0,0,0,0.04)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#059669", background: "rgba(16, 185, 129, 0.12)", padding: "0.15rem 0.55rem", borderRadius: "4px" }}>
+                      Improver #{i + 1}
+                    </span>
+                    <span style={{ fontSize: "1rem", fontWeight: 900, color: "#059669" }}>
+                      +{st.metrics.overallGrowth.toFixed(2)}
+                    </span>
+                  </div>
+
+                  <h4 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0F172A", margin: "0.25rem 0 0.15rem 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={st.name}>
+                    {st.name}
+                  </h4>
+                  <div style={{ fontSize: "0.75rem", color: "#64748B", marginBottom: "0.75rem" }}>{st.registerNumber}</div>
+
+                  <div style={{ fontSize: "0.8rem", color: "#475569", borderTop: "1px solid #F1F5F9", paddingTop: "0.5rem", display: "flex", justifyContent: "space-between" }}>
+                    <span>Sem 1: <strong>{st.metrics.initialSemSgpa.toFixed(2)}</strong></span>
+                    <span>Latest: <strong>{st.metrics.latestSemSgpa.toFixed(2)}</strong></span>
+                  </div>
+
+                  <Link
+                    href={`/students/${st.id}`}
+                    className="btn btn-secondary"
+                    style={{ marginTop: "0.85rem", padding: "0.35rem 0.65rem", fontSize: "0.75rem", width: "100%", justifyContent: "center" }}
+                  >
+                    <span>View Growth Profile</span>
+                    <IconChevronRight size={12} />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* 6. Academic Standing Matrix (All Clear vs Arrears List) */}
       <div
         className="responsive-grid"
         style={{

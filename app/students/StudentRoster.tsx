@@ -70,6 +70,9 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
       case "sem4":
         result = (b.metrics.semMarks[4] || 0) - (a.metrics.semMarks[4] || 0);
         break;
+      case "growthRate":
+        result = ((b.metrics as any).overallGrowth || 0) - ((a.metrics as any).overallGrowth || 0);
+        break;
       default:
         result = 0;
     }
@@ -192,6 +195,7 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
               <option value="sem2">Semester 2 Marks</option>
               <option value="sem3">Semester 3 Marks</option>
               <option value="sem4">Semester 4 Marks</option>
+              <option value="growthRate">Growth Rate (Most Improved)</option>
             </select>
 
             <button

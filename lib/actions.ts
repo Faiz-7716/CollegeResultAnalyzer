@@ -406,6 +406,29 @@ export async function getStudentsWithMetrics() {
     const part2Cgpa = p2Credits > 0 ? Number((p2Points / p2Credits).toFixed(2)) : 0;
     const part3Cgpa = p3Credits > 0 ? Number((p3Points / p3Credits).toFixed(2)) : 0;
 
+    // Calculate Semester-over-Semester SGPA Growth
+    const semSgpas: Record<number, number> = {};
+    Object.keys(semResultsMap).forEach((semStr) => {
+      const semNum = Number(semStr);
+      const items = semResultsMap[semNum];
+      const semCredits = items.reduce((acc, c) => acc + c.credits, 0);
+      const semPoints = items.reduce((acc, c) => acc + (c.credits * c.gradePoints), 0);
+      semSgpas[semNum] = semCredits > 0 ? Number((semPoints / semCredits).toFixed(2)) : 0;
+    });
+
+    const activeSems = Object.keys(semSgpas).map(Number).sort((a, b) => a - b);
+    let initialSemSgpa = activeSems.length > 0 ? semSgpas[activeSems[0]] : 0;
+    let latestSemSgpa = activeSems.length > 0 ? semSgpas[activeSems[activeSems.length - 1]] : 0;
+    
+    let overallGrowth = Number((latestSemSgpa - initialSemSgpa).toFixed(2));
+    let growthPercentage = initialSemSgpa > 0 ? Number(((overallGrowth / initialSemSgpa) * 100).toFixed(1)) : 0;
+
+    let latestGrowth = 0;
+    if (activeSems.length >= 2) {
+      const prevSem = semSgpas[activeSems[activeSems.length - 2]];
+      latestGrowth = Number((latestSemSgpa - prevSem).toFixed(2));
+    }
+
     return {
       id: student.id,
       registerNumber: student.registerNumber,
@@ -416,6 +439,12 @@ export async function getStudentsWithMetrics() {
         part1Cgpa,
         part2Cgpa,
         part3Cgpa,
+        semSgpas,
+        initialSemSgpa,
+        latestSemSgpa,
+        overallGrowth,
+        latestGrowth,
+        growthPercentage,
         totalMarks,
         coreMarks,
         alliedMarks,

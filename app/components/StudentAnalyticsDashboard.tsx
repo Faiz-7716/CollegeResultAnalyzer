@@ -247,6 +247,39 @@ export default function StudentAnalyticsDashboard({
   const totalCreditsEarned = results.filter((r) => r.passStatus).reduce((a, c) => a + c.subject.credits, 0);
   const totalCreditsAttempted = results.reduce((a, c) => a + c.subject.credits, 0);
 
+  // Compute Student Semester Growth Rate
+  const semSgpaMap: Record<number, { credits: number; points: number }> = {};
+  results.forEach((r: any) => {
+    const semNum = r.subject.semester.number;
+    let gp = 0;
+    switch (r.grade) {
+      case "O": gp = 10; break;
+      case "A+": gp = 9; break;
+      case "A": gp = 8; break;
+      case "B+": gp = 7; break;
+      case "B": gp = 6; break;
+      case "C": gp = 5; break;
+      default: gp = 0;
+    }
+    if (!semSgpaMap[semNum]) {
+      semSgpaMap[semNum] = { credits: 0, points: 0 };
+    }
+    semSgpaMap[semNum].credits += r.subject.credits;
+    semSgpaMap[semNum].points += r.subject.credits * gp;
+  });
+
+  const activeSemNums = Object.keys(semSgpaMap).map(Number).sort((a, b) => a - b);
+  const firstSemSgpa = activeSemNums.length > 0 && semSgpaMap[activeSemNums[0]].credits > 0
+    ? Number((semSgpaMap[activeSemNums[0]].points / semSgpaMap[activeSemNums[0]].credits).toFixed(2))
+    : 0;
+  const lastSemNum = activeSemNums.length > 0 ? activeSemNums[activeSemNums.length - 1] : 0;
+  const lastSemSgpa = lastSemNum > 0 && semSgpaMap[lastSemNum].credits > 0
+    ? Number((semSgpaMap[lastSemNum].points / semSgpaMap[lastSemNum].credits).toFixed(2))
+    : 0;
+
+  const studentGrowth = Number((lastSemSgpa - firstSemSgpa).toFixed(2));
+  const studentGrowthPct = firstSemSgpa > 0 ? ((studentGrowth / firstSemSgpa) * 100).toFixed(1) : "0.0";
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       {/* 4 Ultra-Elegant Metric Header Cards */}
@@ -433,15 +466,15 @@ export default function StudentAnalyticsDashboard({
           </div>
         </div>
 
-        <div className="card glass-panel">
+        <div className="card glass-panel" style={{ borderLeft: `4px solid ${studentGrowth >= 0 ? "#10B981" : "#EF4444"}` }}>
           <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Focus Area
+            Semester Growth Rate
           </div>
-          <div className="h3" style={{ marginTop: "0.5rem", color: lowestSub && !lowestSub.passStatus ? "var(--status-error)" : "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {lowestSub ? lowestSub.subject.name : "N/A"}
+          <div className="h1" style={{ marginTop: "0.5rem", fontSize: "2.25rem", color: studentGrowth >= 0 ? "#10B981" : "#EF4444", fontWeight: 850 }}>
+            {studentGrowth >= 0 ? `+${studentGrowth.toFixed(2)}` : studentGrowth.toFixed(2)} SGPA
           </div>
           <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-            {lowestSub ? `${lowestSub.subject.code} (${lowestSub.total}/100 - ${lowestSub.passStatus ? 'Pass' : 'Arrear'})` : "No records"}
+            Trajectory: <strong>Sem 1 ({firstSemSgpa.toFixed(2)}) ➔ Sem {activeSemNums[activeSemNums.length - 1] || 1} ({lastSemSgpa.toFixed(2)})</strong> ({studentGrowth >= 0 ? `+${studentGrowthPct}%` : `${studentGrowthPct}%`})
           </div>
         </div>
       </div>
