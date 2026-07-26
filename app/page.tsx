@@ -160,14 +160,27 @@ export default async function Dashboard() {
       />
 
       {/* 4. Top 5 Honor Roll Leaderboard */}
-      <div className="card glass-panel">
-        <div style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.75rem", textAlign: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
-            <IconTrophy size={26} color="var(--accent-primary)" />
-            <h2 className="h2 text-gradient">Batch Honor Roll (Top 5 Performers)</h2>
+      <div
+        className="card glass-panel"
+        style={{
+          padding: "2rem 1.75rem",
+          background: "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+          border: "1px solid var(--border-color)",
+          boxShadow: "0 12px 32px -8px rgba(0, 0, 0, 0.06)",
+        }}
+      >
+        <div style={{ marginBottom: "2rem", textAlign: "center" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", background: "rgba(245, 158, 11, 0.12)", padding: "0.4rem 1.25rem", borderRadius: "999px", marginBottom: "0.6rem" }}>
+            <IconTrophy size={22} color="#D97706" />
+            <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#D97706", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              Hall of Fame
+            </span>
           </div>
-          <p className="text-muted" style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
-            Highest achieving students ranked by Cumulative Grade Point Average
+          <h2 className="h2 text-gradient" style={{ fontSize: "1.85rem", fontWeight: 850 }}>
+            Batch Honor Roll (Top 5 Performers)
+          </h2>
+          <p className="text-muted" style={{ fontSize: "0.9rem", marginTop: "0.35rem" }}>
+            Highest achieving computer science scholars ranked by Cumulative Grade Point Average (CGPA)
           </p>
         </div>
 
@@ -175,19 +188,72 @@ export default async function Dashboard() {
           className="responsive-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "1.25rem",
+            alignItems: "stretch",
           }}
         >
           {honorRoll.map((student, idx) => {
-            const rankBadgeColors = [
-              "#D97706", // Solid Amber Gold #1
-              "#475569", // Solid Slate Silver #2
-              "#92400E", // Solid Bronze #3
-              "#4F46E5", // Solid Indigo #4
-              "#2563EB", // Solid Royal Blue #5
+            // Rank Themes: Gold #1, Silver #2, Bronze #3, Indigo #4, Royal Blue #5
+            const rankConfigs = [
+              {
+                title: "Gold Medallist",
+                medal: "👑",
+                rankLabel: "#1 Ranker",
+                bg: "linear-gradient(135deg, #FFFFFF 0%, #FEF3C7 100%)",
+                border: "2px solid #F59E0B",
+                badgeBg: "#D97706",
+                badgeColor: "#FFFFFF",
+                accentColor: "#B45309",
+                shadow: "0 10px 25px -4px rgba(245, 158, 11, 0.25)",
+              },
+              {
+                title: "Silver Medallist",
+                medal: "🥈",
+                rankLabel: "#2 Ranker",
+                bg: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
+                border: "2px solid #94A3B8",
+                badgeBg: "#475569",
+                badgeColor: "#FFFFFF",
+                accentColor: "#334155",
+                shadow: "0 10px 25px -4px rgba(148, 163, 184, 0.2)",
+              },
+              {
+                title: "Bronze Medallist",
+                medal: "🥉",
+                rankLabel: "#3 Ranker",
+                bg: "linear-gradient(135deg, #FFFFFF 0%, #FFEDD5 100%)",
+                border: "2px solid #F97316",
+                badgeBg: "#C2410C",
+                badgeColor: "#FFFFFF",
+                accentColor: "#9A3412",
+                shadow: "0 10px 25px -4px rgba(249, 115, 22, 0.2)",
+              },
+              {
+                title: "Honor Scholar",
+                medal: "🏅",
+                rankLabel: "#4 Ranker",
+                bg: "linear-gradient(135deg, #FFFFFF 0%, #EEF2FF 100%)",
+                border: "1px solid rgba(99, 102, 241, 0.3)",
+                badgeBg: "#4F46E5",
+                badgeColor: "#FFFFFF",
+                accentColor: "#4338CA",
+                shadow: "0 8px 20px -4px rgba(79, 70, 229, 0.12)",
+              },
+              {
+                title: "Honor Scholar",
+                medal: "🏅",
+                rankLabel: "#5 Ranker",
+                bg: "linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)",
+                border: "1px solid rgba(59, 130, 246, 0.3)",
+                badgeBg: "#2563EB",
+                badgeColor: "#FFFFFF",
+                accentColor: "#1D4ED8",
+                shadow: "0 8px 20px -4px rgba(37, 99, 235, 0.12)",
+              },
             ];
 
+            const cfg = rankConfigs[idx] || rankConfigs[3];
             const coreAlliedPct = student.metrics.coreAlliedSubjectsCount > 0
               ? ((student.metrics.coreAndAllied / (student.metrics.coreAlliedSubjectsCount * 100)) * 100).toFixed(1)
               : "0.0";
@@ -197,55 +263,146 @@ export default async function Dashboard() {
                 key={student.id}
                 className="card glass-panel"
                 style={{
-                  padding: "1.5rem 1.25rem",
+                  padding: "1.6rem 1.25rem",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   textAlign: "center",
                   position: "relative",
+                  background: cfg.bg,
+                  border: cfg.border,
+                  boxShadow: cfg.shadow,
+                  borderRadius: "var(--radius-lg)",
+                  transition: "transform 0.25s ease, boxShadow 0.25s ease",
                 }}
               >
+                {/* Top Rank Badge */}
                 <div
                   style={{
-                    width: "42px",
-                    height: "42px",
-                    borderRadius: "50%",
-                    background: rankBadgeColors[idx],
-                    color: "#FFFFFF",
+                    position: "absolute",
+                    top: "-12px",
+                    background: cfg.badgeBg,
+                    color: cfg.badgeColor,
+                    fontSize: "0.75rem",
                     fontWeight: 800,
-                    fontSize: "1.2rem",
+                    padding: "0.2rem 0.75rem",
+                    borderRadius: "999px",
+                    boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {cfg.medal} {cfg.rankLabel}
+                </div>
+
+                {/* Avatar Metallic Badge */}
+                <div
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    borderRadius: "50%",
+                    background: cfg.badgeBg,
+                    color: "#FFFFFF",
+                    fontWeight: 850,
+                    fontSize: "1.35rem",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginBottom: "0.75rem",
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.15)",
+                    marginTop: "0.5rem",
+                    marginBottom: "0.85rem",
+                    boxShadow: "0 6px 16px rgba(0, 0, 0, 0.18)",
+                    border: "3px solid #FFFFFF",
                   }}
                 >
-                  #{idx + 1}
+                  {idx + 1}
                 </div>
 
-                <h3 className="h3" style={{ fontSize: "1.1rem", marginBottom: "0.25rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "100%" }}>
+                {/* Student Identity */}
+                <h3
+                  className="h3"
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: 800,
+                    color: "var(--text-primary)",
+                    marginBottom: "0.2rem",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%",
+                  }}
+                  title={student.name}
+                >
                   {student.name}
                 </h3>
-                <p className="text-muted" style={{ fontSize: "0.8rem", marginBottom: "0.75rem" }}>
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    color: "var(--text-secondary)",
+                    background: "rgba(255, 255, 255, 0.7)",
+                    padding: "0.15rem 0.5rem",
+                    borderRadius: "4px",
+                    marginBottom: "1rem",
+                    letterSpacing: "0.03em",
+                  }}
+                >
                   {student.registerNumber}
-                </p>
-
-                <div className="badge badge-success" style={{ fontSize: "0.95rem", padding: "0.35rem 0.85rem", marginBottom: "0.5rem" }}>
-                  CGPA: {student.metrics.cgpa.toFixed(2)}
                 </div>
 
-                <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-                  Core+Allied: <strong>{coreAlliedPct}%</strong>
+                {/* CGPA Display Card Box */}
+                <div
+                  style={{
+                    width: "100%",
+                    background: "rgba(255, 255, 255, 0.85)",
+                    border: "1px solid rgba(0,0,0,0.06)",
+                    borderRadius: "var(--radius-md)",
+                    padding: "0.75rem",
+                    marginBottom: "0.85rem",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.03)",
+                  }}
+                >
+                  <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    Cumulative CGPA
+                  </div>
+                  <div style={{ fontSize: "2.1rem", fontWeight: 900, color: cfg.accentColor, lineHeight: 1.1, marginTop: "0.15rem" }}>
+                    {student.metrics.cgpa.toFixed(2)}
+                  </div>
                 </div>
 
+                {/* Core + Allied Mastery Meter */}
+                <div style={{ width: "100%", fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "1.2rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.3rem", fontWeight: 600 }}>
+                    <span>Core & Allied Mastery</span>
+                    <strong style={{ color: cfg.accentColor }}>{coreAlliedPct}%</strong>
+                  </div>
+                  <div style={{ width: "100%", height: "6px", background: "rgba(0,0,0,0.08)", borderRadius: "999px", overflow: "hidden" }}>
+                    <div style={{ width: `${coreAlliedPct}%`, height: "100%", background: cfg.badgeBg, borderRadius: "999px" }} />
+                  </div>
+                </div>
+
+                {/* Profile Access Button */}
                 <Link
                   href={`/students/${student.id}`}
-                  className="btn btn-secondary"
-                  style={{ width: "100%", marginTop: "1rem", padding: "0.4rem 0.75rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.35rem" }}
+                  className="btn"
+                  style={{
+                    width: "100%",
+                    marginTop: "auto",
+                    padding: "0.5rem 0.85rem",
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    background: cfg.badgeBg,
+                    color: "#FFFFFF",
+                    borderRadius: "var(--radius-sm)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.4rem",
+                    boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+                    textDecoration: "none",
+                  }}
                 >
-                  <span>View Profile</span>
-                  <IconChevronRight size={14} />
+                  <span>View Marksheet Ledger</span>
+                  <IconChevronRight size={14} color="#FFFFFF" />
                 </Link>
               </div>
             );
