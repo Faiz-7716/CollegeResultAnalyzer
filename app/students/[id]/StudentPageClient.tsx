@@ -158,72 +158,184 @@ export default function StudentPageClient({
                 );
               })}
 
-              {/* Part-wise CGPA & Summary Cards */}
-              <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.25rem" }}>
-                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid var(--accent-primary)" }}>
-                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Overall CGPA</h4>
-                  <p className="h1" style={{ fontSize: "2.75rem", color: "var(--accent-primary)", fontWeight: 800, marginTop: "0.25rem" }}>
-                    {cgpa.toFixed(2)}
-                  </p>
+              {/* Ultra-Elegant Part-wise CGPA & Summary Cards */}
+              <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem" }}>
+                {/* 1st Card: Overall CGPA */}
+                <div
+                  className="card glass-panel"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "1.5rem",
+                    background: "linear-gradient(135deg, #FFFFFF 0%, #F5F3FF 100%)",
+                    border: "1px solid rgba(99, 102, 241, 0.25)",
+                    boxShadow: "0 8px 24px -4px rgba(79, 70, 229, 0.08)",
+                    borderRadius: "var(--radius-lg)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#4F46E5", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      Overall CGPA
+                    </span>
+                    <span className="badge" style={{ background: "rgba(79, 70, 229, 0.12)", color: "#4F46E5", fontWeight: 700, fontSize: "0.8rem" }}>
+                      Rank #{classRank.rank}
+                    </span>
+                  </div>
+                  <div style={{ margin: "0.75rem 0" }}>
+                    <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#4F46E5", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                      {cgpa.toFixed(2)}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(79, 70, 229, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                    <span>Cumulative Grade</span>
+                    <strong style={{ color: "#4F46E5" }}>Scale 10.00</strong>
+                  </div>
                 </div>
 
-                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #10B981" }}>
-                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 1: Language CGPA</h4>
-                  <p className="h1" style={{ fontSize: "2.75rem", color: "#10B981", fontWeight: 800, marginTop: "0.25rem" }}>
-                    {(() => {
-                      let p1C = 0, p1P = 0;
-                      results.forEach((r: any) => {
-                        const code = r.subject.code.toUpperCase();
-                        if (code.includes("ULE") || code.includes("ULT") || code.includes("ULU")) {
-                          let gp = 0;
-                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                          p1C += r.subject.credits;
-                          p1P += r.subject.credits * gp;
-                        }
-                      });
-                      return p1C > 0 ? (p1P / p1C).toFixed(2) : "0.00";
-                    })()}
-                  </p>
+                {/* 2nd Card: Part 1 Language CGPA */}
+                <div
+                  className="card glass-panel"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "1.5rem",
+                    background: "linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%)",
+                    border: "1px solid rgba(16, 185, 129, 0.25)",
+                    boxShadow: "0 8px 24px -4px rgba(16, 185, 129, 0.08)",
+                    borderRadius: "var(--radius-lg)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      Part 1: Language
+                    </span>
+                    <span className="badge badge-success" style={{ fontWeight: 700, fontSize: "0.8rem" }}>
+                      Lang Pass
+                    </span>
+                  </div>
+                  <div style={{ margin: "0.75rem 0" }}>
+                    <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#059669", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                      {(() => {
+                        let p1C = 0, p1P = 0;
+                        results.forEach((r: any) => {
+                          const code = r.subject.code.toUpperCase();
+                          if (code.includes("ULE") || code.includes("ULT") || code.includes("ULU")) {
+                            let gp = 0;
+                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                            p1C += r.subject.credits;
+                            p1P += r.subject.credits * gp;
+                          }
+                        });
+                        return p1C > 0 ? (p1P / p1C).toFixed(2) : "0.00";
+                      })()}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(16, 185, 129, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                    <span>Languages</span>
+                    <strong style={{ color: "#059669" }}>Tamil / English / Urdu</strong>
+                  </div>
                 </div>
 
-                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #3B82F6" }}>
-                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 2: Allied + Core CGPA</h4>
-                  <p className="h1" style={{ fontSize: "2.75rem", color: "#3B82F6", fontWeight: 800, marginTop: "0.25rem" }}>
-                    {(() => {
-                      let p2C = 0, p2P = 0;
-                      results.forEach((r: any) => {
-                        const code = r.subject.code.toUpperCase();
-                        if (code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC")) {
-                          let gp = 0;
-                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                          p2C += r.subject.credits;
-                          p2P += r.subject.credits * gp;
-                        }
-                      });
-                      return p2C > 0 ? (p2P / p2C).toFixed(2) : "0.00";
-                    })()}
-                  </p>
+                {/* 3rd Card: Part 2 Allied + Core CGPA */}
+                <div
+                  className="card glass-panel"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "1.5rem",
+                    background: "linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)",
+                    border: "1px solid rgba(59, 130, 246, 0.25)",
+                    boxShadow: "0 8px 24px -4px rgba(59, 130, 246, 0.08)",
+                    borderRadius: "var(--radius-lg)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563EB", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      Part 2: Allied + Core
+                    </span>
+                    <span className="badge" style={{ background: "rgba(59, 130, 246, 0.12)", color: "#2563EB", fontWeight: 700, fontSize: "0.8rem" }}>
+                      Core CS
+                    </span>
+                  </div>
+                  <div style={{ margin: "0.75rem 0" }}>
+                    <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#2563EB", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                      {(() => {
+                        let p2C = 0, p2P = 0;
+                        results.forEach((r: any) => {
+                          const code = r.subject.code.toUpperCase();
+                          if (code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC")) {
+                            let gp = 0;
+                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                            p2C += r.subject.credits;
+                            p2P += r.subject.credits * gp;
+                          }
+                        });
+                        return p2C > 0 ? (p2P / p2C).toFixed(2) : "0.00";
+                      })()}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(59, 130, 246, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                    <span>Domain Scope</span>
+                    <strong style={{ color: "#2563EB" }}>CS Core & Allied Math</strong>
+                  </div>
                 </div>
 
-                <div className="card glass-panel" style={{ textAlign: "center", padding: "1.5rem", borderLeft: "4px solid #F59E0B" }}>
-                  <h4 className="text-muted" style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700 }}>Part 3: Others CGPA</h4>
-                  <p className="h1" style={{ fontSize: "2.75rem", color: "#F59E0B", fontWeight: 800, marginTop: "0.25rem" }}>
-                    {(() => {
-                      let p3C = 0, p3P = 0;
-                      results.forEach((r: any) => {
-                        const code = r.subject.code.toUpperCase();
-                        const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
-                        const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
-                        if (!isLang && !isCoreOrAllied) {
-                          let gp = 0;
-                          switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
-                          p3C += r.subject.credits;
-                          p3P += r.subject.credits * gp;
-                        }
-                      });
-                      return p3C > 0 ? (p3P / p3C).toFixed(2) : "0.00";
-                    })()}
-                  </p>
+                {/* 4th Card: Part 3 Others CGPA */}
+                <div
+                  className="card glass-panel"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "1.5rem",
+                    background: "linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%)",
+                    border: "1px solid rgba(245, 158, 11, 0.25)",
+                    boxShadow: "0 8px 24px -4px rgba(245, 158, 11, 0.08)",
+                    borderRadius: "var(--radius-lg)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#D97706", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      Part 3: Others CGPA
+                    </span>
+                    <span className="badge" style={{ background: "rgba(245, 158, 11, 0.12)", color: "#D97706", fontWeight: 700, fontSize: "0.8rem" }}>
+                      Skills
+                    </span>
+                  </div>
+                  <div style={{ margin: "0.75rem 0" }}>
+                    <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#D97706", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                      {(() => {
+                        let p3C = 0, p3P = 0;
+                        results.forEach((r: any) => {
+                          const code = r.subject.code.toUpperCase();
+                          const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+                          const isCoreOrAllied = code.includes("UCS") || code.includes("UPCS") || code.includes("UECS") || code.includes("CC") || code.includes("EC");
+                          if (!isLang && !isCoreOrAllied) {
+                            let gp = 0;
+                            switch (r.grade) { case "O": gp = 10; break; case "A+": gp = 9; break; case "A": gp = 8; break; case "B+": gp = 7; break; case "B": gp = 6; break; case "C": gp = 5; break; default: gp = 0; }
+                            p3C += r.subject.credits;
+                            p3P += r.subject.credits * gp;
+                          }
+                        });
+                        return p3C > 0 ? (p3P / p3C).toFixed(2) : "0.00";
+                      })()}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(245, 158, 11, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                    <span>Course Focus</span>
+                    <strong style={{ color: "#D97706" }}>Foundation CS, NME & Skills</strong>
+                  </div>
                 </div>
               </div>
             </div>

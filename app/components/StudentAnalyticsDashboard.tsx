@@ -249,60 +249,160 @@ export default function StudentAnalyticsDashboard({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      {/* 4 Primary CGPA & Standing Metric Header Cards */}
+      {/* 4 Ultra-Elegant Metric Header Cards */}
       <div
         className="responsive-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           gap: "1.25rem",
         }}
       >
-        <div className="card glass-panel" style={{ position: "relative", overflow: "hidden", borderLeft: "4px solid var(--accent-primary)" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Overall CGPA
+        {/* 1st Card: Overall Cumulative CGPA */}
+        <div
+          className="card glass-panel"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            padding: "1.5rem",
+            background: "linear-gradient(135deg, #FFFFFF 0%, #F5F3FF 100%)",
+            border: "1px solid rgba(99, 102, 241, 0.25)",
+            boxShadow: "0 8px 24px -4px rgba(79, 70, 229, 0.08)",
+            borderRadius: "var(--radius-lg)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#4F46E5", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Overall CGPA
+            </span>
+            <span className="badge" style={{ background: "rgba(79, 70, 229, 0.12)", color: "#4F46E5", fontWeight: 700, fontSize: "0.8rem" }}>
+              Rank #{classRank.rank}
+            </span>
           </div>
-          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "var(--accent-primary)", fontWeight: 800 }}>
-            {cgpa.toFixed(2)}
+
+          <div style={{ margin: "0.75rem 0" }}>
+            <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#4F46E5", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+              {cgpa.toFixed(2)}
+            </div>
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-            Class Rank: <strong style={{ color: "var(--accent-primary)" }}>#{classRank.rank}</strong> of {classRank.totalStudents}
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(79, 70, 229, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+            <span>Batch Position</span>
+            <strong style={{ color: "#4F46E5" }}>#{classRank.rank} / {classRank.totalStudents} Students</strong>
           </div>
         </div>
 
-        <div className="card glass-panel" style={{ borderLeft: "4px solid #10B981" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part 1: Language CGPA
+        {/* 2nd Card: Part 1 Language CGPA */}
+        <div
+          className="card glass-panel"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            padding: "1.5rem",
+            background: "linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%)",
+            border: "1px solid rgba(16, 185, 129, 0.25)",
+            boxShadow: "0 8px 24px -4px rgba(16, 185, 129, 0.08)",
+            borderRadius: "var(--radius-lg)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Part 1: Language
+            </span>
+            <span className="badge badge-success" style={{ fontWeight: 700, fontSize: "0.8rem" }}>
+              {p1Credits} Credits
+            </span>
           </div>
-          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#10B981", fontWeight: 800 }}>
-            {part1Cgpa}
+
+          <div style={{ margin: "0.75rem 0" }}>
+            <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#059669", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+              {part1Cgpa}
+            </div>
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-            Tamil / English / Urdu ({p1Credits} Credits)
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(16, 185, 129, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+            <span>Languages</span>
+            <strong style={{ color: "#059669" }}>Tamil / English / Urdu</strong>
           </div>
         </div>
 
-        <div className="card glass-panel" style={{ borderLeft: "4px solid #3B82F6" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part 2: Allied + Core CGPA
+        {/* 3rd Card: Part 2 Allied + Core CGPA */}
+        <div
+          className="card glass-panel"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            padding: "1.5rem",
+            background: "linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)",
+            border: "1px solid rgba(59, 130, 246, 0.25)",
+            boxShadow: "0 8px 24px -4px rgba(59, 130, 246, 0.08)",
+            borderRadius: "var(--radius-lg)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563EB", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Part 2: Allied + Core
+            </span>
+            <span className="badge" style={{ background: "rgba(59, 130, 246, 0.12)", color: "#2563EB", fontWeight: 700, fontSize: "0.8rem" }}>
+              {p2Credits} Credits
+            </span>
           </div>
-          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#3B82F6", fontWeight: 800 }}>
-            {part2Cgpa}
+
+          <div style={{ margin: "0.75rem 0" }}>
+            <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#2563EB", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+              {part2Cgpa}
+            </div>
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-            CS Core & Allied Math ({p2Credits} Credits)
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(59, 130, 246, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+            <span>Domain Scope</span>
+            <strong style={{ color: "#2563EB" }}>CS Core & Allied Math</strong>
           </div>
         </div>
 
-        <div className="card glass-panel" style={{ borderLeft: "4px solid #F59E0B" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part 3: Others CGPA
+        {/* 4th Card: Part 3 Others CGPA */}
+        <div
+          className="card glass-panel"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            padding: "1.5rem",
+            background: "linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%)",
+            border: "1px solid rgba(245, 158, 11, 0.25)",
+            boxShadow: "0 8px 24px -4px rgba(245, 158, 11, 0.08)",
+            borderRadius: "var(--radius-lg)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#D97706", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Part 3: Others CGPA
+            </span>
+            <span className="badge" style={{ background: "rgba(245, 158, 11, 0.12)", color: "#D97706", fontWeight: 700, fontSize: "0.8rem" }}>
+              {p3Credits} Credits
+            </span>
           </div>
-          <div className="h1" style={{ marginTop: "0.4rem", fontSize: "2.75rem", color: "#F59E0B", fontWeight: 800 }}>
-            {part3Cgpa}
+
+          <div style={{ margin: "0.75rem 0" }}>
+            <div style={{ fontSize: "3.25rem", fontWeight: 850, color: "#D97706", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+              {part3Cgpa}
+            </div>
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-            Foundation CS, NME & Skills ({p3Credits} Credits)
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(245, 158, 11, 0.12)", paddingTop: "0.6rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+            <span>Course Focus</span>
+            <strong style={{ color: "#D97706" }}>Foundation CS, NME & Skills</strong>
           </div>
         </div>
       </div>
