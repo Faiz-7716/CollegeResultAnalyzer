@@ -5,6 +5,14 @@ import Navbar from "./components/Navbar";
 export const metadata: Metadata = {
   title: "MUC CS Result | Department of Computer Science",
   description: "Academic Performance & Ledger Tracking System for B.Sc. CS Department, Mazharul Uloom College (Batch 31924U180).",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/icon.png", type: "image/png" }
+    ],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -18,6 +26,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body suppressHydrationWarning>
         <Navbar />

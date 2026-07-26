@@ -371,22 +371,6 @@ export async function getStudentsWithMetrics() {
       }
     });
 
-    const semSgpas: Record<number, number> = {};
-    Object.entries(semResultsMap).forEach(([semStr, semResultsArr]) => {
-      const semNum = Number(semStr);
-      let semCredits = 0;
-      let semPoints = 0;
-      semResultsArr.forEach((r: any) => {
-        semCredits += r.credits;
-        semPoints += r.credits * r.gradePoints;
-      });
-      if (semCredits > 0) {
-        semSgpas[semNum] = Number((semPoints / semCredits).toFixed(2));
-      } else {
-        semSgpas[semNum] = 0;
-      }
-    });
-
     const cgpa = totalCredits > 0 ? Number((totalEarnedPoints / totalCredits).toFixed(2)) : 0;
     const part1Cgpa = p1Credits > 0 ? Number((p1Points / p1Credits).toFixed(2)) : 0;
     const part2Cgpa = p2Credits > 0 ? Number((p2Points / p2Credits).toFixed(2)) : 0;
@@ -408,7 +392,6 @@ export async function getStudentsWithMetrics() {
         coreAndAllied: coreMarks + alliedMarks,
         languageMarks,
         semMarks,
-        semSgpas,
         totalSubjectsCount,
         coreAlliedSubjectsCount,
         hasArrear,
