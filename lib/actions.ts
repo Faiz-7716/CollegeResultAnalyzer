@@ -212,7 +212,12 @@ export async function updateResultMarks(resultId: string, internalMarks: number,
 }
 
 export async function getAllStudents() {
+  await ensureDefaultDepartments();
   return await prisma.student.findMany({
+    include: {
+      department: true,
+      results: true,
+    },
     orderBy: { registerNumber: "asc" },
   });
 }
@@ -225,7 +230,32 @@ export async function getAllSemesters() {
 
 export async function getAllSubjects() {
   return await prisma.subject.findMany({
+    include: {
+      semester: true,
+      department: true,
+    },
     orderBy: { code: "asc" },
+  });
+}
+
+export async function getAllResultsDetailed() {
+  return await prisma.result.findMany({
+    include: {
+      student: {
+        include: {
+          department: true,
+        }
+      },
+      subject: {
+        include: {
+          semester: true,
+        }
+      }
+    },
+    orderBy: [
+      { student: { registerNumber: "asc" } },
+      { subject: { code: "asc" } }
+    ]
   });
 }
 
