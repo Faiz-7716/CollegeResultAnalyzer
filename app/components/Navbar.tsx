@@ -93,11 +93,11 @@ export default function Navbar() {
           >
             <img
               src="/logo.png"
-              alt="MUC CS Logo"
+              alt="MUC Enterprise Logo"
               style={{ height: "38px", width: "auto", objectFit: "contain", borderRadius: "var(--radius-sm)" }}
             />
             <span className="text-gradient" style={{ letterSpacing: "-0.01em" }}>
-              MUC CS Result
+              MUC College Ledger
             </span>
           </Link>
 

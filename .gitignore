@@ -43,3 +43,8 @@ next-env.d.ts
 /app/generated/prisma
 
 .vercel
+
+*.crdownload
+*.tmp
+dev.db
+dev.db-journal

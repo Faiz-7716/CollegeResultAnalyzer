@@ -5,14 +5,100 @@ import { revalidatePath } from "next/cache";
 import { calculateGrade } from "./grading";
 import { verifyAdminSession } from "./auth";
 
-export async function addStudent(data: { registerNumber: string; name: string; batch: string }) {
+export async function ensureDefaultDepartments() {
+  try {
+    if (!prisma || !("department" in (prisma as any)) || !(prisma as any).department) {
+      return;
+    }
+    const count = await (prisma as any).department.count();
+    if (count === 0) {
+      const defaultDepts = [
+        { code: "CS", name: "Department of Computer Science", degree: "B.Sc. Computer Science" },
+        { code: "BCA", name: "Department of Computer Applications", degree: "Bachelor of Computer Applications (BCA)" },
+        { code: "BBA", name: "Department of Business Administration", degree: "Bachelor of Business Administration (BBA)" },
+        { code: "BCOM", name: "Department of Commerce", degree: "Bachelor of Commerce (B.Com)" },
+        { code: "MICRO", name: "Department of Microbiology", degree: "B.Sc. Microbiology" },
+      ];
+
+      for (const d of defaultDepts) {
+        await (prisma as any).department.create({ data: d });
+      }
+
+      const csDept = await (prisma as any).department.findUnique({ where: { code: "CS" } });
+      if (csDept) {
+        await prisma.student.updateMany({
+          where: { departmentId: null },
+          data: { departmentId: csDept.id, degree: csDept.degree }
+        });
+      }
+    }
+  } catch (e) {
+    console.error("Default departments check:", e);
+  }
+}
+
+export async function getDepartments() {
+  await ensureDefaultDepartments();
+  if (!prisma || !("department" in (prisma as any)) || !(prisma as any).department) {
+    return [];
+  }
+  return await (prisma as any).department.findMany({
+    orderBy: { name: "asc" }
+  });
+}
+
+export async function addDepartment(data: { code: string; name: string; degree: string }) {
   try {
     const session = await verifyAdminSession();
     if (!session) {
       return { success: false, error: "Unauthorized: Admin authentication required." };
     }
 
-    const student = await prisma.student.create({ data });
+    const dept = await prisma.department.create({
+      data: {
+        code: data.code.toUpperCase().trim(),
+        name: data.name.trim(),
+        degree: data.degree.trim(),
+      }
+    });
+    revalidatePath("/");
+    revalidatePath("/students");
+    revalidatePath("/data-entry");
+    return { success: true, department: dept };
+  } catch (error) {
+    return { success: false, error: "Failed to add department (code must be unique)." };
+  }
+}
+
+export async function addStudent(data: { registerNumber: string; name: string; batch: string; departmentId?: string; batchYear?: string; degree?: string }) {
+  try {
+    const session = await verifyAdminSession();
+    if (!session) {
+      return { success: false, error: "Unauthorized: Admin authentication required." };
+    }
+
+    let deptId = data.departmentId;
+    let degree = data.degree;
+
+    if (!deptId) {
+      await ensureDefaultDepartments();
+      const defaultDept = await prisma.department.findFirst();
+      if (defaultDept) {
+        deptId = defaultDept.id;
+        degree = defaultDept.degree;
+      }
+    }
+
+    const student = await prisma.student.create({
+      data: {
+        registerNumber: data.registerNumber,
+        name: data.name,
+        batch: data.batch,
+        batchYear: data.batchYear || "2023 - 2026",
+        degree: degree || "B.Sc. Computer Science",
+        departmentId: deptId,
+      }
+    });
     revalidatePath("/students");
     return { success: true, student };
   } catch (error) {
@@ -281,8 +367,11 @@ export async function getDashboardStats() {
 }
 
 export async function getStudentsWithMetrics() {
+  await ensureDefaultDepartments();
+  const hasDept = prisma && ("department" in (prisma as any)) && (prisma as any).department;
   const students = await prisma.student.findMany({
     include: {
+      ...(hasDept ? { department: true } : {}),
       results: {
         include: {
           subject: {
@@ -434,6 +523,10 @@ export async function getStudentsWithMetrics() {
       registerNumber: student.registerNumber,
       name: student.name,
       batch: student.batch,
+      batchYear: student.batchYear || "2023 - 2026",
+      degree: student.degree || "B.Sc. Computer Science",
+      department: student.department,
+      departmentId: student.departmentId,
       metrics: {
         cgpa,
         part1Cgpa,

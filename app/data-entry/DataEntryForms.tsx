@@ -1,28 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { addStudent, addSemester, addSubject, addResult } from "@/lib/actions";
+import { addStudent, addSemester, addSubject, addResult, addDepartment } from "@/lib/actions";
 
 type Props = {
   students: any[];
   semesters: any[];
   subjects: any[];
+  departments: any[];
 };
 
-export default function DataEntryForms({ students, semesters, subjects }: Props) {
+export default function DataEntryForms({ students, semesters, subjects, departments }: Props) {
   const [msg, setMsg] = useState("");
+
+  const handleAddDepartment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const res = await addDepartment({
+      code: fd.get("code") as string,
+      name: fd.get("name") as string,
+      degree: fd.get("degree") as string,
+    });
+    setMsg(res.success ? "New Department created successfully!" : res.error || "Error");
+    if (res.success) form.reset();
+  };
 
   const handleAddStudent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
+    const deptId = fd.get("departmentId") as string;
+    const selectedDept = departments.find(d => d.id === deptId);
+
     const res = await addStudent({
       registerNumber: fd.get("registerNumber") as string,
       name: fd.get("name") as string,
       batch: fd.get("batch") as string,
+      batchYear: fd.get("batchYear") as string,
+      departmentId: deptId,
+      degree: selectedDept ? selectedDept.degree : "B.Sc. Computer Science",
     });
     setMsg(res.success ? "Student added!" : res.error || "Error");
-    if(res.success) form.reset();
+    if (res.success) form.reset();
   };
 
   const handleAddSemester = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +51,7 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
     const fd = new FormData(form);
     const res = await addSemester(Number(fd.get("number")));
     setMsg(res.success ? "Semester added!" : res.error || "Error");
-    if(res.success) form.reset();
+    if (res.success) form.reset();
   };
 
   const handleAddSubject = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +65,7 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
       semesterId: fd.get("semesterId") as string,
     });
     setMsg(res.success ? "Subject added!" : res.error || "Error");
-    if(res.success) form.reset();
+    if (res.success) form.reset();
   };
 
   const handleAddResult = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -59,21 +79,50 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
       externalMarks: Number(fd.get("externalMarks")),
     });
     setMsg(res.success ? "Result added!" : res.error || "Error");
-    if(res.success) form.reset();
+    if (res.success) form.reset();
   };
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
       {msg && (
-        <div style={{ gridColumn: "1 / -1", padding: "1rem", background: "var(--accent-primary)", color: "white", borderRadius: "8px", textAlign: "center" }}>
+        <div style={{ gridColumn: "1 / -1", padding: "1rem", background: "var(--accent-primary)", color: "white", borderRadius: "8px", textAlign: "center", fontWeight: 700 }}>
           {msg}
         </div>
       )}
 
-      {/* Add Student Form */}
+      {/* 1. Add Department Card */}
+      <div className="card glass-panel delay-100" style={{ borderLeft: "4px solid #10B981" }}>
+        <h3 className="h3" style={{ marginBottom: "1.5rem", color: "#059669" }}>Create New Department</h3>
+        <form onSubmit={handleAddDepartment}>
+          <div className="input-group">
+            <label className="input-label">Department Code</label>
+            <input name="code" className="input-field" required placeholder="e.g. BCA, BBA, BCOM, MICRO" />
+          </div>
+          <div className="input-group">
+            <label className="input-label">Department Name</label>
+            <input name="name" className="input-field" required placeholder="e.g. Department of Computer Applications" />
+          </div>
+          <div className="input-group">
+            <label className="input-label">Degree Title</label>
+            <input name="degree" className="input-field" required placeholder="e.g. Bachelor of Computer Applications (BCA)" />
+          </div>
+          <button type="submit" className="btn btn-success" style={{ width: "100%", background: "#059669", color: "#FFFFFF" }}>Create Department</button>
+        </form>
+      </div>
+
+      {/* 2. Add Student Form */}
       <div className="card glass-panel delay-100">
         <h3 className="h3" style={{ marginBottom: "1.5rem" }}>Add New Student</h3>
         <form onSubmit={handleAddStudent}>
+          <div className="input-group">
+            <label className="input-label">Department</label>
+            <select name="departmentId" className="input-field" required>
+              <option value="">Select Department</option>
+              {departments.map((d: any) => (
+                <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
+              ))}
+            </select>
+          </div>
           <div className="input-group">
             <label className="input-label">Register Number</label>
             <input name="registerNumber" className="input-field" required placeholder="e.g. 31924U18001" />
@@ -82,15 +131,21 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
             <label className="input-label">Full Name</label>
             <input name="name" className="input-field" required placeholder="e.g. John Doe" />
           </div>
-          <div className="input-group">
-            <label className="input-label">Batch</label>
-            <input name="batch" className="input-field" required defaultValue="31924U180" />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div className="input-group">
+              <label className="input-label">Batch Code</label>
+              <input name="batch" className="input-field" required defaultValue="31924U180" />
+            </div>
+            <div className="input-group">
+              <label className="input-label">Academic Batch Year</label>
+              <input name="batchYear" className="input-field" required defaultValue="2023 - 2026" />
+            </div>
           </div>
           <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Add Student</button>
         </form>
       </div>
 
-      {/* Add Result Form */}
+      {/* 3. Add Result Form */}
       <div className="card glass-panel delay-200">
         <h3 className="h3" style={{ marginBottom: "1.5rem" }}>Log Exam Result</h3>
         <form onSubmit={handleAddResult}>
@@ -122,7 +177,7 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
         </form>
       </div>
 
-      {/* Add Subject & Semester */}
+      {/* 4. Add Subject & Semester */}
       <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
         <div className="card glass-panel delay-300">
           <h3 className="h3" style={{ marginBottom: "1.5rem" }}>Add Subject</h3>
@@ -162,7 +217,6 @@ export default function DataEntryForms({ students, semesters, subjects }: Props)
           </form>
         </div>
       </div>
-
     </div>
   );
 }

@@ -9,6 +9,14 @@ type StudentData = {
   registerNumber: string;
   name: string;
   batch: string;
+  batchYear?: string;
+  degree?: string;
+  department?: {
+    id: string;
+    code: string;
+    name: string;
+    degree: string;
+  } | null;
   metrics: {
     cgpa: number;
     totalMarks: number;
@@ -27,8 +35,20 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
   const [sortOption, setSortOption] = useState<string>("registerNumber");
   const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
   const [filterOption, setFilterOption] = useState<string>("all");
+  const [selectedDeptFilter, setSelectedDeptFilter] = useState<string>("all");
+
+  // Extract unique departments present in students
+  const availableDepts = Array.from(
+    new Set(
+      initialStudents.map((s: any) => s.department?.code || "CS").filter(Boolean)
+    )
+  );
 
   const filteredStudents = initialStudents.filter(student => {
+    const deptCode = student.department?.code || "CS";
+    if (selectedDeptFilter !== "all" && deptCode !== selectedDeptFilter) {
+      return false;
+    }
     if (filterOption === "allClear") return !student.metrics.hasArrear;
     if (filterOption === "arrears") return student.metrics.hasArrear;
     return true;
@@ -171,6 +191,22 @@ export default function StudentRoster({ initialStudents }: { initialStudents: St
               <option value="all">All Students ({initialStudents.length})</option>
               <option value="allClear">All Clear Ranking</option>
               <option value="arrears">Students with Arrears</option>
+            </select>
+          </div>
+
+          {/* Department Filter Dropdown */}
+          <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+            <label className="input-label" style={{ margin: 0, fontWeight: 600 }}>Dept:</label>
+            <select
+              className="input-field"
+              style={{ width: "auto", marginBottom: 0 }}
+              value={selectedDeptFilter}
+              onChange={(e) => setSelectedDeptFilter(e.target.value)}
+            >
+              <option value="all">All Departments</option>
+              {availableDepts.map((code) => (
+                <option key={code} value={code}>{code} Department</option>
+              ))}
             </select>
           </div>
 
