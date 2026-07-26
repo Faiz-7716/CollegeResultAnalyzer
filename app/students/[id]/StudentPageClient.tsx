@@ -500,18 +500,23 @@ export default function StudentPageClient({
 
             {/* Printable Official Document Body */}
             <div id="printable-official-report" style={{ padding: "2.5rem", overflowY: "auto", color: "#000000", background: "#FFFFFF", fontFamily: "'Inter', sans-serif" }}>
-              {/* College Official Letterhead (No Logo Image) */}
+              {/* College Official Letterhead With Logo */}
               <div style={{ textAlign: "center", borderBottom: "3px double #000000", paddingBottom: "1rem", marginBottom: "1.5rem" }}>
-                <h1 style={{ fontSize: "1.8rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.04em", color: "#000000", margin: 0 }}>
-                  MAZHARUL ULOOM COLLEGE
-                </h1>
-                <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#333333", margin: "0.25rem 0 0 0" }}>
-                  Recognized by UGC under Section 2(f) & 12(B) | Affiliated to Thiruvalluvar University
-                </p>
-                <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", margin: "0.15rem 0 0 0" }}>
-                  AMBUR - 635 802, TIRUPATTUR DISTRICT, TAMIL NADU
-                </p>
-                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#000000", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.75rem", borderTop: "1px solid #000000", borderBottom: "1px solid #000000", padding: "0.4rem 0" }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1.25rem", marginBottom: "0.75rem" }}>
+                  <img src="/logo.png" alt="Mazharul Uloom College Logo" style={{ height: "64px", objectFit: "contain" }} />
+                  <div>
+                    <h1 style={{ fontSize: "1.8rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.04em", color: "#000000", margin: 0 }}>
+                      MAZHARUL ULOOM COLLEGE
+                    </h1>
+                    <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#333333", margin: "0.25rem 0 0 0" }}>
+                      Recognized by UGC under Section 2(f) & 12(B) | Affiliated to Thiruvalluvar University
+                    </p>
+                    <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", margin: "0.15rem 0 0 0" }}>
+                      AMBUR - 635 802, TIRUPATTUR DISTRICT, TAMIL NADU
+                    </p>
+                  </div>
+                </div>
+                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#000000", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.5rem", borderTop: "1px solid #000000", borderBottom: "1px solid #000000", padding: "0.4rem 0" }}>
                   DEPARTMENT OF COMPUTER SCIENCE — CONSOLIDATED STATEMENT OF MARKS
                 </div>
               </div>
