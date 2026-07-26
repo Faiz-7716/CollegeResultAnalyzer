@@ -203,15 +203,28 @@ export default function StudentPageClient({
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-              {sortedSemesters.map(([semNumber, semResults], idx) => {
-                const semSgpa = sgpas[idx]?.sgpa || 0;
+              {sortedSemesters.map(([semNumber, semResults]) => {
+                const subjectGrades = semResults.map((r: any) => {
+                  let gp = 0;
+                  switch (r.grade) {
+                    case "O": gp = 10; break;
+                    case "A+": gp = 9; break;
+                    case "A": gp = 8; break;
+                    case "B+": gp = 7; break;
+                    case "B": gp = 6; break;
+                    case "C": gp = 5; break;
+                    default: gp = 0;
+                  }
+                  return { credits: r.subject.credits, gradePoints: gp };
+                });
+                const semSgpa = calculateSGPA(subjectGrades);
 
                 return (
                   <div key={semNumber} className="card glass-panel" style={{ padding: 0, overflow: "hidden" }}>
                     <div className="responsive-flex" style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <h3 className="h3" style={{ fontSize: "1.2rem" }}>Semester {semNumber} Examination Results</h3>
-                      <div className="badge badge-primary" style={{ fontSize: "0.95rem", padding: "0.35rem 0.85rem" }}>
-                        SGPA: <strong style={{ color: "#FFFFFF", marginLeft: "0.4rem" }}>{semSgpa.toFixed(2)}</strong>
+                      <div className="badge" style={{ background: "#4F46E5", color: "#FFFFFF", fontSize: "0.95rem", fontWeight: 700, padding: "0.4rem 0.95rem", borderRadius: "999px", boxShadow: "0 4px 12px rgba(79, 70, 229, 0.3)" }}>
+                        SGPA: <strong style={{ color: "#FFFFFF", marginLeft: "0.4rem", fontWeight: 900, fontSize: "1.05rem" }}>{semSgpa.toFixed(2)}</strong>
                       </div>
                     </div>
                     <div className="table-responsive">
