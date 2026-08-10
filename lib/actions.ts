@@ -643,8 +643,13 @@ export async function getAllClearStudentsWithReports() {
     (s: any) => s.metrics.totalSubjectsCount > 0 && !s.metrics.hasArrear
   );
 
-  // Sort by CGPA descending
-  allClear.sort((a: any, b: any) => b.metrics.cgpa - a.metrics.cgpa);
+  // Sort by Core + Allied Total Marks descending (matching official college ranking)
+  allClear.sort((a: any, b: any) => {
+    const scoreA = a.metrics?.coreAndAllied || 0;
+    const scoreB = b.metrics?.coreAndAllied || 0;
+    if (scoreB !== scoreA) return scoreB - scoreA;
+    return (b.metrics?.cgpa || 0) - (a.metrics?.cgpa || 0);
+  });
 
   // Assign Ranks
   allClear.forEach((s: any, idx: number) => {

@@ -470,19 +470,25 @@ export default function AllClearPageClient({ students, departments }: Props) {
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core Subjects Marks</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {coreScored} / {coreMax} ({corePct.toFixed(2)}%)
+                          {student.metrics?.coreMarks || coreScored} Marks
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Allied Subjects Marks</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {alliedScored} / {alliedMax} ({alliedPct.toFixed(2)}%)
+                          {student.metrics?.alliedMarks || alliedScored} Marks
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Combined Core & Allied Total Marks</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#2563EB" }}>
-                          {totalCoreAlliedScored} / {totalCoreAlliedMax} ({coreAlliedPercentage.toFixed(2)}%)
+                          {student.metrics?.coreAndAllied || totalCoreAlliedScored} / 1300 ({coreAlliedPercentage.toFixed(1)}%)
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Total Marks (All 4 Semesters)</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
+                          {student.metrics?.totalMarks || 0} Marks
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
@@ -494,7 +500,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                       <tr>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Cumulative Grade Point Average (CGPA)</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.9rem" }}>
-                          {coreAlliedCgpa.toFixed(2)} CGPA
+                          {(student.metrics?.cgpa || coreAlliedCgpa).toFixed(2)} CGPA
                         </td>
                       </tr>
                     </tbody>
