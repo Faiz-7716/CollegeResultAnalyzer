@@ -17,6 +17,15 @@ export function IconUsers({ size = 20, color = "currentColor", strokeWidth = 2, 
   );
 }
 
+export function IconArrowLeft({ size = 20, color = "currentColor", strokeWidth = 2, ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
+    </svg>
+  );
+}
+
 export function IconAward({ size = 20, color = "currentColor", strokeWidth = 2, ...props }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>

@@ -632,3 +632,23 @@ export async function getStudentsWithMetrics() {
     };
   });
 }
+
+export async function getAllClearStudentsWithReports() {
+  await ensureDefaultDepartments();
+  const students = await getStudentsWithMetrics();
+
+  // Filter only all-clear students (hasArrear === false and totalSubjectsCount > 0)
+  const allClear = students.filter(
+    (s: any) => s.metrics.totalSubjectsCount > 0 && !s.metrics.hasArrear
+  );
+
+  // Sort by CGPA descending
+  allClear.sort((a: any, b: any) => b.metrics.cgpa - a.metrics.cgpa);
+
+  // Assign Ranks
+  allClear.forEach((s: any, idx: number) => {
+    s.rank = idx + 1;
+  });
+
+  return allClear;
+}

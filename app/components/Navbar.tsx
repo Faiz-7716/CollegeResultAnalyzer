@@ -112,6 +112,12 @@ export default function Navbar() {
               <span>Students</span>
             </Link>
 
+            {/* All Clear Reports Link */}
+            <Link href="/all-clear" className={`nav-link ${activeClass("/all-clear")}`} style={linkStyle(isPathActive("/all-clear"))}>
+              <IconGraduationCap size={18} color={isPathActive("/all-clear") ? "var(--accent-primary)" : "var(--text-secondary)"} />
+              <span>All-Clear Reports</span>
+            </Link>
+
             {/* Data Entry Link (Requires Admin or directs to login) */}
             <Link href="/data-entry" className={`nav-link ${activeClass("/data-entry")}`} style={linkStyle(isPathActive("/data-entry"))}>
               <IconPlusCircle size={18} color={isPathActive("/data-entry") ? "var(--accent-primary)" : "var(--text-secondary)"} />
