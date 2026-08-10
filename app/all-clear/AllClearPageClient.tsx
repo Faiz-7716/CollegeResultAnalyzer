@@ -135,7 +135,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
           <p className="text-muted" style={{ marginTop: "0.5rem" }}>No students matching the selected department filter currently have zero arrears.</p>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+        <div className="all-clear-reports-container" style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
           {filteredStudents.map((student) => {
             // Determine if this single student is target for printing
             const isSinglePrintTarget = printingStudentId === student.id;
@@ -392,13 +392,13 @@ export default function AllClearPageClient({ students, departments }: Props) {
 
                               {/* Subject Name Column */}
                               <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1" }}>
-                                <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.4rem" }}>[{r.subject.code}]</span>
-                                <span style={{ color: "#0F172A", fontWeight: 600 }}>{r.subject.name}</span>
+                                <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.4rem" }}>[{r.subject?.code}]</span>
+                                <span style={{ color: "#0F172A", fontWeight: 600 }}>{r.subject?.name}</span>
                               </td>
 
                               {/* Individual Mark Column */}
                               <td style={{ padding: "0.5rem 0.6rem", textAlign: "center", fontWeight: 800, color: "#0F172A" }}>
-                                {r.total} / 100
+                                {(r.total || (r.internalMarks + r.externalMarks))} / 100
                               </td>
                             </tr>
                           );
@@ -487,12 +487,14 @@ export default function AllClearPageClient({ students, departments }: Props) {
         @media print {
           @page {
             size: A4 portrait;
-            margin: 10mm 12mm;
+            margin: 8mm 10mm;
           }
 
-          body {
+          html, body {
             background: #FFFFFF !important;
             color: #000000 !important;
+            margin: 0 !important;
+            padding: 0 !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
@@ -501,15 +503,34 @@ export default function AllClearPageClient({ students, departments }: Props) {
             display: none !important;
           }
 
+          .all-clear-reports-container,
+          .all-clear-reports-container *,
+          .a4-report-page,
+          .a4-report-page * {
+            visibility: visible !important;
+          }
+
+          .all-clear-reports-container {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
           .a4-report-page {
+            position: relative !important;
             page-break-after: always !important;
             break-after: page !important;
             box-shadow: none !important;
             border: 1.5px solid #000000 !important;
             margin: 0 0 0 0 !important;
-            padding: 1.25rem !important;
+            padding: 1rem !important;
             border-radius: 0 !important;
             background: #FFFFFF !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
 
           .a4-report-page:last-child {

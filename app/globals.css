@@ -491,8 +491,20 @@ body {
   }
   
   #printable-official-report,
-  #printable-official-report * {
-    visibility: visible;
+  #printable-official-report *,
+  .a4-report-page,
+  .a4-report-page *,
+  .all-clear-reports-container,
+  .all-clear-reports-container * {
+    visibility: visible !important;
+  }
+  
+  .all-clear-reports-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
   }
   
   .report-modal-overlay {
