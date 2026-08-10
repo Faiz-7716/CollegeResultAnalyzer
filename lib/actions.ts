@@ -608,6 +608,7 @@ export async function getStudentsWithMetrics() {
       degree: student.degree || "B.Sc. Computer Science",
       department: student.department,
       departmentId: student.departmentId,
+      results: student.results,
       metrics: {
         cgpa,
         part1Cgpa,

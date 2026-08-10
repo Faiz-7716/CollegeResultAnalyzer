@@ -143,30 +143,45 @@ export default function AllClearPageClient({ students, departments }: Props) {
 
             if (hideInSinglePrint) return null;
 
-            // Extract ONLY Core & Allied Subjects
+            // Extract Core & Allied Subjects (Exclude Language and General Skill Electives)
             const allResults = student.results || [];
-            const coreAndAlliedResults = allResults.filter((r: any) => {
+            let coreAndAlliedResults = allResults.filter((r: any) => {
+              if (!r.subject || !r.subject.code) return false;
               const code = r.subject.code.toUpperCase();
               const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
               const isGeneralSkill = code.includes("EVS") || code.includes("VALUE") || code.includes("VE") || code.includes("PE");
               return !isLang && !isGeneralSkill;
             });
 
+            // Fallback: If filter returns empty but student has results, use allResults so table is never 0/0!
+            if (coreAndAlliedResults.length === 0 && allResults.length > 0) {
+              coreAndAlliedResults = allResults;
+            }
+
             // Group by Semester (1, 2, 3, 4...)
             const semGroupMap: Record<number, any[]> = {};
             coreAndAlliedResults.forEach((r: any) => {
-              const semNum = r.subject.semester.number;
+              const semNum = r.subject?.semester?.number || 1;
               if (!semGroupMap[semNum]) semGroupMap[semNum] = [];
               semGroupMap[semNum].push(r);
             });
 
             const sortedSemesters = Object.keys(semGroupMap).map(Number).sort((a, b) => a - b);
 
+            // Sort subjects inside each semester by Subject Code
+            sortedSemesters.forEach((semNum) => {
+              semGroupMap[semNum].sort((a: any, b: any) => {
+                const codeA = a.subject?.code || "";
+                const codeB = b.subject?.code || "";
+                return codeA.localeCompare(codeB);
+              });
+            });
+
             // Compute Core & Allied Summary Metrics
             let totalCoreAlliedScored = 0;
             let totalCoreAlliedMax = coreAndAlliedResults.length * 100;
             coreAndAlliedResults.forEach((r: any) => {
-              totalCoreAlliedScored += r.total;
+              totalCoreAlliedScored += (r.total || (r.internalMarks + r.externalMarks));
             });
 
             const coreAlliedPercentage = totalCoreAlliedMax > 0
