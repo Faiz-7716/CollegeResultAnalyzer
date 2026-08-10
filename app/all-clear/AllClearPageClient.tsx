@@ -342,7 +342,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
             const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
             const overallCgpa = student.metrics?.cgpa || 0;
 
-            // University Degree Classification Norms with Professional Icons
+            // University Degree Classification Norms (CBCS 10-Point Grade Scale)
             let universityClassificationNode = (
               <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                 <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
@@ -350,21 +350,21 @@ export default function AllClearPageClient({ students, departments }: Props) {
             );
             let classificationColor = "#059669";
 
-            if (coreAlliedCgpa >= 7.50 && coreAlliedPercentage >= 75.00) {
+            if (coreAlliedCgpa >= 7.50 || overallCgpa >= 7.50) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
                 </span>
               );
               classificationColor = "#059669";
-            } else if (coreAlliedCgpa >= 6.00 && coreAlliedPercentage >= 60.00) {
+            } else if (coreAlliedCgpa >= 6.00 || overallCgpa >= 6.00) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconMedal size={15} color="#2563EB" /> FIRST CLASS
                 </span>
               );
               classificationColor = "#2563EB";
-            } else if (coreAlliedCgpa >= 5.00 && coreAlliedPercentage >= 50.00) {
+            } else if (coreAlliedCgpa >= 5.00 || overallCgpa >= 5.00) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconStar size={15} color="#D97706" /> SECOND CLASS
