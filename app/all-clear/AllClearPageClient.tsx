@@ -51,41 +51,40 @@ export default function AllClearPageClient({ students, departments }: Props) {
       <div
         className="card glass-panel no-print"
         style={{
-          padding: "1.5rem 1.75rem",
+          padding: "1.25rem 1.5rem",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: "1.25rem",
+          gap: "1rem",
           background: "linear-gradient(135deg, #FFFFFF 0%, #F5F3FF 100%)",
           border: "1px solid rgba(99, 102, 241, 0.25)",
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.4rem" }}>
-            <Link href="/" className="btn btn-secondary" style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.3rem" }}>
+            <Link href="/" className="btn btn-secondary" style={{ padding: "0.3rem 0.65rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
               <IconArrowLeft size={14} /> Back
             </Link>
-            <span className="badge badge-success" style={{ padding: "0.35rem 0.75rem" }}>
+            <span className="badge badge-success" style={{ padding: "0.3rem 0.65rem" }}>
               ✨ {filteredStudents.length} All-Clear Students Found
             </span>
           </div>
-          <h2 className="h2 text-gradient" style={{ fontSize: "1.75rem" }}>
+          <h2 className="h2 text-gradient" style={{ fontSize: "1.6rem" }}>
             All Students Result Reports
           </h2>
-          <p className="text-muted" style={{ fontSize: "0.875rem", marginTop: "0.2rem" }}>
+          <p className="text-muted" style={{ fontSize: "0.85rem", marginTop: "0.15rem" }}>
             MAZHARUL ULOOM COLLEGE (AUTONOMOUS) – AMBUR • Core & Allied Academic Ledger
           </p>
         </div>
 
         {/* Filter Controls & Bulk Action */}
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-          {/* Department Filter */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
             <IconFilter size={16} color="var(--accent-primary)" />
             <select
               className="input-field"
-              style={{ width: "auto", marginBottom: 0, padding: "0.45rem 0.85rem", fontSize: "0.85rem" }}
+              style={{ width: "auto", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
               value={selectedDept}
               onChange={(e) => setSelectedDept(e.target.value)}
             >
@@ -98,31 +97,29 @@ export default function AllClearPageClient({ students, departments }: Props) {
             </select>
           </div>
 
-          {/* Search Field */}
           <input
             type="text"
             className="input-field"
-            style={{ width: "200px", marginBottom: 0, padding: "0.45rem 0.85rem", fontSize: "0.85rem" }}
+            style={{ width: "190px", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
             placeholder="🔍 Search Student..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
-          {/* Bulk Download / Print All Button */}
           <button
             onClick={handlePrintAll}
             className="btn btn-primary"
             style={{
-              padding: "0.6rem 1.25rem",
-              fontSize: "0.9rem",
+              padding: "0.55rem 1.15rem",
+              fontSize: "0.875rem",
               fontWeight: 800,
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.5rem",
+              gap: "0.4rem",
               boxShadow: "0 6px 16px rgba(79, 70, 229, 0.25)",
             }}
           >
-            <IconPrinter size={18} />
+            <IconPrinter size={16} />
             <span>Download All Reports (Bulk A4 Print/PDF)</span>
           </button>
         </div>
@@ -135,9 +132,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
           <p className="text-muted" style={{ marginTop: "0.5rem" }}>No students matching the selected department filter currently have zero arrears.</p>
         </div>
       ) : (
-        <div className="all-clear-reports-container" style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+        <div className="all-clear-reports-container" style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
           {filteredStudents.map((student) => {
-            // Determine if this single student is target for printing
             const isSinglePrintTarget = printingStudentId === student.id;
             const hideInSinglePrint = printingStudentId && !isSinglePrintTarget;
 
@@ -153,7 +149,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
               return !isLang && !isGeneralSkill;
             });
 
-            // Fallback: If filter returns empty but student has results, use allResults so table is never 0/0!
+            // Fallback if filter is empty
             if (coreAndAlliedResults.length === 0 && allResults.length > 0) {
               coreAndAlliedResults = allResults;
             }
@@ -177,7 +173,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
               });
             });
 
-            // Compute Core & Allied Summary Metrics
+            // Compute Summary Metrics
             let totalCoreAlliedScored = 0;
             let totalCoreAlliedMax = coreAndAlliedResults.length * 100;
             coreAndAlliedResults.forEach((r: any) => {
@@ -203,12 +199,13 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 key={student.id}
                 className="a4-report-page card glass-panel"
                 style={{
-                  padding: "2rem",
+                  padding: "1.25rem 1.5rem",
                   background: "#FFFFFF",
-                  border: "1px solid rgba(0,0,0,0.12)",
-                  borderRadius: "var(--radius-lg)",
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  borderRadius: "var(--radius-md)",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
                   position: "relative",
+                  boxSizing: "border-box",
                 }}
               >
                 {/* Individual Action Bar (No Print) */}
@@ -218,8 +215,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginBottom: "1.25rem",
-                    paddingBottom: "0.75rem",
+                    marginBottom: "0.85rem",
+                    paddingBottom: "0.5rem",
                     borderBottom: "1px dashed var(--border-color)",
                   }}
                 >
@@ -235,27 +232,27 @@ export default function AllClearPageClient({ students, departments }: Props) {
                   <button
                     onClick={() => handlePrintSingle(student.id)}
                     className="btn btn-secondary"
-                    style={{ padding: "0.35rem 0.85rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
+                    style={{ padding: "0.3rem 0.75rem", fontSize: "0.775rem", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}
                   >
                     <IconPrinter size={14} /> Print This A4 Report
                   </button>
                 </div>
 
                 {/* ========================================================= */}
-                {/* OFFICIAL A4 REPORT HEADER                                */}
+                {/* 1. OFFICIAL A4 REPORT HEADER                              */}
                 {/* ========================================================= */}
-                <div style={{ textAlign: "center", marginBottom: "1.5rem", borderBottom: "2px solid #000000", paddingBottom: "1rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "0.5rem" }}>
+                <div style={{ textAlign: "center", marginBottom: "0.85rem", borderBottom: "1.5px solid #000000", paddingBottom: "0.6rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.85rem", marginBottom: "0.35rem" }}>
                     <img
                       src="/logo.png"
                       alt="College Logo"
-                      style={{ height: "52px", width: "auto", objectFit: "contain" }}
+                      style={{ height: "42px", width: "auto", objectFit: "contain" }}
                     />
                     <div>
-                      <h1 style={{ fontSize: "1.3rem", fontWeight: 900, color: "#000000", letterSpacing: "0.05em", textTransform: "uppercase", margin: 0 }}>
+                      <h1 style={{ fontSize: "1.15rem", fontWeight: 900, color: "#000000", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0, lineHeight: 1.1 }}>
                         MAZHARUL ULOOM COLLEGE (AUTONOMOUS) – AMBUR
                       </h1>
-                      <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#4F46E5", letterSpacing: "0.04em", margin: "0.2rem 0 0 0" }}>
+                      <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "#4F46E5", letterSpacing: "0.03em", margin: "0.15rem 0 0 0" }}>
                         ALL STUDENTS RESULT REPORT
                       </h2>
                     </div>
@@ -265,31 +262,31 @@ export default function AllClearPageClient({ students, departments }: Props) {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                      gap: "0.5rem",
-                      marginTop: "1rem",
+                      gridTemplateColumns: "1fr 1fr 1.2fr 1fr",
+                      gap: "0.35rem",
+                      marginTop: "0.5rem",
                       background: "#F8FAFC",
-                      padding: "0.6rem 1rem",
+                      padding: "0.4rem 0.75rem",
                       border: "1px solid #CBD5E1",
                       borderRadius: "4px",
-                      fontSize: "0.85rem",
+                      fontSize: "0.8rem",
                       textAlign: "left",
                     }}
                   >
                     <div>
-                      <span style={{ fontSize: "0.7rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Class Rank</span>
-                      <strong style={{ color: "#4F46E5", fontSize: "1rem" }}>Rank #{student.rank}</strong>
+                      <span style={{ fontSize: "0.65rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Class Rank</span>
+                      <strong style={{ color: "#4F46E5", fontSize: "0.9rem" }}>Rank #{student.rank}</strong>
                     </div>
                     <div>
-                      <span style={{ fontSize: "0.7rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Roll No / Reg No</span>
+                      <span style={{ fontSize: "0.65rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Roll No / Reg No</span>
                       <strong style={{ color: "#0F172A" }}>{student.registerNumber}</strong>
                     </div>
                     <div>
-                      <span style={{ fontSize: "0.7rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Student Name</span>
+                      <span style={{ fontSize: "0.65rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Student Name</span>
                       <strong style={{ color: "#0F172A" }}>{student.name}</strong>
                     </div>
                     <div>
-                      <span style={{ fontSize: "0.7rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Department / Batch</span>
+                      <span style={{ fontSize: "0.65rem", color: "#64748B", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Department / Batch</span>
                       <strong style={{ color: "#0F172A" }}>{student.department?.code || "CS"} ({student.batchYear || student.batch})</strong>
                     </div>
                   </div>
@@ -298,8 +295,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 {/* ========================================================= */}
                 {/* 2. STUDENT RESULT TABLE (CORE & ALLIED SUBJECTS ONLY)     */}
                 {/* ========================================================= */}
-                <div style={{ marginBottom: "1.5rem" }}>
-                  <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>
+                <div style={{ marginBottom: "0.85rem" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem" }}>
                     📋 Core & Allied Subjects Performance Table
                   </div>
 
@@ -307,17 +304,17 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     style={{
                       width: "100%",
                       borderCollapse: "collapse",
-                      fontSize: "0.85rem",
+                      fontSize: "0.775rem",
                       border: "1.5px solid #000000",
                     }}
                   >
                     <thead>
                       <tr style={{ background: "#F1F5F9", borderBottom: "1.5px solid #000000" }}>
-                        <th style={{ padding: "0.6rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "60px" }}>RANK</th>
-                        <th style={{ padding: "0.6rem", borderRight: "1px solid #CBD5E1", textAlign: "left", width: "220px" }}>ROLL NO & NAME</th>
-                        <th style={{ padding: "0.6rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "80px" }}>SEMESTER</th>
-                        <th style={{ padding: "0.6rem", borderRight: "1px solid #CBD5E1", textAlign: "left" }}>CORE / ALLIED SUBJECT</th>
-                        <th style={{ padding: "0.6rem", textAlign: "center", width: "90px" }}>MARK</th>
+                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "50px" }}>RANK</th>
+                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left", width: "190px" }}>ROLL NO & NAME</th>
+                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "70px" }}>SEMESTER</th>
+                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left" }}>CORE / ALLIED SUBJECT</th>
+                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "center", width: "80px" }}>MARK</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -337,16 +334,16 @@ export default function AllClearPageClient({ students, departments }: Props) {
                                 background: semIdx % 2 === 0 ? "#FFFFFF" : "#F8FAFC",
                               }}
                             >
-                              {/* Rank Column (Spans All Rows) */}
+                              {/* Rank Column */}
                               {showStudentHeaderInfo ? (
                                 <td
                                   rowSpan={coreAndAlliedResults.length}
                                   style={{
-                                    padding: "0.6rem",
+                                    padding: "0.4rem 0.5rem",
                                     borderRight: "1px solid #000000",
                                     textAlign: "center",
                                     fontWeight: 900,
-                                    fontSize: "1rem",
+                                    fontSize: "0.9rem",
                                     color: "#4F46E5",
                                     verticalAlign: "middle",
                                     background: "#FFFFFF",
@@ -356,28 +353,28 @@ export default function AllClearPageClient({ students, departments }: Props) {
                                 </td>
                               ) : null}
 
-                              {/* Roll No & Name Column (Spans All Rows) */}
+                              {/* Roll No & Name Column */}
                               {showStudentHeaderInfo ? (
                                 <td
                                   rowSpan={coreAndAlliedResults.length}
                                   style={{
-                                    padding: "0.6rem",
+                                    padding: "0.4rem 0.5rem",
                                     borderRight: "1px solid #000000",
                                     verticalAlign: "middle",
                                     background: "#FFFFFF",
                                   }}
                                 >
                                   <div style={{ fontWeight: 800, color: "#0F172A" }}>{student.registerNumber}</div>
-                                  <div style={{ color: "#334155", fontSize: "0.8rem", fontWeight: 600 }}>{student.name}</div>
+                                  <div style={{ color: "#334155", fontSize: "0.75rem", fontWeight: 600 }}>{student.name}</div>
                                 </td>
                               ) : null}
 
-                              {/* Semester Column (Spans Semester Rows) */}
+                              {/* Semester Column */}
                               {isFirstRowInSem ? (
                                 <td
                                   rowSpan={semResults.length}
                                   style={{
-                                    padding: "0.6rem",
+                                    padding: "0.35rem 0.5rem",
                                     borderRight: "1px solid #CBD5E1",
                                     textAlign: "center",
                                     fontWeight: 800,
@@ -391,13 +388,13 @@ export default function AllClearPageClient({ students, departments }: Props) {
                               ) : null}
 
                               {/* Subject Name Column */}
-                              <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1" }}>
-                                <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.4rem" }}>[{r.subject?.code}]</span>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1" }}>
+                                <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.35rem" }}>[{r.subject?.code}]</span>
                                 <span style={{ color: "#0F172A", fontWeight: 600 }}>{r.subject?.name}</span>
                               </td>
 
                               {/* Individual Mark Column */}
-                              <td style={{ padding: "0.5rem 0.6rem", textAlign: "center", fontWeight: 800, color: "#0F172A" }}>
+                              <td style={{ padding: "0.3rem 0.5rem", textAlign: "center", fontWeight: 800, color: "#0F172A" }}>
                                 {(r.total || (r.internalMarks + r.externalMarks))} / 100
                               </td>
                             </tr>
@@ -409,10 +406,10 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 </div>
 
                 {/* ========================================================= */}
-                {/* 5. OVERALL RESULT FOOTER SUMMARY TABLE                   */}
+                {/* 3. OVERALL RESULT FOOTER SUMMARY TABLE                    */}
                 {/* ========================================================= */}
-                <div>
-                  <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>
+                <div style={{ marginBottom: "0.5rem" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem" }}>
                     📊 Overall Core & Allied Result Summary
                   </div>
 
@@ -420,39 +417,39 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     style={{
                       width: "100%",
                       borderCollapse: "collapse",
-                      fontSize: "0.85rem",
+                      fontSize: "0.775rem",
                       border: "1.5px solid #000000",
                       background: "#F8FAFC",
                     }}
                   >
                     <thead>
                       <tr style={{ background: "#E2E8F0", borderBottom: "1px solid #000000" }}>
-                        <th style={{ padding: "0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "40%" }}>RESULT COMPONENT</th>
-                        <th style={{ padding: "0.5rem", textAlign: "left" }}>VALUE</th>
+                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "42%" }}>RESULT COMPONENT</th>
+                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left" }}>VALUE</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core & Allied Marks Obtained</td>
-                        <td style={{ padding: "0.5rem 0.6rem", fontWeight: 850, color: "#0F172A" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core & Allied Marks Obtained</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
                           {totalCoreAlliedScored} / {totalCoreAlliedMax}
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Core & Allied Percentage</td>
-                        <td style={{ padding: "0.5rem 0.6rem", fontWeight: 850, color: "#2563EB" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Core & Allied Percentage</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#2563EB" }}>
                           {coreAlliedPercentage.toFixed(2)}%
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Classification Grade</td>
-                        <td style={{ padding: "0.5rem 0.6rem", fontWeight: 850, color: "#059669" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Classification Grade</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#059669" }}>
                           {overallGrade}
                         </td>
                       </tr>
                       <tr>
-                        <td style={{ padding: "0.5rem 0.6rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Cumulative Grade Point Average (CGPA)</td>
-                        <td style={{ padding: "0.5rem 0.6rem", fontWeight: 900, color: "#4F46E5", fontSize: "1rem" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Cumulative Grade Point Average (CGPA)</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.9rem" }}>
                           {coreAlliedCgpa.toFixed(2)} CGPA
                         </td>
                       </tr>
@@ -466,10 +463,9 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginTop: "1.5rem",
-                    paddingTop: "0.75rem",
+                    paddingTop: "0.4rem",
                     borderTop: "1px solid #CBD5E1",
-                    fontSize: "0.75rem",
+                    fontSize: "0.7rem",
                     color: "#64748B",
                   }}
                 >
@@ -482,7 +478,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
         </div>
       )}
 
-      {/* Global CSS for Print Optimization */}
+      {/* Global CSS for Strict Single-Page A4 Print Optimization */}
       <style jsx global>{`
         @media print {
           @page {
@@ -526,11 +522,18 @@ export default function AllClearPageClient({ students, departments }: Props) {
             box-shadow: none !important;
             border: 1.5px solid #000000 !important;
             margin: 0 0 0 0 !important;
-            padding: 1rem !important;
+            padding: 0.85rem 1rem !important;
             border-radius: 0 !important;
             background: #FFFFFF !important;
             width: 100% !important;
+            max-width: 210mm !important;
+            height: 275mm !important;
+            max-height: 275mm !important;
             box-sizing: border-box !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
           }
 
           .a4-report-page:last-child {
