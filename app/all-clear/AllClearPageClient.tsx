@@ -11,7 +11,8 @@ import {
   IconMedal,
   IconStar,
   IconClipboardList,
-  IconBarChart3
+  IconBarChart3,
+  IconCheckCircle
 } from "../components/Icons";
 
 type Props = {
@@ -23,6 +24,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
   const [selectedDept, setSelectedDept] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [printingStudentId, setPrintingStudentId] = useState<string | null>(null);
+  const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
+  const [printingMode, setPrintingMode] = useState<"all" | "single" | "selected">("all");
 
   // Filter students
   const filteredStudents = students.filter((s) => {
@@ -38,20 +41,57 @@ export default function AllClearPageClient({ students, departments }: Props) {
     return true;
   });
 
-  // Handle printing all reports at once
+  const filteredIds = filteredStudents.map((s) => s.id);
+  const allFilteredSelected = filteredIds.length > 0 && filteredIds.every((id) => selectedStudentIds.includes(id));
+  const selectedCount = selectedStudentIds.filter((id) => filteredIds.includes(id)).length;
+
+  // Toggle selection for a single student
+  const toggleSelectStudent = (id: string) => {
+    if (selectedStudentIds.includes(id)) {
+      setSelectedStudentIds(selectedStudentIds.filter((item) => item !== id));
+    } else {
+      setSelectedStudentIds([...selectedStudentIds, id]);
+    }
+  };
+
+  // Toggle select all filtered students
+  const toggleSelectAll = () => {
+    if (allFilteredSelected) {
+      setSelectedStudentIds(selectedStudentIds.filter((id) => !filteredIds.includes(id)));
+    } else {
+      const combined = Array.from(new Set([...selectedStudentIds, ...filteredIds]));
+      setSelectedStudentIds(combined);
+    }
+  };
+
+  // Handle printing all reports
   const handlePrintAll = () => {
+    setPrintingMode("all");
     setPrintingStudentId(null);
     setTimeout(() => {
       window.print();
     }, 150);
   };
 
+  // Handle printing selected reports batch
+  const handlePrintSelected = () => {
+    if (selectedCount === 0) return;
+    setPrintingMode("selected");
+    setPrintingStudentId(null);
+    setTimeout(() => {
+      window.print();
+      setPrintingMode("all");
+    }, 150);
+  };
+
   // Handle printing a single student's report
   const handlePrintSingle = (studentId: string) => {
+    setPrintingMode("single");
     setPrintingStudentId(studentId);
     setTimeout(() => {
       window.print();
       setPrintingStudentId(null);
+      setPrintingMode("all");
     }, 150);
   };
 
@@ -88,8 +128,9 @@ export default function AllClearPageClient({ students, departments }: Props) {
           </p>
         </div>
 
-        {/* Filter Controls & Bulk Action */}
+        {/* Filter Controls & Select & Print Actions */}
         <div style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap" }}>
+          {/* Department Filter */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
             <IconFilter size={16} color="var(--accent-primary)" />
             <select
@@ -107,18 +148,67 @@ export default function AllClearPageClient({ students, departments }: Props) {
             </select>
           </div>
 
+          {/* Search Student */}
           <input
             type="text"
             className="input-field"
-            style={{ width: "190px", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+            style={{ width: "170px", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
             placeholder="Search Student..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
+          {/* Select All Checkbox Control */}
+          <label
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              color: allFilteredSelected ? "var(--accent-primary)" : "var(--text-primary)",
+              background: "#F1F5F9",
+              padding: "0.45rem 0.85rem",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid #CBD5E1",
+              userSelect: "none",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={allFilteredSelected}
+              onChange={toggleSelectAll}
+              style={{ accentColor: "var(--accent-primary)", width: "16px", height: "16px", cursor: "pointer" }}
+            />
+            <span>Select All ({selectedCount}/{filteredStudents.length})</span>
+          </label>
+
+          {/* Print Selected Batch Button */}
+          {selectedCount > 0 && (
+            <button
+              onClick={handlePrintSelected}
+              className="btn btn-primary"
+              style={{
+                padding: "0.55rem 1.15rem",
+                fontSize: "0.875rem",
+                fontWeight: 800,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
+                boxShadow: "0 6px 16px rgba(37, 99, 235, 0.3)",
+              }}
+            >
+              <IconPrinter size={16} />
+              <span>Print Selected ({selectedCount})</span>
+            </button>
+          )}
+
+          {/* Download All Reports Button */}
           <button
             onClick={handlePrintAll}
-            className="btn btn-primary"
+            className="btn btn-secondary"
             style={{
               padding: "0.55rem 1.15rem",
               fontSize: "0.875rem",
@@ -126,11 +216,10 @@ export default function AllClearPageClient({ students, departments }: Props) {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.4rem",
-              boxShadow: "0 6px 16px rgba(79, 70, 229, 0.25)",
             }}
           >
             <IconPrinter size={16} />
-            <span>Download All Reports (Bulk A4 Print/PDF)</span>
+            <span>Download All ({filteredStudents.length})</span>
           </button>
         </div>
       </div>
@@ -144,10 +233,17 @@ export default function AllClearPageClient({ students, departments }: Props) {
       ) : (
         <div className="all-clear-reports-container" style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
           {filteredStudents.map((student) => {
-            const isSinglePrintTarget = printingStudentId === student.id;
-            const hideInSinglePrint = printingStudentId && !isSinglePrintTarget;
+            // Check if this student is hidden during printing
+            let isHiddenInPrint = false;
+            if (printingMode === "single" && printingStudentId !== student.id) {
+              isHiddenInPrint = true;
+            } else if (printingMode === "selected" && !selectedStudentIds.includes(student.id)) {
+              isHiddenInPrint = true;
+            }
 
-            if (hideInSinglePrint) return null;
+            if (isHiddenInPrint) return null;
+
+            const isChecked = selectedStudentIds.includes(student.id);
 
             // Extract Core & Allied Subjects (Explicitly include Python Practical, exclude EVS / General Skill Electives)
             const allResults = student.results || [];
@@ -287,11 +383,12 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 style={{
                   padding: "1.25rem 1.5rem",
                   background: "#FFFFFF",
-                  border: "1px solid rgba(0,0,0,0.15)",
+                  border: isChecked ? "2px solid var(--accent-primary)" : "1px solid rgba(0,0,0,0.15)",
                   borderRadius: "var(--radius-md)",
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                  boxShadow: isChecked ? "0 8px 24px rgba(79, 70, 229, 0.12)" : "0 4px 16px rgba(0,0,0,0.04)",
                   position: "relative",
                   boxSizing: "border-box",
+                  transition: "all 0.2s ease-in-out",
                 }}
               >
                 {/* Individual Action Bar (No Print) */}
@@ -306,7 +403,33 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     borderBottom: "1px dashed var(--border-color)",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    {/* Checkbox for Select and Print */}
+                    <label
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                        cursor: "pointer",
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        color: isChecked ? "var(--accent-primary)" : "var(--text-secondary)",
+                        background: isChecked ? "rgba(79, 70, 229, 0.08)" : "#F1F5F9",
+                        padding: "0.3rem 0.65rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: isChecked ? "1px solid var(--accent-primary)" : "1px solid #CBD5E1",
+                        userSelect: "none",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleSelectStudent(student.id)}
+                        style={{ accentColor: "var(--accent-primary)", width: "16px", height: "16px", cursor: "pointer" }}
+                      />
+                      <span>{isChecked ? "Selected" : "Select"}</span>
+                    </label>
+
                     <span className="badge badge-primary" style={{ fontWeight: 800 }}>
                       RANK #{student.rank}
                     </span>
