@@ -149,14 +149,24 @@ export default function AllClearPageClient({ students, departments }: Props) {
 
             if (hideInSinglePrint) return null;
 
-            // Extract Core & Allied Subjects (Exclude Language and General Skill Electives)
+            // Extract Core & Allied Subjects (Explicitly include Python Practical, exclude EVS / General Skill Electives)
             const allResults = student.results || [];
             let coreAndAlliedResults = allResults.filter((r: any) => {
               if (!r.subject || !r.subject.code) return false;
               const code = r.subject.code.toUpperCase();
+              const name = r.subject.name ? r.subject.name.toUpperCase() : "";
+
+              // Exclude Language Papers (ULE, ULT, ULU)
               const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
-              const isGeneralSkill = code.includes("EVS") || code.includes("VALUE") || code.includes("VE") || code.includes("PE");
-              return !isLang && !isGeneralSkill;
+
+              // Exclude Environmental Studies & General Value Education (EVS, VE, VALUE, PE, HRE)
+              const isEVS = code.includes("EVS") || code.includes("VALUE") || code.includes("VE") || code.includes("PE") || name.includes("ENVIRONMENT");
+
+              // ALWAYS include Python, Python Practical (UPCS), Core, and Allied papers!
+              const isPythonOrCore = code.includes("UPCS") || code.includes("UCS") || name.includes("PYTHON") || name.includes("LAB") || name.includes("PRACTICAL");
+
+              if (isPythonOrCore) return true;
+              return !isLang && !isEVS;
             });
 
             // Fallback if filter is empty
@@ -175,13 +185,23 @@ export default function AllClearPageClient({ students, departments }: Props) {
             const sortedSemesters = Object.keys(semGroupMap).map(Number).sort((a, b) => a - b);
             let finalCoreAlliedResults: any[] = [];
 
-            // Sort subjects inside each semester by Subject Code & slice to exact quota:
+            // Sort subjects inside each semester & slice to exact quota:
+            // Prioritize Python Theory, Python Practical (Lab), Core & Allied over general electives
             // Sem 1, Sem 2, Sem 3 -> max 3 Core/Allied subjects
             // Sem 4 -> max 4 Core/Allied subjects
             sortedSemesters.forEach((semNum) => {
               semGroupMap[semNum].sort((a: any, b: any) => {
                 const codeA = a.subject?.code || "";
                 const codeB = b.subject?.code || "";
+                const nameA = (a.subject?.name || "").toUpperCase();
+                const nameB = (b.subject?.name || "").toUpperCase();
+
+                const isCoreA = codeA.includes("UCS") || codeA.includes("UPCS") || nameA.includes("PYTHON") || nameA.includes("LAB");
+                const isCoreB = codeB.includes("UCS") || codeB.includes("UPCS") || nameB.includes("PYTHON") || nameB.includes("LAB");
+
+                if (isCoreA && !isCoreB) return -1;
+                if (!isCoreA && isCoreB) return 1;
+
                 return codeA.localeCompare(codeB);
               });
 
