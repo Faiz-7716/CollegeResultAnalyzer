@@ -486,6 +486,12 @@ export default function AllClearPageClient({ students, departments }: Props) {
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Core & Allied Grade Point Average (Core + Allied CGPA)</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.875rem" }}>
+                          {coreAlliedCgpa.toFixed(2)} CGPA
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Total Marks (All 4 Semesters)</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
                           {student.metrics?.totalMarks || 0} Marks
@@ -498,8 +504,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
                         </td>
                       </tr>
                       <tr>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Cumulative Grade Point Average (CGPA)</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.9rem" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Cumulative Grade Point Average (Overall CGPA)</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#059669", fontSize: "0.875rem" }}>
                           {(student.metrics?.cgpa || coreAlliedCgpa).toFixed(2)} CGPA
                         </td>
                       </tr>
