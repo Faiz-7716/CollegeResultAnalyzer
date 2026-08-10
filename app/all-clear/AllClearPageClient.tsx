@@ -181,26 +181,56 @@ export default function AllClearPageClient({ students, departments }: Props) {
               finalCoreAlliedResults.push(...semSliced);
             });
 
-            // Compute Summary Metrics for the exact Core & Allied quota subjects
-            let totalCoreAlliedScored = 0;
-            let totalCoreAlliedMax = finalCoreAlliedResults.length * 100;
+            // Compute Summary Metrics for Core & Allied subjects
+            let coreScored = 0;
+            let coreMax = 0;
+            let alliedScored = 0;
+            let alliedMax = 0;
+
             finalCoreAlliedResults.forEach((r: any) => {
-              totalCoreAlliedScored += (r.total || (r.internalMarks + r.externalMarks));
+              const code = (r.subject?.code || "").toUpperCase();
+              const mark = (r.total || (r.internalMarks + r.externalMarks));
+              const isCore = code.includes("UCS") || code.includes("UPCS") || code.includes("CC");
+
+              if (isCore) {
+                coreScored += mark;
+                coreMax += 100;
+              } else {
+                alliedScored += mark;
+                alliedMax += 100;
+              }
             });
+
+            let totalCoreAlliedScored = coreScored + alliedScored;
+            let totalCoreAlliedMax = coreMax + alliedMax;
+            if (totalCoreAlliedMax === 0) totalCoreAlliedMax = finalCoreAlliedResults.length * 100;
 
             const coreAlliedPercentage = totalCoreAlliedMax > 0
               ? Number(((totalCoreAlliedScored / totalCoreAlliedMax) * 100).toFixed(2))
               : 0;
 
+            const corePct = coreMax > 0 ? Number(((coreScored / coreMax) * 100).toFixed(2)) : 0;
+            const alliedPct = alliedMax > 0 ? Number(((alliedScored / alliedMax) * 100).toFixed(2)) : 0;
+
             const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
 
-            let overallGrade = "O";
-            if (coreAlliedPercentage >= 90) overallGrade = "O (Outstanding)";
-            else if (coreAlliedPercentage >= 80) overallGrade = "A+ (Excellent)";
-            else if (coreAlliedPercentage >= 70) overallGrade = "A (Very Good)";
-            else if (coreAlliedPercentage >= 60) overallGrade = "B+ (Good)";
-            else if (coreAlliedPercentage >= 50) overallGrade = "B (Above Average)";
-            else overallGrade = "C (Pass)";
+            // University Degree Classification Norms
+            let universityClassification = "FIRST CLASS WITH DISTINCTION 👑";
+            let classificationColor = "#059669";
+
+            if (coreAlliedCgpa >= 7.50 && coreAlliedPercentage >= 75.00) {
+              universityClassification = "FIRST CLASS WITH DISTINCTION 👑";
+              classificationColor = "#059669";
+            } else if (coreAlliedCgpa >= 6.00 && coreAlliedPercentage >= 60.00) {
+              universityClassification = "FIRST CLASS 🏅";
+              classificationColor = "#2563EB";
+            } else if (coreAlliedCgpa >= 5.00 && coreAlliedPercentage >= 50.00) {
+              universityClassification = "SECOND CLASS 🌟";
+              classificationColor = "#D97706";
+            } else {
+              universityClassification = "PASS CLASS";
+              classificationColor = "#475569";
+            }
 
             return (
               <div
@@ -418,7 +448,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 {/* ========================================================= */}
                 <div style={{ marginBottom: "0.5rem" }}>
                   <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem" }}>
-                    📊 Overall Core & Allied Result Summary
+                    📊 Overall Core & Allied Result Summary (University Norms)
                   </div>
 
                   <table
@@ -432,27 +462,33 @@ export default function AllClearPageClient({ students, departments }: Props) {
                   >
                     <thead>
                       <tr style={{ background: "#E2E8F0", borderBottom: "1px solid #000000" }}>
-                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "42%" }}>RESULT COMPONENT</th>
-                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left" }}>VALUE</th>
+                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "45%" }}>RESULT COMPONENT</th>
+                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left" }}>VALUE & CLASSIFICATION</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core & Allied Marks Obtained</td>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core Subjects Marks</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {totalCoreAlliedScored} / {totalCoreAlliedMax}
+                          {coreScored} / {coreMax} ({corePct.toFixed(2)}%)
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Core & Allied Percentage</td>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Allied Subjects Marks</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
+                          {alliedScored} / {alliedMax} ({alliedPct.toFixed(2)}%)
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Combined Core & Allied Total Marks</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#2563EB" }}>
-                          {coreAlliedPercentage.toFixed(2)}%
+                          {totalCoreAlliedScored} / {totalCoreAlliedMax} ({coreAlliedPercentage.toFixed(2)}%)
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Classification Grade</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#059669" }}>
-                          {overallGrade}
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification</td>
+                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: classificationColor }}>
+                          {universityClassification}
                         </td>
                       </tr>
                       <tr>
