@@ -242,33 +242,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
             const corePct = coreMax > 0 ? Number(((coreScored / coreMax) * 100).toFixed(2)) : 0;
             const alliedPct = alliedMax > 0 ? Number(((alliedScored / alliedMax) * 100).toFixed(2)) : 0;
 
-            // Compute exact Core & Allied CGPA from the rendered Core/Allied subjects
-            let coreAlliedEarnedPoints = 0;
-            let coreAlliedTotalCredits = 0;
-
-            finalCoreAlliedResults.forEach((r: any) => {
-              const mark = r.total || (r.internalMarks + r.externalMarks) || 0;
-              const credits = r.subject?.credits || (r.subject?.code?.includes("UPCS") ? 4 : 5);
-
-              let gp = 0;
-              if (r.gradePoints !== undefined && r.gradePoints !== null && r.gradePoints > 0) {
-                gp = r.gradePoints;
-              } else if (mark >= 90) gp = 10;
-              else if (mark >= 80) gp = 9;
-              else if (mark >= 70) gp = 8;
-              else if (mark >= 60) gp = 7;
-              else if (mark >= 55) gp = 6;
-              else if (mark >= 50) gp = 5;
-              else gp = 0;
-
-              coreAlliedEarnedPoints += (credits * gp);
-              coreAlliedTotalCredits += credits;
-            });
-
-            const coreAlliedCgpa = coreAlliedTotalCredits > 0
-              ? Number((coreAlliedEarnedPoints / coreAlliedTotalCredits).toFixed(2))
-              : (student.metrics?.part2Cgpa || student.metrics?.cgpa || 0);
-
+            // Core & Allied CGPA matching official student ledger metrics (Part 2 CGPA)
+            const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
             const overallCgpa = student.metrics?.cgpa || 0;
 
             // University Degree Classification Norms with Professional Icons
