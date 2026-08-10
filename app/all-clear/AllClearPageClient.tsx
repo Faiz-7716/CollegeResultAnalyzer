@@ -163,20 +163,28 @@ export default function AllClearPageClient({ students, departments }: Props) {
             });
 
             const sortedSemesters = Object.keys(semGroupMap).map(Number).sort((a, b) => a - b);
+            let finalCoreAlliedResults: any[] = [];
 
-            // Sort subjects inside each semester by Subject Code
+            // Sort subjects inside each semester by Subject Code & slice to exact quota:
+            // Sem 1, Sem 2, Sem 3 -> max 3 Core/Allied subjects
+            // Sem 4 -> max 4 Core/Allied subjects
             sortedSemesters.forEach((semNum) => {
               semGroupMap[semNum].sort((a: any, b: any) => {
                 const codeA = a.subject?.code || "";
                 const codeB = b.subject?.code || "";
                 return codeA.localeCompare(codeB);
               });
+
+              const maxQuota = semNum <= 3 ? 3 : 4;
+              const semSliced = semGroupMap[semNum].slice(0, maxQuota);
+              semGroupMap[semNum] = semSliced;
+              finalCoreAlliedResults.push(...semSliced);
             });
 
-            // Compute Summary Metrics
+            // Compute Summary Metrics for the exact Core & Allied quota subjects
             let totalCoreAlliedScored = 0;
-            let totalCoreAlliedMax = coreAndAlliedResults.length * 100;
-            coreAndAlliedResults.forEach((r: any) => {
+            let totalCoreAlliedMax = finalCoreAlliedResults.length * 100;
+            finalCoreAlliedResults.forEach((r: any) => {
               totalCoreAlliedScored += (r.total || (r.internalMarks + r.externalMarks));
             });
 
@@ -337,7 +345,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                               {/* Rank Column */}
                               {showStudentHeaderInfo ? (
                                 <td
-                                  rowSpan={coreAndAlliedResults.length}
+                                  rowSpan={finalCoreAlliedResults.length}
                                   style={{
                                     padding: "0.4rem 0.5rem",
                                     borderRight: "1px solid #000000",
@@ -356,7 +364,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                               {/* Roll No & Name Column */}
                               {showStudentHeaderInfo ? (
                                 <td
-                                  rowSpan={coreAndAlliedResults.length}
+                                  rowSpan={finalCoreAlliedResults.length}
                                   style={{
                                     padding: "0.4rem 0.5rem",
                                     borderRight: "1px solid #000000",
