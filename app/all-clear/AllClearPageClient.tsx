@@ -11,8 +11,7 @@ import {
   IconMedal,
   IconStar,
   IconClipboardList,
-  IconBarChart3,
-  IconCheckCircle
+  IconBarChart3
 } from "../components/Icons";
 
 type Props = {
@@ -99,7 +98,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       {/* 1. Header Control Bar (No Print) */}
       <div
-        className="card glass-panel no-print"
+        className="card glass-panel no-print report-control-bar"
         style={{
           padding: "1.25rem 1.5rem",
           display: "flex",
@@ -121,7 +120,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
             </span>
           </div>
           <h2 className="h2 text-gradient" style={{ fontSize: "1.6rem" }}>
-            All Students Result Reports
+            Student Result Reports
           </h2>
           <p className="text-muted" style={{ fontSize: "0.85rem", marginTop: "0.15rem" }}>
             MAZHARUL ULOOM COLLEGE (AUTONOMOUS) – AMBUR • Core & Allied Academic Ledger
@@ -129,13 +128,13 @@ export default function AllClearPageClient({ students, departments }: Props) {
         </div>
 
         {/* Filter Controls & Select & Print Actions */}
-        <div style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap" }}>
+        <div className="report-control-actions" style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap" }}>
           {/* Department Filter */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flex: "1 1 auto" }}>
             <IconFilter size={16} color="var(--accent-primary)" />
             <select
               className="input-field"
-              style={{ width: "auto", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+              style={{ width: "100%", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
               value={selectedDept}
               onChange={(e) => setSelectedDept(e.target.value)}
             >
@@ -152,7 +151,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
           <input
             type="text"
             className="input-field"
-            style={{ width: "170px", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+            style={{ minWidth: "150px", flex: "1 1 auto", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
             placeholder="Search Student..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -173,6 +172,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
               borderRadius: "var(--radius-md)",
               border: "1px solid #CBD5E1",
               userSelect: "none",
+              whiteSpace: "nowrap",
             }}
           >
             <input
@@ -198,6 +198,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 gap: "0.4rem",
                 background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
                 boxShadow: "0 6px 16px rgba(37, 99, 235, 0.3)",
+                whiteSpace: "nowrap",
               }}
             >
               <IconPrinter size={16} />
@@ -216,6 +217,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.4rem",
+              whiteSpace: "nowrap",
             }}
           >
             <IconPrinter size={16} />
@@ -393,7 +395,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
               >
                 {/* Individual Action Bar (No Print) */}
                 <div
-                  className="no-print"
+                  className="no-print student-action-bar"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -401,9 +403,11 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     marginBottom: "0.85rem",
                     paddingBottom: "0.5rem",
                     borderBottom: "1px dashed var(--border-color)",
+                    flexWrap: "wrap",
+                    gap: "0.5rem",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                     {/* Checkbox for Select and Print */}
                     <label
                       style={{
@@ -451,18 +455,18 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 {/* 1. OFFICIAL A4 REPORT HEADER                              */}
                 {/* ========================================================= */}
                 <div style={{ textAlign: "center", marginBottom: "0.85rem", borderBottom: "1.5px solid #000000", paddingBottom: "0.6rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.85rem", marginBottom: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.85rem", marginBottom: "0.35rem", flexWrap: "wrap" }}>
                     <img
                       src="/logo.png"
                       alt="College Logo"
                       style={{ height: "42px", width: "auto", objectFit: "contain" }}
                     />
                     <div>
-                      <h1 style={{ fontSize: "1.15rem", fontWeight: 900, color: "#000000", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0, lineHeight: 1.1 }}>
+                      <h1 className="report-header-title" style={{ fontSize: "1.15rem", fontWeight: 900, color: "#000000", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0, lineHeight: 1.1 }}>
                         MAZHARUL ULOOM COLLEGE (AUTONOMOUS) – AMBUR
                       </h1>
                       <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "#4F46E5", letterSpacing: "0.03em", margin: "0.15rem 0 0 0" }}>
-                        ALL STUDENTS RESULT REPORT
+                        STUDENT RESULT REPORT
                       </h2>
                     </div>
                   </div>
@@ -471,7 +475,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1.2fr 1fr",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
                       gap: "0.35rem",
                       marginTop: "0.5rem",
                       background: "#F8FAFC",
@@ -509,109 +513,112 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     <IconClipboardList size={15} color="#4F46E5" /> Core & Allied Subjects Performance Table
                   </div>
 
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      fontSize: "0.775rem",
-                      border: "1.5px solid #000000",
-                    }}
-                  >
-                    <thead>
-                      <tr style={{ background: "#F1F5F9", borderBottom: "1.5px solid #000000" }}>
-                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "50px" }}>RANK</th>
-                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left", width: "190px" }}>ROLL NO & NAME</th>
-                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "70px" }}>SEMESTER</th>
-                        <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left" }}>CORE / ALLIED SUBJECT</th>
-                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "center", width: "80px" }}>MARK</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedSemesters.map((semNum, semIdx) => {
-                        const semResults = semGroupMap[semNum];
-                        const isFirstSem = semIdx === 0;
+                  <div style={{ overflowX: "auto", width: "100%" }}>
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        fontSize: "0.775rem",
+                        border: "1.5px solid #000000",
+                        minWidth: "480px",
+                      }}
+                    >
+                      <thead>
+                        <tr style={{ background: "#F1F5F9", borderBottom: "1.5px solid #000000" }}>
+                          <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "50px" }}>RANK</th>
+                          <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left", width: "190px" }}>ROLL NO & NAME</th>
+                          <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "70px" }}>SEMESTER</th>
+                          <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left" }}>CORE / ALLIED SUBJECT</th>
+                          <th style={{ padding: "0.35rem 0.5rem", textAlign: "center", width: "80px" }}>MARK</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sortedSemesters.map((semNum, semIdx) => {
+                          const semResults = semGroupMap[semNum];
+                          const isFirstSem = semIdx === 0;
 
-                        return semResults.map((r: any, rIdx: number) => {
-                          const isFirstRowInSem = rIdx === 0;
-                          const showStudentHeaderInfo = isFirstSem && isFirstRowInSem;
+                          return semResults.map((r: any, rIdx: number) => {
+                            const isFirstRowInSem = rIdx === 0;
+                            const showStudentHeaderInfo = isFirstSem && isFirstRowInSem;
 
-                          return (
-                            <tr
-                              key={r.id}
-                              style={{
-                                borderBottom: rIdx === semResults.length - 1 ? "1.5px solid #000000" : "1px solid #E2E8F0",
-                                background: semIdx % 2 === 0 ? "#FFFFFF" : "#F8FAFC",
-                              }}
-                            >
-                              {/* Rank Column */}
-                              {showStudentHeaderInfo ? (
-                                <td
-                                  rowSpan={finalCoreAlliedResults.length}
-                                  style={{
-                                    padding: "0.4rem 0.5rem",
-                                    borderRight: "1px solid #000000",
-                                    textAlign: "center",
-                                    fontWeight: 900,
-                                    fontSize: "0.9rem",
-                                    color: "#4F46E5",
-                                    verticalAlign: "middle",
-                                    background: "#FFFFFF",
-                                  }}
-                                >
-                                  #{student.rank}
+                            return (
+                              <tr
+                                key={r.id}
+                                style={{
+                                  borderBottom: rIdx === semResults.length - 1 ? "1.5px solid #000000" : "1px solid #E2E8F0",
+                                  background: semIdx % 2 === 0 ? "#FFFFFF" : "#F8FAFC",
+                                }}
+                              >
+                                {/* Rank Column */}
+                                {showStudentHeaderInfo ? (
+                                  <td
+                                    rowSpan={finalCoreAlliedResults.length}
+                                    style={{
+                                      padding: "0.4rem 0.5rem",
+                                      borderRight: "1px solid #000000",
+                                      textAlign: "center",
+                                      fontWeight: 900,
+                                      fontSize: "0.9rem",
+                                      color: "#4F46E5",
+                                      verticalAlign: "middle",
+                                      background: "#FFFFFF",
+                                    }}
+                                  >
+                                    #{student.rank}
+                                  </td>
+                                ) : null}
+
+                                {/* Roll No & Name Column */}
+                                {showStudentHeaderInfo ? (
+                                  <td
+                                    rowSpan={finalCoreAlliedResults.length}
+                                    style={{
+                                      padding: "0.4rem 0.5rem",
+                                      borderRight: "1px solid #000000",
+                                      verticalAlign: "middle",
+                                      background: "#FFFFFF",
+                                    }}
+                                  >
+                                    <div style={{ fontWeight: 800, color: "#0F172A" }}>{student.registerNumber}</div>
+                                    <div style={{ color: "#334155", fontSize: "0.75rem", fontWeight: 600 }}>{student.name}</div>
+                                  </td>
+                                ) : null}
+
+                                {/* Semester Column */}
+                                {isFirstRowInSem ? (
+                                  <td
+                                    rowSpan={semResults.length}
+                                    style={{
+                                      padding: "0.35rem 0.5rem",
+                                      borderRight: "1px solid #CBD5E1",
+                                      textAlign: "center",
+                                      fontWeight: 800,
+                                      color: "#1E293B",
+                                      verticalAlign: "middle",
+                                      background: "#F1F5F9",
+                                    }}
+                                  >
+                                    Sem {semNum}
+                                  </td>
+                                ) : null}
+
+                                {/* Subject Name Column */}
+                                <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1" }}>
+                                  <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.35rem" }}>[{r.subject?.code}]</span>
+                                  <span style={{ color: "#0F172A", fontWeight: 600 }}>{r.subject?.name}</span>
                                 </td>
-                              ) : null}
 
-                              {/* Roll No & Name Column */}
-                              {showStudentHeaderInfo ? (
-                                <td
-                                  rowSpan={finalCoreAlliedResults.length}
-                                  style={{
-                                    padding: "0.4rem 0.5rem",
-                                    borderRight: "1px solid #000000",
-                                    verticalAlign: "middle",
-                                    background: "#FFFFFF",
-                                  }}
-                                >
-                                  <div style={{ fontWeight: 800, color: "#0F172A" }}>{student.registerNumber}</div>
-                                  <div style={{ color: "#334155", fontSize: "0.75rem", fontWeight: 600 }}>{student.name}</div>
+                                {/* Individual Mark Column */}
+                                <td style={{ padding: "0.3rem 0.5rem", textAlign: "center", fontWeight: 800, color: "#0F172A" }}>
+                                  {(r.total || (r.internalMarks + r.externalMarks))} / 100
                                 </td>
-                              ) : null}
-
-                              {/* Semester Column */}
-                              {isFirstRowInSem ? (
-                                <td
-                                  rowSpan={semResults.length}
-                                  style={{
-                                    padding: "0.35rem 0.5rem",
-                                    borderRight: "1px solid #CBD5E1",
-                                    textAlign: "center",
-                                    fontWeight: 800,
-                                    color: "#1E293B",
-                                    verticalAlign: "middle",
-                                    background: "#F1F5F9",
-                                  }}
-                                >
-                                  Sem {semNum}
-                                </td>
-                              ) : null}
-
-                              {/* Subject Name Column */}
-                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1" }}>
-                                <span style={{ fontWeight: 700, color: "#4F46E5", marginRight: "0.35rem" }}>[{r.subject?.code}]</span>
-                                <span style={{ color: "#0F172A", fontWeight: 600 }}>{r.subject?.name}</span>
-                              </td>
-
-                              {/* Individual Mark Column */}
-                              <td style={{ padding: "0.3rem 0.5rem", textAlign: "center", fontWeight: 800, color: "#0F172A" }}>
-                                {(r.total || (r.internalMarks + r.externalMarks))} / 100
-                              </td>
-                            </tr>
-                          );
-                        });
-                      })}
-                    </tbody>
-                  </table>
+                              </tr>
+                            );
+                          });
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 {/* ========================================================= */}
@@ -622,66 +629,69 @@ export default function AllClearPageClient({ students, departments }: Props) {
                     <IconBarChart3 size={15} color="#4F46E5" /> Overall Core & Allied Result Summary (University Norms)
                   </div>
 
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      fontSize: "0.775rem",
-                      border: "1.5px solid #000000",
-                      background: "#F8FAFC",
-                    }}
-                  >
-                    <thead>
-                      <tr style={{ background: "#E2E8F0", borderBottom: "1px solid #000000" }}>
-                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "45%" }}>RESULT COMPONENT</th>
-                        <th style={{ padding: "0.35rem 0.5rem", textAlign: "left" }}>VALUE & CLASSIFICATION</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core Subjects Marks</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {student.metrics?.coreMarks || coreScored} Marks
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Allied Subjects Marks</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {student.metrics?.alliedMarks || alliedScored} Marks
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Combined Core & Allied Total Marks</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#2563EB" }}>
-                          {student.metrics?.coreAndAllied || totalCoreAlliedScored} / 1300 ({coreAlliedPercentage.toFixed(1)}%)
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Core & Allied Grade Point Average (Core + Allied CGPA)</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.875rem" }}>
-                          {coreAlliedCgpa.toFixed(2)} CGPA
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Total Marks (All 4 Semesters)</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
-                          {student.metrics?.totalMarks || 0} Marks
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification (Core & Allied Only)</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: classificationColor }}>
-                          {universityClassificationNode}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Cumulative Grade Point Average (Overall CGPA)</td>
-                        <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#059669", fontSize: "0.875rem" }}>
-                          {overallCgpa.toFixed(2)} CGPA
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div style={{ overflowX: "auto", width: "100%" }}>
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        fontSize: "0.775rem",
+                        border: "1.5px solid #000000",
+                        background: "#F8FAFC",
+                        minWidth: "480px",
+                      }}
+                    >
+                      <thead>
+                        <tr style={{ background: "#E2E8F0", borderBottom: "1px solid #000000" }}>
+                          <th style={{ padding: "0.35rem 0.5rem", textAlign: "left", borderRight: "1px solid #CBD5E1", width: "45%" }}>RESULT COMPONENT</th>
+                          <th style={{ padding: "0.35rem 0.5rem", textAlign: "left" }}>VALUE & CLASSIFICATION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Core Subjects Marks</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
+                            {student.metrics?.coreMarks || coreScored} Marks
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Total Allied Subjects Marks</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
+                            {student.metrics?.alliedMarks || alliedScored} Marks
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Combined Core & Allied Total Marks</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#2563EB" }}>
+                            {student.metrics?.coreAndAllied || totalCoreAlliedScored} / 1300 ({coreAlliedPercentage.toFixed(1)}%)
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Core & Allied Grade Point Average (Core + Allied CGPA)</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#4F46E5", fontSize: "0.875rem" }}>
+                            {coreAlliedCgpa.toFixed(2)} CGPA
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Total Marks (All 4 Semesters)</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 850, color: "#0F172A" }}>
+                            {student.metrics?.totalMarks || 0} Marks
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification (Core & Allied Only)</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: classificationColor }}>
+                            {universityClassificationNode}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Cumulative Grade Point Average (Overall CGPA)</td>
+                          <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#059669", fontSize: "0.875rem" }}>
+                            {overallCgpa.toFixed(2)} CGPA
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 {/* Printable Footer Stamp */}
@@ -705,8 +715,34 @@ export default function AllClearPageClient({ students, departments }: Props) {
         </div>
       )}
 
-      {/* Global CSS for Strict Single-Page A4 Print Optimization */}
+      {/* Global CSS for Strict Single-Page A4 Print & Responsive Screens */}
       <style jsx global>{`
+        @media screen and (max-width: 768px) {
+          .report-control-bar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .report-control-actions {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .report-control-actions button,
+          .report-control-actions label,
+          .report-control-actions input,
+          .report-control-actions select {
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          .student-action-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+          .a4-report-page {
+            padding: 0.85rem 0.75rem !important;
+          }
+        }
+
         @media print {
           @page {
             size: A4 portrait;
