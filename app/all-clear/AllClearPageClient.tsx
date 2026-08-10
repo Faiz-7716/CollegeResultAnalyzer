@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IconPrinter, IconFilter, IconArrowLeft, IconSparkles } from "../components/Icons";
+import {
+  IconPrinter,
+  IconFilter,
+  IconArrowLeft,
+  IconSparkles,
+  IconCrown,
+  IconMedal,
+  IconStar,
+  IconClipboardList,
+  IconBarChart3
+} from "../components/Icons";
 
 type Props = {
   students: any[];
@@ -66,8 +76,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
             <Link href="/" className="btn btn-secondary" style={{ padding: "0.3rem 0.65rem", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
               <IconArrowLeft size={14} /> Back
             </Link>
-            <span className="badge badge-success" style={{ padding: "0.3rem 0.65rem" }}>
-              ✨ {filteredStudents.length} All-Clear Students Found
+            <span className="badge badge-success" style={{ padding: "0.3rem 0.65rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+              <IconSparkles size={14} color="#059669" /> {filteredStudents.length} All-Clear Students Found
             </span>
           </div>
           <h2 className="h2 text-gradient" style={{ fontSize: "1.6rem" }}>
@@ -101,7 +111,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
             type="text"
             className="input-field"
             style={{ width: "190px", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
-            placeholder="🔍 Search Student..."
+            placeholder="Search Student..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -209,26 +219,40 @@ export default function AllClearPageClient({ students, departments }: Props) {
               ? Number(((totalCoreAlliedScored / totalCoreAlliedMax) * 100).toFixed(2))
               : 0;
 
-            const corePct = coreMax > 0 ? Number(((coreScored / coreMax) * 100).toFixed(2)) : 0;
-            const alliedPct = alliedMax > 0 ? Number(((alliedScored / alliedMax) * 100).toFixed(2)) : 0;
+            const coreAlliedCgpa = student.metrics?.part3Cgpa || student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
+            const overallCgpa = student.metrics?.cgpa || 0;
 
-            const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
-
-            // University Degree Classification Norms
-            let universityClassification = "FIRST CLASS WITH DISTINCTION 👑";
+            // University Degree Classification Norms with Professional Icons
+            let universityClassificationNode = (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
+              </span>
+            );
             let classificationColor = "#059669";
 
             if (coreAlliedCgpa >= 7.50 && coreAlliedPercentage >= 75.00) {
-              universityClassification = "FIRST CLASS WITH DISTINCTION 👑";
+              universityClassificationNode = (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
+                </span>
+              );
               classificationColor = "#059669";
             } else if (coreAlliedCgpa >= 6.00 && coreAlliedPercentage >= 60.00) {
-              universityClassification = "FIRST CLASS 🏅";
+              universityClassificationNode = (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <IconMedal size={15} color="#2563EB" /> FIRST CLASS
+                </span>
+              );
               classificationColor = "#2563EB";
             } else if (coreAlliedCgpa >= 5.00 && coreAlliedPercentage >= 50.00) {
-              universityClassification = "SECOND CLASS 🌟";
+              universityClassificationNode = (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <IconStar size={15} color="#D97706" /> SECOND CLASS
+                </span>
+              );
               classificationColor = "#D97706";
             } else {
-              universityClassification = "PASS CLASS";
+              universityClassificationNode = <span>PASS CLASS</span>;
               classificationColor = "#475569";
             }
 
@@ -334,8 +358,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 {/* 2. STUDENT RESULT TABLE (CORE & ALLIED SUBJECTS ONLY)     */}
                 {/* ========================================================= */}
                 <div style={{ marginBottom: "0.85rem" }}>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem" }}>
-                    📋 Core & Allied Subjects Performance Table
+                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    <IconClipboardList size={15} color="#4F46E5" /> Core & Allied Subjects Performance Table
                   </div>
 
                   <table
@@ -447,8 +471,8 @@ export default function AllClearPageClient({ students, departments }: Props) {
                 {/* 3. OVERALL RESULT FOOTER SUMMARY TABLE                    */}
                 {/* ========================================================= */}
                 <div style={{ marginBottom: "0.5rem" }}>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem" }}>
-                    📊 Overall Core & Allied Result Summary (University Norms)
+                  <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#334155", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.35rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    <IconBarChart3 size={15} color="#4F46E5" /> Overall Core & Allied Result Summary (University Norms)
                   </div>
 
                   <table
@@ -500,13 +524,13 @@ export default function AllClearPageClient({ students, departments }: Props) {
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: classificationColor }}>
-                          {universityClassification}
+                          {universityClassificationNode}
                         </td>
                       </tr>
                       <tr>
                         <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>Overall Cumulative Grade Point Average (Overall CGPA)</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: "#059669", fontSize: "0.875rem" }}>
-                          {(student.metrics?.cgpa || coreAlliedCgpa).toFixed(2)} CGPA
+                          {overallCgpa.toFixed(2)} CGPA
                         </td>
                       </tr>
                     </tbody>
