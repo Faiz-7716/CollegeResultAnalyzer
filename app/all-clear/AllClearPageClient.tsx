@@ -342,7 +342,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
             const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
             const overallCgpa = student.metrics?.cgpa || 0;
 
-            // University Degree Classification Norms (CBCS 10-Point Grade Scale)
+            // University Degree Classification Norms (Based Strictly on Core & Allied CGPA)
             let universityClassificationNode = (
               <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                 <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
@@ -350,21 +350,21 @@ export default function AllClearPageClient({ students, departments }: Props) {
             );
             let classificationColor = "#059669";
 
-            if (coreAlliedCgpa >= 7.50 || overallCgpa >= 7.50) {
+            if (coreAlliedCgpa >= 7.50) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconCrown size={15} color="#059669" /> FIRST CLASS WITH DISTINCTION
                 </span>
               );
               classificationColor = "#059669";
-            } else if (coreAlliedCgpa >= 6.00 || overallCgpa >= 6.00) {
+            } else if (coreAlliedCgpa >= 6.00) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconMedal size={15} color="#2563EB" /> FIRST CLASS
                 </span>
               );
               classificationColor = "#2563EB";
-            } else if (coreAlliedCgpa >= 5.00 || overallCgpa >= 5.00) {
+            } else if (coreAlliedCgpa >= 5.00) {
               universityClassificationNode = (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                   <IconStar size={15} color="#D97706" /> SECOND CLASS
@@ -669,7 +669,7 @@ export default function AllClearPageClient({ students, departments }: Props) {
                         </td>
                       </tr>
                       <tr style={{ borderBottom: "1px solid #CBD5E1" }}>
-                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification</td>
+                        <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700 }}>University Awarded Degree Classification (Core & Allied Only)</td>
                         <td style={{ padding: "0.3rem 0.5rem", fontWeight: 900, color: classificationColor }}>
                           {universityClassificationNode}
                         </td>
