@@ -24,12 +24,23 @@ export default function AllClearPageClient({ students, departments }: Props) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [printingStudentId, setPrintingStudentId] = useState<string | null>(null);
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
-  const [printingMode, setPrintingMode] = useState<"all" | "single" | "selected">("all");
+  const [printingMode, setPrintingMode] = useState<"all" | "single" | "selected" | "summary">("all");
+  const [selectedClass, setSelectedClass] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
 
   // Filter students
   const filteredStudents = students.filter((s) => {
     const sDeptCode = s.department?.code || "CS";
     if (selectedDept !== "all" && sDeptCode !== selectedDept) return false;
+    
+    const coreAlliedCgpa = s.metrics?.part2Cgpa || s.metrics?.cgpa || 0;
+    let cls = "pass";
+    if (coreAlliedCgpa >= 7.50) cls = "distinction";
+    else if (coreAlliedCgpa >= 6.00) cls = "first";
+    else if (coreAlliedCgpa >= 5.00) cls = "second";
+
+    if (selectedClass !== "all" && cls !== selectedClass) return false;
+
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       return (
@@ -94,6 +105,86 @@ export default function AllClearPageClient({ students, departments }: Props) {
     }, 150);
   };
 
+  // Handle printing summary report
+  const handlePrintSummary = () => {
+    setPrintingMode("summary");
+    setPrintingStudentId(null);
+    setTimeout(() => {
+      window.print();
+      setPrintingMode("all");
+    }, 150);
+  };
+
+  // Helper to compute exact metrics for summary matching individual cards
+  const computeStudentMetrics = (student: any) => {
+    const allResults = student.results || [];
+    let coreAndAlliedResults = allResults.filter((r: any) => {
+      if (!r.subject || !r.subject.code) return false;
+      const code = r.subject.code.toUpperCase();
+      const name = r.subject.name ? r.subject.name.toUpperCase() : "";
+      const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+      const isEVS = code.includes("EVS") || code.includes("VALUE") || code.includes("VE") || code.includes("PE") || name.includes("ENVIRONMENT");
+      const isPythonOrCore = code.includes("UPCS") || code.includes("UCS") || name.includes("PYTHON") || name.includes("LAB") || name.includes("PRACTICAL");
+      if (isPythonOrCore) return true;
+      return !isLang && !isEVS;
+    });
+
+    if (coreAndAlliedResults.length === 0 && allResults.length > 0) {
+      coreAndAlliedResults = allResults;
+    }
+
+    const semGroupMap: Record<number, any[]> = {};
+    coreAndAlliedResults.forEach((r: any) => {
+      const semNum = r.subject?.semester?.number || 1;
+      if (!semGroupMap[semNum]) semGroupMap[semNum] = [];
+      semGroupMap[semNum].push(r);
+    });
+
+    const sortedSemesters = Object.keys(semGroupMap).map(Number).sort((a, b) => a - b);
+    let finalCoreAlliedResults: any[] = [];
+    sortedSemesters.forEach((semNum) => {
+      semGroupMap[semNum].sort((a: any, b: any) => {
+        const codeA = a.subject?.code || "";
+        const codeB = b.subject?.code || "";
+        const nameA = (a.subject?.name || "").toUpperCase();
+        const nameB = (b.subject?.name || "").toUpperCase();
+        const isCoreA = codeA.includes("UCS") || codeA.includes("UPCS") || nameA.includes("PYTHON") || nameA.includes("LAB");
+        const isCoreB = codeB.includes("UCS") || codeB.includes("UPCS") || nameB.includes("PYTHON") || nameB.includes("LAB");
+        if (isCoreA && !isCoreB) return -1;
+        if (!isCoreA && isCoreB) return 1;
+        return codeA.localeCompare(codeB);
+      });
+      const maxQuota = semNum <= 3 ? 3 : 4;
+      finalCoreAlliedResults.push(...semGroupMap[semNum].slice(0, maxQuota));
+    });
+
+    let coreScored = 0; let coreMax = 0;
+    let alliedScored = 0; let alliedMax = 0;
+    finalCoreAlliedResults.forEach((r: any) => {
+      const code = (r.subject?.code || "").toUpperCase();
+      const mark = (r.total || (r.internalMarks + r.externalMarks));
+      const isCore = code.includes("UCS") || code.includes("UPCS") || code.includes("CC");
+      if (isCore) { coreScored += mark; coreMax += 100; }
+      else { alliedScored += mark; alliedMax += 100; }
+    });
+
+    let totalScored = coreScored + alliedScored;
+    let totalMax = coreMax + alliedMax;
+    if (totalMax === 0) totalMax = finalCoreAlliedResults.length * 100;
+    const percentage = totalMax > 0 ? ((totalScored / totalMax) * 100).toFixed(2) : "0.00";
+    
+    return {
+      sortedSemesters,
+      semGroupMap,
+      finalCoreAlliedResults,
+      coreScored,
+      alliedScored,
+      totalScored,
+      totalMax,
+      percentage
+    };
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       {/* 1. Header Control Bar (No Print) */}
@@ -147,6 +238,23 @@ export default function AllClearPageClient({ students, departments }: Props) {
             </select>
           </div>
 
+          {/* Classification Filter */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flex: "1 1 auto" }}>
+            <IconFilter size={16} color="var(--accent-primary)" />
+            <select
+              className="input-field"
+              style={{ width: "100%", marginBottom: 0, padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              <option value="all">All Classes</option>
+              <option value="distinction">First Class with Distinction (≥ 7.5 CGPA)</option>
+              <option value="first">First Class (6.0 - 7.49 CGPA)</option>
+              <option value="second">Second Class (5.0 - 5.99 CGPA)</option>
+              <option value="pass">Pass Class (&lt; 5.0 CGPA)</option>
+            </select>
+          </div>
+
           {/* Search Student */}
           <input
             type="text"
@@ -156,6 +264,22 @@ export default function AllClearPageClient({ students, departments }: Props) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+
+          {/* View Mode Toggle */}
+          <div className="no-print" style={{ display: "inline-flex", background: "#F1F5F9", borderRadius: "var(--radius-md)", border: "1px solid #CBD5E1", overflow: "hidden" }}>
+            <button
+              onClick={() => setViewMode("table")}
+              style={{ padding: "0.45rem 0.85rem", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", border: "none", background: viewMode === "table" ? "#FFFFFF" : "transparent", color: viewMode === "table" ? "var(--accent-primary)" : "#64748B", boxShadow: viewMode === "table" ? "0 1px 3px rgba(0,0,0,0.1)" : "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <IconClipboardList size={16} /> Table View
+            </button>
+            <button
+              onClick={() => setViewMode("cards")}
+              style={{ padding: "0.45rem 0.85rem", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", border: "none", background: viewMode === "cards" ? "#FFFFFF" : "transparent", color: viewMode === "cards" ? "var(--accent-primary)" : "#64748B", boxShadow: viewMode === "cards" ? "0 1px 3px rgba(0,0,0,0.1)" : "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <IconBarChart3 size={16} /> Card View
+            </button>
+          </div>
 
           {/* Select All Checkbox Control */}
           <label
@@ -223,14 +347,154 @@ export default function AllClearPageClient({ students, departments }: Props) {
             <IconPrinter size={16} />
             <span>Download All ({filteredStudents.length})</span>
           </button>
+
+          {/* Download Summary Report Button */}
+          <button
+            onClick={handlePrintSummary}
+            className="btn btn-primary"
+            style={{
+              padding: "0.55rem 1.15rem",
+              fontSize: "0.875rem",
+              fontWeight: 800,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              whiteSpace: "nowrap",
+              background: "linear-gradient(135deg, #059669 0%, #047857 100%)",
+              boxShadow: "0 6px 16px rgba(5, 150, 105, 0.3)",
+              border: "none",
+              color: "white"
+            }}
+          >
+            <IconClipboardList size={16} />
+            <span>Summary Report</span>
+          </button>
         </div>
       </div>
 
-      {/* 2. List of A4 Student Reports */}
+      {/* 2. List of A4 Student Reports OR Summary Report */}
       {filteredStudents.length === 0 ? (
         <div className="card glass-panel" style={{ padding: "3rem", textAlign: "center" }}>
           <h3 className="h3">No All-Clear Students Found</h3>
           <p className="text-muted" style={{ marginTop: "0.5rem" }}>No students matching the selected department filter currently have zero arrears.</p>
+        </div>
+      ) : (printingMode === "summary" || viewMode === "table") ? (
+        <div className="all-clear-reports-container summary-only" style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <div className="summary-report-page card glass-panel" style={{ padding: "1.25rem 1.5rem", background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.15)", borderRadius: "var(--radius-md)", position: "relative", boxSizing: "border-box" }}>
+             {/* Official Header */}
+             <div style={{ textAlign: "center", marginBottom: "0.85rem", borderBottom: "1.5px solid #000000", paddingBottom: "0.6rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.85rem", marginBottom: "0.35rem", flexWrap: "wrap" }}>
+                    <img
+                      src="/logo.png"
+                      alt="College Logo"
+                      style={{ height: "42px", width: "auto", objectFit: "contain" }}
+                    />
+                    <div>
+                      <h1 className="report-header-title" style={{ fontSize: "1.15rem", fontWeight: 900, color: "#000000", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0, lineHeight: 1.1 }}>
+                        MAZHARUL ULOOM COLLEGE (AUTONOMOUS) – AMBUR
+                      </h1>
+                      <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "#4F46E5", letterSpacing: "0.03em", margin: "0.15rem 0 0 0" }}>
+                        ALL CLEAR STUDENT SUMMARY REPORT
+                      </h2>
+                    </div>
+                  </div>
+              </div>
+
+              {/* Summary Table */}
+              <div style={{ overflowX: "auto", width: "100%", flexGrow: 1 }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.775rem", border: "1.5px solid #000000" }}>
+                   <thead>
+                     <tr style={{ background: "#F1F5F9", borderBottom: "1.5px solid #000000" }}>
+                       <th className="no-print" style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "40px" }}>
+                         <input type="checkbox" checked={allFilteredSelected} onChange={toggleSelectAll} style={{ cursor: "pointer", accentColor: "var(--accent-primary)" }} />
+                       </th>
+                       <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "50px" }}>S.NO</th>
+                       <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left", width: "100px" }}>ROLL</th>
+                       <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "left" }}>NAME</th>
+                       <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "130px" }}>TOTAL MARK (ALLIED+CORE)</th>
+                       <th style={{ padding: "0.35rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", width: "100px" }}>PERCENTAGE</th>
+                       <th style={{ padding: "0.35rem 0.5rem", textAlign: "center", width: "70px" }}>CGPA</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {(() => {
+                        const summaryStudents = (printingMode === "summary" && selectedCount > 0)
+                          ? filteredStudents.filter(s => selectedStudentIds.includes(s.id))
+                          : filteredStudents;
+
+                        return summaryStudents.map((student, idx) => {
+                          const { totalScored, totalMax, percentage } = computeStudentMetrics(student);
+                          const cgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
+                          const isChecked = selectedStudentIds.includes(student.id);
+
+                          return (
+                            <tr key={student.id} style={{ borderBottom: "1px solid #E2E8F0", background: idx % 2 === 0 ? "#FFFFFF" : (isChecked ? "#F0F9FF" : "#F8FAFC") }}>
+                              <td className="no-print" style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center" }}>
+                                <input type="checkbox" checked={isChecked} onChange={() => toggleSelectStudent(student.id)} style={{ cursor: "pointer", accentColor: "var(--accent-primary)" }} />
+                              </td>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", fontWeight: 800, color: "#1E293B" }}>{idx + 1}</td>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 700, color: "#0F172A" }}>{student.registerNumber}</td>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", fontWeight: 600, color: "#334155" }}>{student.name}</td>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", fontWeight: 800, color: "#2563EB" }}>{totalScored} / {totalMax}</td>
+                              <td style={{ padding: "0.3rem 0.5rem", borderRight: "1px solid #CBD5E1", textAlign: "center", fontWeight: 800, color: "#059669" }}>{percentage}%</td>
+                              <td style={{ padding: "0.3rem 0.5rem", textAlign: "center", fontWeight: 800, color: "#4F46E5" }}>{cgpa.toFixed(2)}</td>
+                            </tr>
+                          );
+                        });
+                     })()}
+                   </tbody>
+                </table>
+              </div>
+
+              {/* Summary Aggregate Footer */}
+              {(() => {
+                // Instantly react to checkboxes in the UI for the footer stats
+                const footerStudents = selectedCount > 0
+                  ? filteredStudents.filter(s => selectedStudentIds.includes(s.id))
+                  : filteredStudents;
+
+                let totalDistinction = 0;
+                let totalFirst = 0;
+                let totalSecond = 0;
+                let totalPass = 0;
+            
+                footerStudents.forEach(student => {
+                   const cgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
+                   if (cgpa >= 7.50) totalDistinction++;
+                   else if (cgpa >= 6.00) totalFirst++;
+                   else if (cgpa >= 5.00) totalSecond++;
+                   else totalPass++;
+                });
+
+                return (
+                  <div style={{ marginTop: "1.5rem", border: "1.5px solid #000000", padding: "1rem", background: "#F8FAFC" }}>
+                     <h3 style={{ fontSize: "0.85rem", fontWeight: 900, color: "#0F172A", marginBottom: "0.75rem", textTransform: "uppercase", borderBottom: "1px solid #CBD5E1", paddingBottom: "0.4rem" }}>Filtered Class Summary</h3>
+                     <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "1rem", textAlign: "center" }}>
+                        <div style={{ borderRight: "1px solid #CBD5E1" }}>
+                          <div style={{ fontSize: "0.7rem", color: "#475569", fontWeight: 800, textTransform: "uppercase" }}>Total Students</div>
+                          <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#0F172A", marginTop: "0.2rem" }}>{footerStudents.length}</div>
+                        </div>
+                        <div style={{ borderRight: "1px solid #CBD5E1" }}>
+                          <div style={{ fontSize: "0.7rem", color: "#475569", fontWeight: 800, textTransform: "uppercase" }}>Distinction</div>
+                          <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#059669", marginTop: "0.2rem" }}>{totalDistinction}</div>
+                        </div>
+                        <div style={{ borderRight: "1px solid #CBD5E1" }}>
+                          <div style={{ fontSize: "0.7rem", color: "#475569", fontWeight: 800, textTransform: "uppercase" }}>First Class</div>
+                          <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#2563EB", marginTop: "0.2rem" }}>{totalFirst}</div>
+                        </div>
+                        <div style={{ borderRight: "1px solid #CBD5E1" }}>
+                          <div style={{ fontSize: "0.7rem", color: "#475569", fontWeight: 800, textTransform: "uppercase" }}>Second Class</div>
+                          <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#D97706", marginTop: "0.2rem" }}>{totalSecond}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "0.7rem", color: "#475569", fontWeight: 800, textTransform: "uppercase" }}>Pass Class</div>
+                          <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#475569", marginTop: "0.2rem" }}>{totalPass}</div>
+                        </div>
+                     </div>
+                  </div>
+                );
+              })()}
+          </div>
         </div>
       ) : (
         <div className="all-clear-reports-container" style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
@@ -247,98 +511,22 @@ export default function AllClearPageClient({ students, departments }: Props) {
 
             const isChecked = selectedStudentIds.includes(student.id);
 
-            // Extract Core & Allied Subjects (Explicitly include Python Practical, exclude EVS / General Skill Electives)
-            const allResults = student.results || [];
-            let coreAndAlliedResults = allResults.filter((r: any) => {
-              if (!r.subject || !r.subject.code) return false;
-              const code = r.subject.code.toUpperCase();
-              const name = r.subject.name ? r.subject.name.toUpperCase() : "";
+            // Compute Summary Metrics for Core & Allied subjects using helper
+            const { 
+              sortedSemesters, 
+              semGroupMap, 
+              finalCoreAlliedResults, 
+              coreScored, 
+              alliedScored,
+              totalScored: totalCoreAlliedScored,
+              totalMax: totalCoreAlliedMax,
+              percentage
+            } = computeStudentMetrics(student);
 
-              // Exclude Language Papers (ULE, ULT, ULU)
-              const isLang = code.includes("ULE") || code.includes("ULT") || code.includes("ULU");
+            const coreAlliedPercentage = Number(percentage);
 
-              // Exclude Environmental Studies & General Value Education (EVS, VE, VALUE, PE, HRE)
-              const isEVS = code.includes("EVS") || code.includes("VALUE") || code.includes("VE") || code.includes("PE") || name.includes("ENVIRONMENT");
-
-              // ALWAYS include Python, Python Practical (UPCS), Core, and Allied papers!
-              const isPythonOrCore = code.includes("UPCS") || code.includes("UCS") || name.includes("PYTHON") || name.includes("LAB") || name.includes("PRACTICAL");
-
-              if (isPythonOrCore) return true;
-              return !isLang && !isEVS;
-            });
-
-            // Fallback if filter is empty
-            if (coreAndAlliedResults.length === 0 && allResults.length > 0) {
-              coreAndAlliedResults = allResults;
-            }
-
-            // Group by Semester (1, 2, 3, 4...)
-            const semGroupMap: Record<number, any[]> = {};
-            coreAndAlliedResults.forEach((r: any) => {
-              const semNum = r.subject?.semester?.number || 1;
-              if (!semGroupMap[semNum]) semGroupMap[semNum] = [];
-              semGroupMap[semNum].push(r);
-            });
-
-            const sortedSemesters = Object.keys(semGroupMap).map(Number).sort((a, b) => a - b);
-            let finalCoreAlliedResults: any[] = [];
-
-            // Sort subjects inside each semester & slice to exact quota:
-            // Prioritize Python Theory, Python Practical (Lab), Core & Allied over general electives
-            // Sem 1, Sem 2, Sem 3 -> max 3 Core/Allied subjects
-            // Sem 4 -> max 4 Core/Allied subjects
-            sortedSemesters.forEach((semNum) => {
-              semGroupMap[semNum].sort((a: any, b: any) => {
-                const codeA = a.subject?.code || "";
-                const codeB = b.subject?.code || "";
-                const nameA = (a.subject?.name || "").toUpperCase();
-                const nameB = (b.subject?.name || "").toUpperCase();
-
-                const isCoreA = codeA.includes("UCS") || codeA.includes("UPCS") || nameA.includes("PYTHON") || nameA.includes("LAB");
-                const isCoreB = codeB.includes("UCS") || codeB.includes("UPCS") || nameB.includes("PYTHON") || nameB.includes("LAB");
-
-                if (isCoreA && !isCoreB) return -1;
-                if (!isCoreA && isCoreB) return 1;
-
-                return codeA.localeCompare(codeB);
-              });
-
-              const maxQuota = semNum <= 3 ? 3 : 4;
-              const semSliced = semGroupMap[semNum].slice(0, maxQuota);
-              semGroupMap[semNum] = semSliced;
-              finalCoreAlliedResults.push(...semSliced);
-            });
-
-            // Compute Summary Metrics for Core & Allied subjects
-            let coreScored = 0;
-            let coreMax = 0;
-            let alliedScored = 0;
-            let alliedMax = 0;
-
-            finalCoreAlliedResults.forEach((r: any) => {
-              const code = (r.subject?.code || "").toUpperCase();
-              const mark = (r.total || (r.internalMarks + r.externalMarks));
-              const isCore = code.includes("UCS") || code.includes("UPCS") || code.includes("CC");
-
-              if (isCore) {
-                coreScored += mark;
-                coreMax += 100;
-              } else {
-                alliedScored += mark;
-                alliedMax += 100;
-              }
-            });
-
-            let totalCoreAlliedScored = coreScored + alliedScored;
-            let totalCoreAlliedMax = coreMax + alliedMax;
-            if (totalCoreAlliedMax === 0) totalCoreAlliedMax = finalCoreAlliedResults.length * 100;
-
-            const coreAlliedPercentage = totalCoreAlliedMax > 0
-              ? Number(((totalCoreAlliedScored / totalCoreAlliedMax) * 100).toFixed(2))
-              : 0;
-
-            const corePct = coreMax > 0 ? Number(((coreScored / coreMax) * 100).toFixed(2)) : 0;
-            const alliedPct = alliedMax > 0 ? Number(((alliedScored / alliedMax) * 100).toFixed(2)) : 0;
+            // const corePct = coreMax > 0 ? Number(((coreScored / coreMax) * 100).toFixed(2)) : 0;
+            // const alliedPct = alliedMax > 0 ? Number(((alliedScored / alliedMax) * 100).toFixed(2)) : 0;
 
             // Core & Allied CGPA matching official student ledger metrics (Part 2 CGPA)
             const coreAlliedCgpa = student.metrics?.part2Cgpa || student.metrics?.cgpa || 0;
@@ -765,7 +953,9 @@ export default function AllClearPageClient({ students, departments }: Props) {
           .all-clear-reports-container,
           .all-clear-reports-container *,
           .a4-report-page,
-          .a4-report-page * {
+          .a4-report-page *,
+          .summary-report-page,
+          .summary-report-page * {
             visibility: visible !important;
           }
 
@@ -776,6 +966,20 @@ export default function AllClearPageClient({ students, departments }: Props) {
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
+          }
+
+          .summary-report-page {
+            position: relative !important;
+            box-shadow: none !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            background: #FFFFFF !important;
+            width: 100% !important;
+            max-width: 210mm !important;
+            box-sizing: border-box !important;
+            display: block !important;
           }
 
           .a4-report-page {
